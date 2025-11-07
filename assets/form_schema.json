@@ -1,0 +1,73 @@
+[
+  {
+    "id": 1,
+    "label": "Select type of scheme",
+    "type": "radio",
+    "options": ["sfc", "slc"],
+    "rules": [
+      {"action": "required"}
+    ]
+  },
+  {
+    "id": 2,
+    "label": "Nature of SFC scheme",
+    "type": "select",
+    "options": ["Urban", "Rural"],
+    "rules": [
+      {"action": "show", "condition_type": "equals", "depends_on": 1, "depends_value": "sfc"}
+    ]
+  },
+  {
+    "id": 3,
+    "label": "Nature of SLC scheme",
+    "type": "select",
+    "options": ["Agriculture", "Industrial"],
+    "rules": [
+      {"action": "show", "condition_type": "equals", "depends_on": 1, "depends_value": "slc"}
+    ]
+  },
+  {
+    "id": 4,
+    "label": "Preferred Urban Area Type",
+    "type": "dropdown",
+    "options": ["Metro", "Semi-Metro"],
+    "rules": [
+      {"action": "show", "condition_type": "equals", "depends_on": 2, "depends_value": "Urban"}
+    ]
+  },
+  {
+    "id": 5,
+    "label": "Select Industrial Category",
+    "type": "checkbox",
+    "options": ["Manufacturing", "Textile", "Chemical"],
+    "rules": [
+      {"action": "show", "condition_type": "equals", "depends_on": 3, "depends_value": "Industrial"}
+    ]
+  },
+  {
+    "id": 6,
+    "label": "Your full name",
+    "type": "text",
+    "options": [],
+    "rules": [
+      {"action": "required"}
+    ]
+  },
+  {
+    "id": 7,
+    "label": "Contact number",
+    "type": "number",
+    "options": [],
+    "rules": [
+      {"action": "required"}
+    ]
+  },
+  {
+    "id": 8,
+    "label": "Additional details",
+    "type": "textarea",
+    "options": [],
+    "rules": []
+  }
+]
+
