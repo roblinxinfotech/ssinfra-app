@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
@@ -10,7 +9,7 @@ import '../controller/formScreenController.dart';
 import '../utils/appColors.dart';
 
 class FormScreen extends StatefulWidget {
-  const FormScreen({super.key});
+  const FormScreen({super.key, String? formid});
 
   @override
   State<FormScreen> createState() => _FormScreenState();
@@ -52,63 +51,125 @@ class _FormScreenState extends State<FormScreen> {
                   : controller.error == true
                   ? Center(
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Image.asset(
-                            height: 30.w,
-                            width: 30.w,
-                            "assets/icons/somethingWentWrong.png",
-                            fit: BoxFit.fill,
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  Get.back();
+                                },
+                                child: Image.asset(
+                                  "assets/icons/backWard.png",
+                                  height: 25.sp,
+                                  width: 25.sp,
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            ],
                           ),
-                          CommonWidgets().commonText(
-                            text: "SOMETHING WENT WRONG",
-                            fontSize: 20.sp,
-                            fontColor: AppColors().color1E1E1E,
-                            fontFamily: "PlusJakartaSansMedium",
-                            fontWeight: FontWeight.bold,
+
+                          Column(
+                            children: [
+                              Image.asset(
+                                height: 30.w,
+                                width: 30.w,
+                                "assets/icons/somethingWentWrong.png",
+                                fit: BoxFit.fill,
+                              ),
+                              CommonWidgets().commonText(
+                                text: "SOMETHING WENT WRONG",
+                                fontSize: 20.sp,
+                                fontColor: AppColors().color1E1E1E,
+                                fontFamily: "PlusJakartaSansMedium",
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ],
                           ),
+
+                          Container(height: 25.sp, width: 25.sp),
                         ],
                       ),
                     )
                   : controller.questions.length == 0
                   ? Center(
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
                         children: [
-                          Image.asset(
-                            height: 30.w,
-                            width: 30.w,
-                            "assets/icons/noDataFound.png",
-                            fit: BoxFit.fill,
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  Get.back();
+                                },
+                                child: Image.asset(
+                                  "assets/icons/backWard.png",
+                                  height: 25.sp,
+                                  width: 25.sp,
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            ],
                           ),
-                          CommonWidgets().commonText(
-                            text: "NO DATA FOUND.",
-                            fontSize: 20.sp,
-                            fontColor: AppColors().color1E1E1E,
-                            fontFamily: "PlusJakartaSansMedium",
-                            fontWeight: FontWeight.bold,
+                          Column(
+                            children: [
+                              Image.asset(
+                                height: 30.w,
+                                width: 30.w,
+                                "assets/icons/noDataFound.png",
+                                fit: BoxFit.fill,
+                              ),
+                              CommonWidgets().commonText(
+                                text: "NO DATA FOUND.",
+                                fontSize: 20.sp,
+                                fontColor: AppColors().color1E1E1E,
+                                fontFamily: "PlusJakartaSansMedium",
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ],
                           ),
+                          Container(height: 25.sp, width: 25.sp),
                         ],
                       ),
                     )
                   : Column(
                       children: [
-                        Column(
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            CommonWidgets().commonText(
-                              text:
-                                  "${controller.title.toString().toUpperCase()}",
-                              fontSize: 20.sp,
-                              fontColor: AppColors().color1E1E1E,
-                              fontFamily: "PlusJakartaSansMedium",
-                              fontWeight: FontWeight.bold,
+                            GestureDetector(
+                              onTap: () {
+                                Get.back();
+                              },
+                              child: Image.asset(
+                                "assets/icons/backWard.png",
+                                height: 25.sp,
+                                width: 25.sp,
+                                fit: BoxFit.contain,
+                              ),
                             ),
-                            SizedBox(height: 2.w),
-                            Container(
-                              height: 1,
-                              width: 30.w,
-                              color: AppColors().color5B6AEA,
+                            Column(
+                              children: [
+                                CommonWidgets().commonText(
+                                  text:
+                                      "${controller.title.toString().toUpperCase()}",
+                                  fontSize: 20.sp,
+                                  fontColor: AppColors().color1E1E1E,
+                                  fontFamily: "PlusJakartaSansMedium",
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                SizedBox(height: 2.w),
+                                Container(
+                                  height: 1,
+                                  width: 30.w,
+                                  color: AppColors().color5B6AEA,
+                                ),
+                              ],
                             ),
+                            Container(height: 25.sp, width: 25.sp),
                           ],
                         ),
                         SizedBox(height: 3.w),
@@ -213,8 +274,11 @@ class _FormScreenState extends State<FormScreen> {
                                           child: Container(
                                             height: 40,
                                             child: TextFormField(
+                                              readOnly: true,
                                               decoration: InputDecoration(
                                                 labelText: 'State',
+                                                hintText:
+                                                    "${controller.assignedVillageWardModel.value.data?.state?.name ?? "N/A"}",
                                                 labelStyle: TextStyle(
                                                   color:
                                                       AppColors().color5B6AEA,
@@ -257,8 +321,11 @@ class _FormScreenState extends State<FormScreen> {
                                           child: Container(
                                             height: 40,
                                             child: TextFormField(
+                                              readOnly: true,
                                               decoration: InputDecoration(
                                                 labelText: 'Code',
+                                                hintText:
+                                                    "${controller.assignedVillageWardModel.value.data?.state?.code ?? "N/A"}",
                                                 labelStyle: TextStyle(
                                                   color:
                                                       AppColors().color5B6AEA,
@@ -301,7 +368,10 @@ class _FormScreenState extends State<FormScreen> {
                                           child: Container(
                                             height: 40,
                                             child: TextFormField(
+                                              readOnly: true,
                                               decoration: InputDecoration(
+                                                hintText:
+                                                    "${controller.assignedVillageWardModel.value.data?.district?.name ?? "N/A"}",
                                                 labelText: 'District',
                                                 labelStyle: TextStyle(
                                                   color:
@@ -345,7 +415,10 @@ class _FormScreenState extends State<FormScreen> {
                                           child: Container(
                                             height: 40,
                                             child: TextFormField(
+                                              readOnly: true,
                                               decoration: InputDecoration(
+                                                hintText:
+                                                    "${controller.assignedVillageWardModel.value.data?.district?.code ?? "N/A"}",
                                                 labelText: 'Code',
                                                 labelStyle: TextStyle(
                                                   color:
@@ -389,7 +462,10 @@ class _FormScreenState extends State<FormScreen> {
                                           child: Container(
                                             height: 40,
                                             child: TextFormField(
+                                              readOnly: true,
                                               decoration: InputDecoration(
+                                                hintText:
+                                                    "${controller.assignedVillageWardModel.value.data?.subdistrict?.name ?? "N/A"}",
                                                 labelText: 'Block/Tehsil',
                                                 labelStyle: TextStyle(
                                                   color:
@@ -433,7 +509,10 @@ class _FormScreenState extends State<FormScreen> {
                                           child: Container(
                                             height: 40,
                                             child: TextFormField(
+                                              readOnly: true,
                                               decoration: InputDecoration(
+                                                hintText:
+                                                    "${controller.assignedVillageWardModel.value.data?.subdistrict?.code ?? "N/A"}",
                                                 labelText: 'Code',
                                                 labelStyle: TextStyle(
                                                   color:
@@ -474,8 +553,8 @@ class _FormScreenState extends State<FormScreen> {
                                     SizedBox(height: 2.w),
                                     Container(
                                       height: 42,
-
                                       child: DropdownButtonFormField<int>(
+                                        value: controller.villageStored.value,
                                         decoration: InputDecoration(
                                           contentPadding: EdgeInsets.symmetric(
                                             horizontal: 12,
@@ -486,7 +565,6 @@ class _FormScreenState extends State<FormScreen> {
                                             size: 30,
                                             color: AppColors().color1E1E1E,
                                           ),
-
                                           enabledBorder: OutlineInputBorder(
                                             borderSide: BorderSide(
                                               color: AppColors().colorD7D7D7,
@@ -499,8 +577,32 @@ class _FormScreenState extends State<FormScreen> {
                                           ),
                                           border: OutlineInputBorder(),
                                         ),
-                                        items: [],
-                                        onChanged: (int? value) {},
+                                        items: controller
+                                            .assignedVillageWardModel
+                                            .value
+                                            .data
+                                            ?.villages!
+                                            .map(
+                                              (opt) => DropdownMenuItem(
+                                                value: opt.id,
+                                                child: Text(
+                                                  opt.name.toString(),
+                                                  style: TextStyle(
+                                                    fontSize: 16.sp,
+                                                    fontFamily:
+                                                        "PlusJakartaSansRegular",
+                                                    fontWeight: FontWeight.w600,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+                                            .toList(),
+                                        onChanged: (dynamic value) {
+                                          controller.villageStored.value =
+                                              value;
+                                        },
                                         // value: ans.answer,
                                         // items: q.options
                                         //     .map(
@@ -558,7 +660,7 @@ class _FormScreenState extends State<FormScreen> {
                 children: [
                   GestureDetector(
                     onTap: () async {
-                      await controller.submit();
+                      await controller.submit(context);
                     },
                     child: Container(
                       margin: EdgeInsets.only(
@@ -595,6 +697,7 @@ class _FormScreenState extends State<FormScreen> {
 
   Widget _buildQuestion(QuestionModel q, {int? index}) {
     final visible = controller.shouldShowQuestion(q);
+    final isAutofilled = q.autofill?.hasFormula ?? false;
 
     return Visibility(
       visible: visible,
@@ -636,6 +739,11 @@ class _FormScreenState extends State<FormScreen> {
                 ),
               ),
               if (q.type != "label") const SizedBox(height: 8),
+              if (isAutofilled && q.type != "label")
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: _AutoFormulaBanner(type: q.autofill?.type),
+                ),
               _buildField(q),
               if (q.childrens.isNotEmpty)
                 Padding(
@@ -694,7 +802,6 @@ class _FormScreenState extends State<FormScreen> {
 
       case "checkbox":
         List<int> selected = (ans.answer ?? []).cast<int>();
-        final minSelect = q.minSelect ?? 0;
         final maxSelect = q.maxSelect ?? q.options.length;
 
         return Column(
@@ -723,6 +830,18 @@ class _FormScreenState extends State<FormScreen> {
                     Get.snackbar(
                       "Limit reached",
                       "Maximum $maxSelect choices allowed.",
+                      titleText: Text(
+                        "Limit reached",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      messageText: Text(
+                        "Maximum $maxSelect choices allowed.",
+                        style: TextStyle(fontSize: 16, color: Colors.white),
+                      ),
                       backgroundColor: Colors.orangeAccent,
                       colorText: Colors.white,
                     );
@@ -743,6 +862,7 @@ class _FormScreenState extends State<FormScreen> {
           height: 42,
 
           child: DropdownButtonFormField<int>(
+            isExpanded: true,
             decoration: InputDecoration(
               contentPadding: EdgeInsets.symmetric(
                 horizontal: 12,
@@ -773,6 +893,7 @@ class _FormScreenState extends State<FormScreen> {
                         fontSize: 16.sp,
                         fontFamily: "PlusJakartaSansRegular",
                         fontWeight: FontWeight.w600,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ),
@@ -783,93 +904,9 @@ class _FormScreenState extends State<FormScreen> {
         );
 
       case "input":
-        return Row(
-          children: [
-            Flexible(
-              child: Container(
-                height: 40,
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    disabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: AppColors().color787878),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: AppColors().colorD7D7D7),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: AppColors().color5B6AEA),
-                    ),
-                    contentPadding: EdgeInsets.only(left: 10),
-                    border: const OutlineInputBorder(),
-                    hintText: "${q.label}",
-                    hintStyle: TextStyle(
-                      fontSize: 16,
-                      fontFamily: "PlusJakartaSansRegular",
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  onChanged: (v) => controller.updateAnswer(q.id, v),
-                ),
-              ),
-            ),
-            q.unit?.name != null
-                ? Padding(
-                    padding: EdgeInsets.only(left: 2.w),
-                    child: Text(
-                      "${q.unit?.name.toString()}",
-                      style: TextStyle(
-                        fontSize: 15.sp,
-                        fontFamily: "PlusJakartaSansRegular",
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  )
-                : SizedBox(),
-          ],
-        );
+        return _InputFieldWidget(question: q, controller: controller);
       case "textarea":
-        return Row(
-          children: [
-            Flexible(
-              child: TextFormField(
-                maxLines: 5,
-                decoration: InputDecoration(
-                  disabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors().color787878),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors().colorD7D7D7),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors().color5B6AEA),
-                  ),
-                  contentPadding: EdgeInsets.only(left: 10),
-                  border: const OutlineInputBorder(),
-                  hintText: "${q.label}",
-                  hintStyle: TextStyle(
-                    fontSize: 16,
-                    fontFamily: "PlusJakartaSansRegular",
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                onChanged: (v) => controller.updateAnswer(q.id, v),
-              ),
-            ),
-            q.unit?.name != null
-                ? Padding(
-                    padding: EdgeInsets.only(left: 2.w),
-                    child: Text(
-                      "${q.unit?.name.toString()}",
-                      style: TextStyle(
-                        fontSize: 15.sp,
-                        fontFamily: "PlusJakartaSansRegular",
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  )
-                : SizedBox(),
-          ],
-        );
+        return _TextareaFieldWidget(question: q, controller: controller);
 
       case "number":
         return _NumberFieldWidget(question: q, controller: controller);
@@ -884,8 +921,19 @@ class _FormScreenState extends State<FormScreen> {
                 onPressed: () async {
                   final result = await FilePicker.platform.pickFiles();
                   if (result != null) {
-                    controller.updateAnswer(q.id, result.files.single.name);
+                    controller.updateAnswer(q.id, result.files.single.path);
                   }
+
+                  // final XFile? image = await controller
+                  //     .picker.pickImage(
+                  //     source: ImageSource
+                  //         .camera,
+                  //     imageQuality: 50);
+                  // Navigator.pop(context);
+                  // final result =  image;
+                  // if (result != null) {
+                  //   controller.updateAnswer(q.id, result.path);
+                  // }
                 },
                 icon: Icon(Icons.upload_file, color: AppColors().color1E1E1E),
                 label: Text(
@@ -966,6 +1014,7 @@ class _NumberFieldWidgetState extends State<_NumberFieldWidget> {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
+      final isAutoFilled = widget.question.autofill?.hasFormula ?? false;
       final currentAns =
           widget.controller.answers.firstWhereOrNull(
             (a) => a.id == widget.question.id,
@@ -991,9 +1040,8 @@ class _NumberFieldWidgetState extends State<_NumberFieldWidget> {
             child: Container(
               height: 40,
               child: TextFormField(
-                key: ValueKey(
-                  'number_field_${widget.question.id}',
-                ), // Stable key
+                key: ValueKey('number_field_${widget.question.id}'),
+                // Stable key
                 controller: _textController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
@@ -1012,6 +1060,17 @@ class _NumberFieldWidgetState extends State<_NumberFieldWidget> {
                     fontSize: 15.sp,
                     fontFamily: "PlusJakartaSansRegular",
                     fontWeight: FontWeight.w600,
+                  ),
+                  filled: isAutoFilled,
+                  fillColor: isAutoFilled
+                      ? AppColors().colorE1E5FD.withOpacity(0.4)
+                      : null,
+                  suffixIcon: isAutoFilled
+                      ? _AutoBadgeChip(type: widget.question.autofill?.type)
+                      : null,
+                  suffixIconConstraints: const BoxConstraints(
+                    minHeight: 0,
+                    minWidth: 0,
                   ),
                 ),
                 keyboardType: TextInputType.number,
@@ -1046,5 +1105,340 @@ class _NumberFieldWidgetState extends State<_NumberFieldWidget> {
         ],
       );
     });
+  }
+}
+
+/// Stateful widget for input fields to preserve text across hide/show
+class _InputFieldWidget extends StatefulWidget {
+  final QuestionModel question;
+  final DynamicFormController controller;
+
+  const _InputFieldWidget({required this.question, required this.controller});
+
+  @override
+  State<_InputFieldWidget> createState() => _InputFieldWidgetState();
+}
+
+class _InputFieldWidgetState extends State<_InputFieldWidget> {
+  late TextEditingController _textController;
+  late FocusNode _focusNode;
+  bool _isUserEditing = false;
+
+  @override
+  void initState() {
+    super.initState();
+    final ans = widget.controller.answers.firstWhereOrNull(
+      (a) => a.id == widget.question.id,
+    );
+    _textController = TextEditingController(
+      text: ans?.answer?.toString() ?? '',
+    );
+    _focusNode = FocusNode();
+    _focusNode.addListener(_onFocusChange);
+  }
+
+  @override
+  void dispose() {
+    _focusNode.removeListener(_onFocusChange);
+    _focusNode.dispose();
+    _textController.dispose();
+    super.dispose();
+  }
+
+  void _onFocusChange() {
+    if (!_focusNode.hasFocus) {
+      _isUserEditing = false;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      final isAutoFilled = widget.question.autofill?.hasFormula ?? false;
+      final currentAns =
+          widget.controller.answers.firstWhereOrNull(
+            (a) => a.id == widget.question.id,
+          ) ??
+          AnswerModel(id: widget.question.id, answer: null);
+      final currentValue = currentAns.answer?.toString() ?? '';
+
+      if (!_isUserEditing && _textController.text != currentValue) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted && !_isUserEditing) {
+            _textController.value = TextEditingValue(
+              text: currentValue,
+              selection: TextSelection.collapsed(offset: currentValue.length),
+            );
+          }
+        });
+      }
+
+      return Row(
+        children: [
+          Flexible(
+            child: Container(
+              height: 40,
+              child: TextFormField(
+                key: ValueKey('input_field_${widget.question.id}'),
+                controller: _textController,
+                focusNode: _focusNode,
+                decoration: InputDecoration(
+                  disabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: AppColors().color787878),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: AppColors().colorD7D7D7),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: AppColors().color5B6AEA),
+                  ),
+                  contentPadding: EdgeInsets.only(left: 10),
+                  border: const OutlineInputBorder(),
+                  hintText: "${widget.question.label}",
+                  hintStyle: TextStyle(
+                    fontSize: 16,
+                    fontFamily: "PlusJakartaSansRegular",
+                    fontWeight: FontWeight.w600,
+                  ),
+                  filled: isAutoFilled,
+                  fillColor: isAutoFilled
+                      ? AppColors().colorE1E5FD.withOpacity(0.4)
+                      : null,
+                  suffixIcon: isAutoFilled
+                      ? _AutoBadgeChip(type: widget.question.autofill?.type)
+                      : null,
+                  suffixIconConstraints: const BoxConstraints(
+                    minHeight: 0,
+                    minWidth: 0,
+                  ),
+                ),
+                onTap: () {
+                  _isUserEditing = true;
+                },
+                onChanged: (v) {
+                  _isUserEditing = true;
+                  widget.controller.updateAnswer(widget.question.id, v);
+                },
+                onEditingComplete: () {
+                  _isUserEditing = false;
+                  _focusNode.unfocus();
+                },
+              ),
+            ),
+          ),
+          widget.question.unit?.name != null
+              ? Padding(
+                  padding: EdgeInsets.only(left: 2.w),
+                  child: Text(
+                    "${widget.question.unit?.name.toString()}",
+                    style: TextStyle(
+                      fontSize: 15.sp,
+                      fontFamily: "PlusJakartaSansRegular",
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                )
+              : SizedBox(),
+        ],
+      );
+    });
+  }
+}
+
+/// Stateful widget for textarea fields to preserve text across hide/show
+class _TextareaFieldWidget extends StatefulWidget {
+  final QuestionModel question;
+  final DynamicFormController controller;
+
+  const _TextareaFieldWidget({
+    required this.question,
+    required this.controller,
+  });
+
+  @override
+  State<_TextareaFieldWidget> createState() => _TextareaFieldWidgetState();
+}
+
+class _TextareaFieldWidgetState extends State<_TextareaFieldWidget> {
+  late TextEditingController _textController;
+  late FocusNode _focusNode;
+  bool _isUserEditing = false;
+
+  @override
+  void initState() {
+    super.initState();
+    final ans = widget.controller.answers.firstWhereOrNull(
+      (a) => a.id == widget.question.id,
+    );
+    _textController = TextEditingController(
+      text: ans?.answer?.toString() ?? '',
+    );
+    _focusNode = FocusNode();
+    _focusNode.addListener(_onFocusChange);
+  }
+
+  @override
+  void dispose() {
+    _focusNode.removeListener(_onFocusChange);
+    _focusNode.dispose();
+    _textController.dispose();
+    super.dispose();
+  }
+
+  void _onFocusChange() {
+    if (!_focusNode.hasFocus) {
+      _isUserEditing = false;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      final isAutoFilled = widget.question.autofill?.hasFormula ?? false;
+      final currentAns =
+          widget.controller.answers.firstWhereOrNull(
+            (a) => a.id == widget.question.id,
+          ) ??
+          AnswerModel(id: widget.question.id, answer: null);
+      final currentValue = currentAns.answer?.toString() ?? '';
+
+      if (!_isUserEditing && _textController.text != currentValue) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted && !_isUserEditing) {
+            _textController.value = TextEditingValue(
+              text: currentValue,
+              selection: TextSelection.collapsed(offset: currentValue.length),
+            );
+          }
+        });
+      }
+
+      return Row(
+        children: [
+          Flexible(
+            child: TextFormField(
+              key: ValueKey('textarea_field_${widget.question.id}'),
+              controller: _textController,
+              focusNode: _focusNode,
+              maxLines: 5,
+              decoration: InputDecoration(
+                disabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: AppColors().color787878),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: AppColors().colorD7D7D7),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: AppColors().color5B6AEA),
+                ),
+                contentPadding: EdgeInsets.only(left: 10),
+                border: const OutlineInputBorder(),
+                hintText: "${widget.question.label}",
+                hintStyle: TextStyle(
+                  fontSize: 16,
+                  fontFamily: "PlusJakartaSansRegular",
+                  fontWeight: FontWeight.w600,
+                ),
+                filled: isAutoFilled,
+                fillColor: isAutoFilled
+                    ? AppColors().colorE1E5FD.withOpacity(0.4)
+                    : null,
+                suffixIcon: isAutoFilled
+                    ? _AutoBadgeChip(type: widget.question.autofill?.type)
+                    : null,
+                suffixIconConstraints: const BoxConstraints(
+                  minHeight: 0,
+                  minWidth: 0,
+                ),
+              ),
+              onTap: () {
+                _isUserEditing = true;
+              },
+              onChanged: (v) {
+                _isUserEditing = true;
+                widget.controller.updateAnswer(widget.question.id, v);
+              },
+              onEditingComplete: () {
+                _isUserEditing = false;
+                _focusNode.unfocus();
+              },
+            ),
+          ),
+          widget.question.unit?.name != null
+              ? Padding(
+                  padding: EdgeInsets.only(left: 2.w),
+                  child: Text(
+                    "${widget.question.unit?.name.toString()}",
+                    style: TextStyle(
+                      fontSize: 15.sp,
+                      fontFamily: "PlusJakartaSansRegular",
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                )
+              : SizedBox(),
+        ],
+      );
+    });
+  }
+}
+
+class _AutoBadgeChip extends StatelessWidget {
+  final String? type;
+  const _AutoBadgeChip({this.type});
+
+  @override
+  Widget build(BuildContext context) {
+    final label = (type?.isNotEmpty ?? false) ? type! : "Auto";
+    return Container(
+      margin: const EdgeInsets.only(right: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: AppColors().color5B6AEA.withOpacity(0.15),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Text(
+        label.toUpperCase(),
+        style: TextStyle(
+          fontSize: 10.sp,
+          fontFamily: "PlusJakartaSansMedium",
+          fontWeight: FontWeight.bold,
+          color: AppColors().color5B6AEA,
+        ),
+      ),
+    );
+  }
+}
+
+class _AutoFormulaBanner extends StatelessWidget {
+  final String? type;
+  const _AutoFormulaBanner({this.type});
+
+  @override
+  Widget build(BuildContext context) {
+    final label = (type?.isNotEmpty ?? false) ? type! : "Auto";
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: AppColors().colorE1E5FD.withOpacity(0.6),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.auto_awesome, color: AppColors().color5B6AEA, size: 16),
+          const SizedBox(width: 6),
+          Text(
+            "${label.toUpperCase()} filled",
+            style: TextStyle(
+              fontSize: 12.sp,
+              fontFamily: "PlusJakartaSansRegular",
+              fontWeight: FontWeight.w600,
+              color: AppColors().color1E1E1E,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

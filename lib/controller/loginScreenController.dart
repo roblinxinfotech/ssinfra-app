@@ -7,6 +7,7 @@ import 'package:sizer/sizer.dart';
 import 'package:ssinfra/model/loginModel.dart';
 import 'package:ssinfra/services/apiEndPoint.dart';
 import 'package:ssinfra/services/apiServices.dart';
+import 'package:ssinfra/view/dashBoardScreen.dart';
 import 'package:ssinfra/view/formScreen.dart';
 
 class LoginScreenController extends GetxController {
@@ -40,7 +41,7 @@ class LoginScreenController extends GetxController {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var response = await ApiServices().postData(
         url: ApiEndPoint.login,
-        data: authUserData,
+        data: jsonEncode(authUserData),
       );
       print(response);
       loginModel.value = LoginModel.fromJson(json.decode(response));
@@ -50,16 +51,32 @@ class LoginScreenController extends GetxController {
           "tokenValue",
           loginModel.value.data?.token.toString() ?? "",
         );
+        if (loginModel.value.data?.permissions?.length != 0) {
+          await prefs.setStringList(
+            "permissions",
+            loginModel.value.data!.permissions!,
+          );
+        } else {
+          await prefs.setStringList("permissions", []);
+        }
+        List? permission = await prefs.getStringList("permissions");
+        print(permission);
+        print("permission");
 
-        Get.offAll(FormScreen());
+        Get.offAll(DashBoardScreen());
       } else {
         Navigator.pop(context);
-        Get.snackbar("Message", loginModel.value.message.toString());
+        Get.snackbar(
+          "Message",
+          loginModel.value.message.toString(),
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
       }
     } catch (e) {
       print(e);
+      print("hgdhgdhd");
       Navigator.pop(context);
     }
-
   }
 }

@@ -238,135 +238,135 @@ class _NotificationScreenState extends State<NotificationScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: Stack(
-        children: [
-          Container(
-            height: 20.w,
-            width: 100.w,
-            color: Colors.white.withValues(alpha: 0.6),
-          ),
-          Container(
-            height: 20.w,
-            width: 100.w,
-            decoration: BoxDecoration(
-              color: AppColors().colorFFFFFF,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(4.w),
-                topRight: Radius.circular(4.w),
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                  padding: EdgeInsets.all(1.5.w),
-                  decoration: BoxDecoration(
-                    color: AppColors().color5B6AEA,
-                    borderRadius: BorderRadius.circular(10.sp),
-                  ),
-                  child: Row(
-                    children: [
-                      SvgPicture.asset(
-                        "assets/icons/home.svg",
-                        height: 18.sp,
-                        width: 18.sp,
-                        fit: BoxFit.fill,
-                        color: AppColors().colorFFFFFF,
-                      ),
-                      SizedBox(width: 1.w),
-                      CommonWidgets().commonText(
-                        text: "Home",
-                        fontSize: 16.sp,
-                        fontColor: AppColors().colorFFFFFF,
-                        fontFamily: "PlusJakartaSansRegular",
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ],
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    padding: EdgeInsets.all(1.5.w),
-                    decoration: BoxDecoration(
-                      color: AppColors().color5B6AEA,
-                      borderRadius: BorderRadius.circular(10.sp),
-                    ),
-                    child: Row(
-                      children: [
-                        SvgPicture.asset(
-                          "assets/icons/location.svg",
-                          height: 18.sp,
-                          width: 18.sp,
-                          fit: BoxFit.fill,
-                        ),
-                        SizedBox(width: 1.w),
-                        CommonWidgets().commonText(
-                          text: "Location",
-                          fontSize: 16.sp,
-                          fontColor: AppColors().color1E1E1E,
-                          fontFamily: "PlusJakartaSansRegular",
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.all(1.5.w),
-                  decoration: BoxDecoration(
-                    color: AppColors().color5B6AEA,
-                    borderRadius: BorderRadius.circular(10.sp),
-                  ),
-                  child: Row(
-                    children: [
-                      SvgPicture.asset(
-                        "assets/icons/group.svg",
-                        height: 18.sp,
-                        width: 18.sp,
-                        fit: BoxFit.fill,
-                      ),
-                      SizedBox(width: 1.w),
-                      CommonWidgets().commonText(
-                        text: "Team",
-                        fontSize: 16.sp,
-                        fontColor: AppColors().color1E1E1E,
-                        fontFamily: "PlusJakartaSansRegular",
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.all(1.5.w),
-                  decoration: BoxDecoration(
-                    color: AppColors().color5B6AEA,
-                    borderRadius: BorderRadius.circular(10.sp),
-                  ),
-                  child: Row(
-                    children: [
-                      SvgPicture.asset(
-                        "assets/icons/profile.svg",
-                        height: 18.sp,
-                        width: 18.sp,
-                        fit: BoxFit.fill,
-                      ),
-                      SizedBox(width: 1.w),
-                      CommonWidgets().commonText(
-                        text: "Profile",
-                        fontSize: 16.sp,
-                        fontColor: AppColors().color1E1E1E,
-                        fontFamily: "PlusJakartaSansRegular",
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+      // bottomNavigationBar: Stack(
+      //   children: [
+      //     Container(
+      //       height: 20.w,
+      //       width: 100.w,
+      //       color: Colors.white.withValues(alpha: 0.6),
+      //     ),
+      //     Container(
+      //       height: 20.w,
+      //       width: 100.w,
+      //       decoration: BoxDecoration(
+      //         color: AppColors().colorFFFFFF,
+      //         borderRadius: BorderRadius.only(
+      //           topLeft: Radius.circular(4.w),
+      //           topRight: Radius.circular(4.w),
+      //         ),
+      //       ),
+      //       child: Row(
+      //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      //         children: [
+      //           Container(
+      //             padding: EdgeInsets.all(1.5.w),
+      //             decoration: BoxDecoration(
+      //               color: AppColors().color5B6AEA,
+      //               borderRadius: BorderRadius.circular(10.sp),
+      //             ),
+      //             child: Row(
+      //               children: [
+      //                 SvgPicture.asset(
+      //                   "assets/icons/home.svg",
+      //                   height: 18.sp,
+      //                   width: 18.sp,
+      //                   fit: BoxFit.fill,
+      //                   color: AppColors().colorFFFFFF,
+      //                 ),
+      //                 SizedBox(width: 1.w),
+      //                 CommonWidgets().commonText(
+      //                   text: "Home",
+      //                   fontSize: 16.sp,
+      //                   fontColor: AppColors().colorFFFFFF,
+      //                   fontFamily: "PlusJakartaSansRegular",
+      //                   fontWeight: FontWeight.w600,
+      //                 ),
+      //               ],
+      //             ),
+      //           ),
+      //           GestureDetector(
+      //             onTap: () {},
+      //             child: Container(
+      //               padding: EdgeInsets.all(1.5.w),
+      //               decoration: BoxDecoration(
+      //                 color: AppColors().color5B6AEA,
+      //                 borderRadius: BorderRadius.circular(10.sp),
+      //               ),
+      //               child: Row(
+      //                 children: [
+      //                   SvgPicture.asset(
+      //                     "assets/icons/location.svg",
+      //                     height: 18.sp,
+      //                     width: 18.sp,
+      //                     fit: BoxFit.fill,
+      //                   ),
+      //                   SizedBox(width: 1.w),
+      //                   CommonWidgets().commonText(
+      //                     text: "Location",
+      //                     fontSize: 16.sp,
+      //                     fontColor: AppColors().color1E1E1E,
+      //                     fontFamily: "PlusJakartaSansRegular",
+      //                     fontWeight: FontWeight.w600,
+      //                   ),
+      //                 ],
+      //               ),
+      //             ),
+      //           ),
+      //           Container(
+      //             padding: EdgeInsets.all(1.5.w),
+      //             decoration: BoxDecoration(
+      //               color: AppColors().color5B6AEA,
+      //               borderRadius: BorderRadius.circular(10.sp),
+      //             ),
+      //             child: Row(
+      //               children: [
+      //                 SvgPicture.asset(
+      //                   "assets/icons/group.svg",
+      //                   height: 18.sp,
+      //                   width: 18.sp,
+      //                   fit: BoxFit.fill,
+      //                 ),
+      //                 SizedBox(width: 1.w),
+      //                 CommonWidgets().commonText(
+      //                   text: "Team",
+      //                   fontSize: 16.sp,
+      //                   fontColor: AppColors().color1E1E1E,
+      //                   fontFamily: "PlusJakartaSansRegular",
+      //                   fontWeight: FontWeight.w600,
+      //                 ),
+      //               ],
+      //             ),
+      //           ),
+      //           Container(
+      //             padding: EdgeInsets.all(1.5.w),
+      //             decoration: BoxDecoration(
+      //               color: AppColors().color5B6AEA,
+      //               borderRadius: BorderRadius.circular(10.sp),
+      //             ),
+      //             child: Row(
+      //               children: [
+      //                 SvgPicture.asset(
+      //                   "assets/icons/profile.svg",
+      //                   height: 18.sp,
+      //                   width: 18.sp,
+      //                   fit: BoxFit.fill,
+      //                 ),
+      //                 SizedBox(width: 1.w),
+      //                 CommonWidgets().commonText(
+      //                   text: "Profile",
+      //                   fontSize: 16.sp,
+      //                   fontColor: AppColors().color1E1E1E,
+      //                   fontFamily: "PlusJakartaSansRegular",
+      //                   fontWeight: FontWeight.w600,
+      //                 ),
+      //               ],
+      //             ),
+      //           ),
+      //         ],
+      //       ),
+      //     ),
+      //   ],
+      // ),
     );
   }
 }

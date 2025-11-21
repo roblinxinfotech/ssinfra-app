@@ -38,6 +38,7 @@ class Data {
   String? email;
   String? role;
   String? token;
+  List<String>? permissions;
 
   Data({
     this.id,
@@ -45,6 +46,7 @@ class Data {
     this.email,
     this.role,
     this.token,
+    this.permissions,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
@@ -53,6 +55,9 @@ class Data {
     email: json["email"],
     role: json["role"],
     token: json["token"],
+    permissions: json["permissions"] == null
+        ? []
+        : List<String>.from(json["permissions"].map((x) => x.toString())),
   );
 
   Map<String, dynamic> toJson() => {
@@ -61,5 +66,6 @@ class Data {
     "email": email,
     "role": role,
     "token": token,
+    "permissions": permissions,
   };
 }

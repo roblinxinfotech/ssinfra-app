@@ -6,11 +6,13 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:sizer/sizer.dart';
 import 'package:ssinfra/view/formScreen.dart';
 import 'package:ssinfra/view/homeScreen.dart';
+import 'package:ssinfra/view/talukaScreen.dart';
 import 'package:ssinfra/view/teamScreen.dart';
 import 'package:ssinfra/view/villageScreen.dart';
 
 import '../main.dart';
 import '../utils/appColors.dart';
+import 'dashBoardScreen.dart';
 import 'loginScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -31,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
       if (await prefs.getString("tokenValue") != null) {
-        Get.offAll(FormScreen());
+        Get.offAll(DashBoardScreen());
       } else {
         // Get.to(VillageScreen());
         Get.offAll(LoginScreen());

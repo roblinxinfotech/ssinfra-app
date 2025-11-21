@@ -41,8 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         child: Padding(
           padding: EdgeInsets.only(left: 6.w, right: 6.w, top: 14.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: ListView(
             children: [
               SizedBox(height: 20.w),
               Container(
@@ -96,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     SizedBox(height: 3.w),
                     CommonWidgets().commonText(
-                      text: "Email Address/Username",
+                      text: "Username",
                       fontSize: 16.sp,
                       fontColor: AppColors().color1E1E1E,
                       fontFamily: "PlusJakartaSansRegular",
@@ -125,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           contentPadding: EdgeInsets.only(left: 10),
                           border: const OutlineInputBorder(),
-                          hintText: "Full Name",
+                          hintText: "User Name",
                           hintStyle: TextStyle(
                             fontSize: 16,
                             fontFamily: "PlusJakartaSansRegular",
@@ -181,7 +180,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             contentPadding: EdgeInsets.only(left: 10),
                             border: const OutlineInputBorder(),
-                            hintText: "Full Name",
+                            hintText: "Password",
                             hintStyle: TextStyle(
                               fontSize: 16,
                               fontFamily: "PlusJakartaSansRegular",
@@ -192,17 +191,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       );
                     }),
 
-                    SizedBox(height: 3.w),
-                    Align(
-                      alignment: Alignment.bottomRight,
-                      child: CommonWidgets().commonText(
-                        text: "Forgot Password?",
-                        fontSize: 16.sp,
-                        fontColor: AppColors().colorAFAAAA,
-                        fontFamily: "PlusJakartaSansRegular",
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
                     SizedBox(height: 6.w),
                     GestureDetector(
                       onTap: () async {

@@ -1,15 +1,24 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:sizer/sizer.dart';
+import 'package:ssinfra/model/assignedVillageWardModel.dart';
 
 import 'package:ssinfra/services/apiEndPoint.dart';
 import 'package:ssinfra/services/apiServices.dart';
 
+import '../utils/commonWidgets.dart';
+import '../utils/formula_evaluator.dart';
+
 class DynamicFormController extends GetxController {
   RxList<QuestionModel> questions = <QuestionModel>[].obs;
+  Rx<AssignedVillageWardModel> assignedVillageWardModel =
+      AssignedVillageWardModel().obs;
   RxList<AnswerModel> answers = <AnswerModel>[].obs;
   final ScrollController scrollController = ScrollController();
   RxDouble progress = 0.0.obs;
@@ -18,6 +27,10 @@ class DynamicFormController extends GetxController {
   RxInt id = 0.obs;
   RxString code = "".obs;
   RxString title = "".obs;
+  String formId = "";
+  var arguments;
+  RxnInt villageStored = RxnInt();
+  final ImagePicker picker = ImagePicker();
 
   @override
   void onInit() {
@@ -28,15 +41,36 @@ class DynamicFormController extends GetxController {
   }
 
   void loadQuestions() async {
+    arguments = Get.arguments;
+    formId = arguments["formId"];
+    print(formId);
     try {
       var res = await ApiServices().getData(
-        url: "${ApiEndPoint.vFormField}1${ApiEndPoint.language}en",
+        url: "${ApiEndPoint.vFormField}${formId}${ApiEndPoint.language}en",
       );
+      var responseVillage = await ApiServices().getData(
+        url: "${ApiEndPoint.assignedVillageWardData}",
+      );
+      log(responseVillage);
+      assignedVillageWardModel.value = AssignedVillageWardModel.fromJson(
+        json.decode(responseVillage),
+      );
+      print(assignedVillageWardModel.value.data!.villages![0].id!);
+      print(assignedVillageWardModel.value.data!.villages![0].id!);
+      print(assignedVillageWardModel.value.data!.villages![0].id!);
+      print(assignedVillageWardModel.value.data!.villages![0].id!);
+      if (assignedVillageWardModel.value.data?.villages?.length != 0) {
+        villageStored.value =
+            assignedVillageWardModel.value.data!.villages![0].id!;
+      }
+      print(villageStored);
+      print(villageStored);
+
       await Future.delayed(Duration(seconds: 3), () {});
       var datas = jsonDecode(res);
       print(datas);
-      // use live API response
-      const response = {
+      // use live API response (fallback to static data if needed)
+      const Map<String, dynamic> fallbackResponse = {
         "status": 200,
         "message": "Form fields fetched successfully.",
         "data": {
@@ -107,13 +141,13 @@ class DynamicFormController extends GetxController {
               ],
               "rules": [],
             },
-            {
-              "id": 7,
-              "type": "file",
-              "is_required": true,
-              "label": "Please upload village map",
-              "rules": [],
-            },
+            // {
+            //   "id": 7,
+            //   "type": "file",
+            //   "is_required": true,
+            //   "label": "Please upload village map",
+            //   "rules": [],
+            // },
             {
               "id": 8,
               "type": "number",
@@ -159,7 +193,14 @@ class DynamicFormController extends GetxController {
         },
       };
 
-      final data = datas["data"] as Map<String, dynamic>?;
+      late final Map<String, dynamic> response;
+      if (datas is Map<String, dynamic> && datas["data"] != null) {
+        response = Map<String, dynamic>.from(datas);
+      } else {
+        response = fallbackResponse;
+      }
+
+      final data = response["data"] as Map<String, dynamic>?;
       id.value = data?["id"];
       code.value = data?["code"];
       title.value = data?["title"];
@@ -170,6 +211,7 @@ class DynamicFormController extends GetxController {
     } catch (e) {
       showLoader.value = false;
       error.value = true;
+      print(e);
     }
     showLoader.value = false;
 
@@ -204,11 +246,11 @@ class DynamicFormController extends GetxController {
         ans.answer = value;
       }
 
-      answers.refresh();
-      updateProgress(); // 🔁 Recalculate progress every time
-
       // 🔄 Trigger autofill recalculation for fields that depend on this field
       _recalculateAutofillFields(id);
+
+      answers.refresh();
+      updateProgress(); // 🔁 Recalculate progress every time
     }
   }
 
@@ -306,17 +348,26 @@ class DynamicFormController extends GetxController {
     if (rule.dependsOn == null) return false;
     final depAns = answers.firstWhereOrNull((a) => a.id == rule.dependsOn);
     final depVal = depAns?.answer;
-
-    final String depStr = depVal?.toString() ?? "";
     final String ruleVal = rule.dependsValue?.toString() ?? "";
+
+    bool listContainsValue(List<dynamic> values) {
+      return values.any((element) => element?.toString() == ruleVal);
+    }
 
     switch (rule.conditionType) {
       case 'equals':
-        return depStr.isNotEmpty && depStr == ruleVal;
+        if (depVal is List) {
+          return depVal.isNotEmpty && listContainsValue(depVal);
+        }
+        return depVal != null &&
+            depVal.toString().isNotEmpty &&
+            depVal.toString() == ruleVal;
       case 'not_equals':
-        // If depVal is null treat as not equal (so not_equals evaluates true)
-        if (depAns == null || depVal == null) return true;
-        return depStr != ruleVal;
+        if (depVal == null) return true;
+        if (depVal is List) {
+          return !listContainsValue(depVal);
+        }
+        return depVal.toString() != ruleVal;
       default:
         return false;
     }
@@ -328,36 +379,38 @@ class DynamicFormController extends GetxController {
   ///  - If there are show rules: visible only if at least one show rule evaluates true
   ///  - If no rules -> visible
   bool shouldShowQuestion(QuestionModel q) {
-    // ✅ Show all by default until a dependent answer is filled
-    bool hasAnswerDependency = q.rules.any((r) => r.dependsOn != null);
-    bool anyDependencyAnswered = q.rules.any((r) {
-      final depAns = answers.firstWhereOrNull((a) => a.id == r.dependsOn);
-      return depAns?.answer != null && depAns!.answer.toString().isNotEmpty;
-    });
-
-    // if rule exists but dependency not answered yet → show by default
-    if (hasAnswerDependency && !anyDependencyAnswered) {
-      return true;
-    }
-
-    // ====== Then evaluate actual rule logic ======
-
     if (q.rules.isEmpty) return true;
 
-    // 1) if any hide rule is matched -> hide
+    // If dependencies exist but none answered yet -> show by default
+    final dependentRules = q.rules.where((r) => r.dependsOn != null).toList();
+    if (dependentRules.isNotEmpty) {
+      final anyDependencyAnswered = dependentRules.any((r) {
+        final depAns = answers.firstWhereOrNull((a) => a.id == r.dependsOn);
+        final value = depAns?.answer;
+        if (value == null) return false;
+        if (value is List) return value.isNotEmpty;
+        return value.toString().isNotEmpty;
+      });
+
+      if (!anyDependencyAnswered) {
+        return true;
+      }
+    }
+
+    // 1) if any hide rule is matched -> hide immediately
     for (final r in q.rules.where((r) => r.action == 'hide')) {
       if (_evaluateRule(r)) {
         return false;
       }
     }
 
-    // 2) if show rules exist -> show only if any matches
+    // 2) if show rules exist -> visible only if at least one evaluates true
     final showRules = q.rules.where((r) => r.action == 'show').toList();
     if (showRules.isNotEmpty) {
-      final anyShowMatch = showRules.any(_evaluateRule);
-      return anyShowMatch;
+      return showRules.any(_evaluateRule);
     }
 
+    // 3) No show rules, no hide rules matched -> visible
     return true;
   }
 
@@ -372,6 +425,10 @@ class DynamicFormController extends GetxController {
     if (!shouldShowQuestion(q)) return true; // hidden -> treat as valid
 
     final ans = answers.firstWhereOrNull((a) => a.id == q.id);
+    //TODO uncomenct for label validation remove
+    // if (q.type == "label" && q.childrens.length != 0) {
+    // } else
+
     if (q.isRequired) {
       if (q.type == 'checkbox') {
         final List sel = (ans?.answer ?? []).cast<dynamic>();
@@ -381,6 +438,19 @@ class DynamicFormController extends GetxController {
           Get.snackbar(
             "Missing",
             "Please select at least $min options for '${q.label}'.",
+
+            titleText: Text(
+              "Missing",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            messageText: Text(
+              "Please select at least $min options for '${q.label}'.",
+              style: TextStyle(fontSize: 16, color: Colors.white),
+            ),
             backgroundColor: Colors.redAccent,
             colorText: Colors.white,
           );
@@ -390,6 +460,18 @@ class DynamicFormController extends GetxController {
           Get.snackbar(
             "Missing",
             "Please select at most $max options for '${q.label}'.",
+            titleText: Text(
+              "Missing",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            messageText: Text(
+              "Please select at most $max options for '${q.label}'.",
+              style: TextStyle(fontSize: 16, color: Colors.white),
+            ),
             backgroundColor: Colors.redAccent,
             colorText: Colors.white,
           );
@@ -401,6 +483,18 @@ class DynamicFormController extends GetxController {
           Get.snackbar(
             "Missing",
             "Please provide answer for '${q.label}'.",
+            titleText: Text(
+              "Missing",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            messageText: Text(
+              "Please provide answer for '${q.label}'.",
+              style: TextStyle(fontSize: 16, color: Colors.white),
+            ),
             backgroundColor: Colors.redAccent,
             colorText: Colors.white,
           );
@@ -415,6 +509,18 @@ class DynamicFormController extends GetxController {
             Get.snackbar(
               "Too short",
               "Answer for '${q.label}' must be at least $min characters.",
+              titleText: Text(
+                "Too short",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              messageText: Text(
+                "Answer for '${q.label}' must be at least $min characters.",
+                style: TextStyle(fontSize: 16, color: Colors.white),
+              ),
               backgroundColor: Colors.redAccent,
               colorText: Colors.white,
             );
@@ -424,6 +530,18 @@ class DynamicFormController extends GetxController {
             Get.snackbar(
               "Too long",
               "Answer for '${q.label}' must be no more than $max characters.",
+              titleText: Text(
+                "Too long",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              messageText: Text(
+                "Answer for '${q.label}' must be no more than $max characters.",
+                style: TextStyle(fontSize: 16, color: Colors.white),
+              ),
               backgroundColor: Colors.redAccent,
               colorText: Colors.white,
             );
@@ -439,14 +557,65 @@ class DynamicFormController extends GetxController {
     return true;
   }
 
-  submit() {
+  submit(context) async {
     if (!validateForm()) return;
 
     final result = <Map<String, dynamic>>[];
     for (final q in questions) {
       _collectAnswers(q, result);
     }
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return Center(
+          child: Image.asset(
+            "assets/images/splashLoader.gif",
+            height: 25.w,
+            width: 25.w,
+            fit: BoxFit.fill,
+          ),
+        );
+      },
+    );
 
+    try {
+      final authUserData = {
+        "village_id": villageStored.value.toString(),
+        "form_id": formId.toString(),
+        "answers": result,
+      };
+
+      log("📤 Request Data: ${jsonEncode(authUserData)}");
+
+      var response = await ApiServices().uploadFormDataWithFiles(
+        url: ApiEndPoint.formSubmit,
+        villageId: 12.toInt(),
+        formId: formId.toString(), // encode once here
+        answers: result, // encode once here
+      );
+      var datas = jsonDecode(response);
+      if (datas["status"] == 201) {
+        CommonWidgets().showSnackBar(
+          "Message",
+          datas["message"],
+          Colors.green,
+          Colors.white,
+        );
+        Navigator.pop(context);
+      } else {
+        CommonWidgets().showSnackBar(
+          "Message",
+          datas["message"],
+          Colors.red,
+          Colors.white,
+        );
+      }
+      print("✅ Response: $response");
+    } catch (e) {
+      print("❌ Error submitting form: $e");
+    }
+    Navigator.pop(context);
     debugPrint("✅ Submitted Answers => $result");
     Get.snackbar(
       "Success",
@@ -460,7 +629,7 @@ class DynamicFormController extends GetxController {
     if (!shouldShowQuestion(q)) return;
     final ans = answers.firstWhereOrNull((a) => a.id == q.id);
     if (ans != null && ans.answer != null && ans.answer.toString().isNotEmpty) {
-      list.add({"id": q.id, "answer": ans.answer});
+      list.add({"id": q.id, "answer": ans.answer, "type": q.type});
     }
     for (final ch in q.childrens) {
       _collectAnswers(ch, list);
@@ -473,24 +642,11 @@ class DynamicFormController extends GetxController {
     final allQuestions = _getAllQuestions(questions);
 
     for (final q in allQuestions) {
-      if (q.autofill != null && q.autofill!.plainFormula != null) {
-        // Check if this autofill formula references the updated field
-        final formula = q.autofill!.plainFormula!;
-        final fieldIdPattern = RegExp(r'\{(\d+)\}');
-        final matches = fieldIdPattern.allMatches(formula);
-
-        bool dependsOnUpdatedField = false;
-        for (final match in matches) {
-          final fieldId = int.tryParse(match.group(1) ?? '');
-          if (fieldId == updatedFieldId) {
-            dependsOnUpdatedField = true;
-            break;
-          }
-        }
-
-        if (dependsOnUpdatedField) {
-          _evaluateAutofill(q);
-        }
+      final formula = _getFormulaString(q.autofill);
+      if (formula == null) continue;
+      final fieldIds = _extractFormulaFieldIds(formula);
+      if (fieldIds.contains(updatedFieldId)) {
+        _evaluateAutofill(q);
       }
     }
   }
@@ -509,78 +665,32 @@ class DynamicFormController extends GetxController {
 
   /// Evaluate autofill formula for a question
   void _evaluateAutofill(QuestionModel q) {
-    if (q.autofill == null || q.autofill!.plainFormula == null) return;
+    final formula = _getFormulaString(q.autofill);
+    if (formula == null) return;
 
-    final formula = q.autofill!.plainFormula!;
-    final fieldIdPattern = RegExp(r'\{(\d+)\}');
+    final targetAnswer = answers.firstWhereOrNull((a) => a.id == q.id);
+    if (targetAnswer == null) return;
 
-    // Replace field IDs with their actual values
-    String evaluatedFormula = formula;
-    final matches = fieldIdPattern.allMatches(formula);
+    final evaluator = FormulaEvaluator(valueResolver: _resolveFormulaReference);
 
-    for (final match in matches) {
-      final fieldId = int.tryParse(match.group(1) ?? '');
-      if (fieldId != null) {
-        final depAns = answers.firstWhereOrNull((a) => a.id == fieldId);
-        final depValue = depAns?.answer;
-
-        if (depValue == null) {
-          // If any dependency is null, set autofill field to null
-          final ans = answers.firstWhereOrNull((a) => a.id == q.id);
-          if (ans != null) {
-            ans.answer = null;
-          }
-          answers.refresh();
-          updateProgress();
-          return;
-        }
-
-        // Convert to number for calculation
-        final numValue = _parseToNumber(depValue);
-        if (numValue == null) {
-          // If value cannot be parsed, set autofill field to null
-          final ans = answers.firstWhereOrNull((a) => a.id == q.id);
-          if (ans != null) {
-            ans.answer = null;
-          }
-          answers.refresh();
-          updateProgress();
-          return;
-        }
-
-        evaluatedFormula = evaluatedFormula.replaceAll(
-          '{$fieldId}',
-          numValue.toString(),
-        );
-      }
-    }
-
-    // Evaluate the formula
     try {
-      final result = _evaluateExpression(evaluatedFormula);
-      if (result != null) {
-        final ans = answers.firstWhereOrNull((a) => a.id == q.id);
-        if (ans != null) {
-          // Format result appropriately (remove unnecessary decimals)
-          if (result % 1 == 0) {
-            ans.answer = result.toInt().toString();
-          } else {
-            ans.answer = result
-                .toStringAsFixed(2)
-                .replaceAll(RegExp(r'\.?0+$'), '');
-          }
-          answers.refresh();
-          updateProgress();
-        }
-      }
+      final result = evaluator.evaluate(formula);
+      targetAnswer.answer = _normalizeAutofillValue(result, q);
+    } on FormulaMissingDependencyException {
+      targetAnswer.answer = null;
     } catch (e) {
-      debugPrint('Error evaluating autofill formula: $e');
+      debugPrint('Error evaluating autofill formula for ${q.id}: $e');
+      targetAnswer.answer = null;
     }
+
+    answers.refresh();
+    updateProgress();
   }
 
   /// Parse a value to a number
   num? _parseToNumber(dynamic value) {
     if (value is num) return value;
+    if (value is bool) return value ? 1 : 0;
     if (value is String) {
       final cleaned = value.trim().replaceAll(RegExp(r'[^\d.-]'), '');
       return num.tryParse(cleaned);
@@ -588,166 +698,79 @@ class DynamicFormController extends GetxController {
     return null;
   }
 
-  /// Evaluate a mathematical expression safely - fully dynamic evaluator
-  num? _evaluateExpression(String expression) {
-    try {
-      // Remove any whitespace
-      expression = expression.trim().replaceAll(' ', '');
-
-      // Use dynamic expression evaluator that handles any mathematical operations
-      return _evaluateDynamic(expression);
-    } catch (e) {
-      debugPrint('Error evaluating expression: $expression - $e');
-      return null;
-    }
-  }
-
-  /// Fully dynamic expression evaluator supporting +, -, *, /, %, and parentheses
-  /// Follows operator precedence: parentheses > *, /, % > +, -
-  num _evaluateDynamic(String expression) {
-    expression = expression.trim();
-
-    // Handle parentheses first (highest precedence)
-    int parenStart = expression.lastIndexOf('(');
-    if (parenStart >= 0) {
-      int parenEnd = expression.indexOf(')', parenStart);
-      if (parenEnd < 0) throw FormatException('Unmatched parenthesis');
-
-      String before = expression.substring(0, parenStart);
-      String inside = expression.substring(parenStart + 1, parenEnd);
-      String after = expression.substring(parenEnd + 1);
-
-      num insideValue = _evaluateDynamic(inside);
-      return _evaluateDynamic(before + insideValue.toString() + after);
-    }
-
-    // Handle multiplication, division, and modulo (same precedence, left to right)
-    int multIndex = _findOperatorIndex(expression, '*');
-    int divIndex = _findOperatorIndex(expression, '/');
-    int modIndex = _findOperatorIndex(expression, '%');
-
-    // Find the leftmost operator among *, /, %
-    int? mdIndex;
-    String? mdOp;
-
-    // Check multiplication
-    if (multIndex >= 0 && (mdIndex == null || multIndex < mdIndex)) {
-      mdIndex = multIndex;
-      mdOp = '*';
-    }
-    // Check division
-    if (divIndex >= 0 && (mdIndex == null || divIndex < mdIndex)) {
-      mdIndex = divIndex;
-      mdOp = '/';
-    }
-    // Check modulo
-    if (modIndex >= 0 && (mdIndex == null || modIndex < mdIndex)) {
-      mdIndex = modIndex;
-      mdOp = '%';
-    }
-
-    if (mdIndex != null && mdOp != null) {
-      num left = _evaluateDynamic(expression.substring(0, mdIndex));
-      num right = _evaluateDynamic(expression.substring(mdIndex + 1));
-
-      switch (mdOp) {
-        case '*':
-          return left * right;
-        case '/':
-          if (right == 0) throw FormatException('Division by zero');
-          return left / right;
-        case '%':
-          if (right == 0) throw FormatException('Modulo by zero');
-          return left % right;
-        default:
-          throw FormatException('Unknown operator: $mdOp');
-      }
-    }
-
-    // Handle addition and subtraction (lowest precedence, left to right)
-    int plusIndex = _findOperatorIndex(expression, '+');
-    int minusIndex = _findOperatorIndex(expression, '-');
-
-    // Find the leftmost operator among +, -
-    int? asIndex;
-    String? asOp;
-
-    // Check addition
-    if (plusIndex >= 0 && (asIndex == null || plusIndex < asIndex)) {
-      asIndex = plusIndex;
-      asOp = '+';
-    }
-    // Check subtraction
-    if (minusIndex >= 0 && (asIndex == null || minusIndex < asIndex)) {
-      asIndex = minusIndex;
-      asOp = '-';
-    }
-
-    if (asIndex != null && asOp != null) {
-      num left = _evaluateDynamic(expression.substring(0, asIndex));
-      num right = _evaluateDynamic(expression.substring(asIndex + 1));
-
-      switch (asOp) {
-        case '+':
-          return left + right;
-        case '-':
-          return left - right;
-        default:
-          throw FormatException('Unknown operator: $asOp');
-      }
-    }
-
-    // Base case: parse number (handles negative numbers)
-    return num.parse(expression);
-  }
-
-  /// Find the index of an operator, avoiding negative number signs
-  /// Returns -1 if not found
-  int _findOperatorIndex(String expression, String operator) {
-    int index = 0;
-    while (true) {
-      index = expression.indexOf(operator, index);
-      if (index < 0) return -1;
-
-      // Check if this is a negative sign (not an operator)
-      // It's a negative sign if:
-      // 1. It's at the start of expression
-      // 2. It's preceded by an operator (+, -, *, /, %, ())
-      if (index == 0) {
-        // At start, could be negative number
-        if (operator == '-') {
-          index++;
-          continue;
-        }
-        return index;
-      }
-
-      // Check previous character
-      String prevChar = expression[index - 1];
-      if (operator == '-' &&
-          (prevChar == '+' ||
-              prevChar == '-' ||
-              prevChar == '*' ||
-              prevChar == '/' ||
-              prevChar == '%' ||
-              prevChar == '(')) {
-        // This is a negative sign, not subtraction
-        index++;
-        continue;
-      }
-
-      return index;
-    }
-  }
-
   /// Calculate initial autofill values when questions are loaded
   void _calculateInitialAutofills() {
     final allQuestions = _getAllQuestions(questions);
     for (final q in allQuestions) {
-      if (q.autofill != null && q.autofill!.plainFormula != null) {
+      if (_getFormulaString(q.autofill) != null) {
         _evaluateAutofill(q);
       }
     }
+  }
+
+  String? _getFormulaString(AutofillModel? autofill) {
+    if (autofill == null) return null;
+    if (autofill.plainFormula != null &&
+        autofill.plainFormula!.trim().isNotEmpty) {
+      return autofill.plainFormula!;
+    }
+    if (autofill.formula != null && autofill.formula!.trim().isNotEmpty) {
+      return autofill.formula!;
+    }
+    return null;
+  }
+
+  Set<int> _extractFormulaFieldIds(String formula) {
+    final ids = <int>{};
+    final regex = RegExp(r'\{(\d+)(?::[^}]*)?\}');
+    for (final match in regex.allMatches(formula)) {
+      final id = int.tryParse(match.group(1) ?? '');
+      if (id != null) ids.add(id);
+    }
+    return ids;
+  }
+
+  dynamic _resolveFormulaReference(String token) {
+    final idPart = token.split(':').first.trim();
+    final fieldId = int.tryParse(idPart);
+    if (fieldId == null) return null;
+    final answer = answers.firstWhereOrNull((a) => a.id == fieldId);
+    final value = answer?.answer;
+    if (value is List) {
+      if (value.isEmpty) return null;
+      return value.length == 1 ? value.first : value;
+    }
+    return value;
+  }
+
+  dynamic _normalizeAutofillValue(dynamic value, QuestionModel question) {
+    if (value == null) return null;
+
+    switch (question.type) {
+      case 'radio':
+      case 'select':
+        final numeric = _parseToNumber(value);
+        return numeric?.toInt();
+      case 'number':
+        if (value is num) {
+          return _formatNumber(value);
+        }
+        final numeric = _parseToNumber(value);
+        return numeric != null ? _formatNumber(numeric) : value.toString();
+      default:
+        if (value is num) return _formatNumber(value);
+        return value.toString();
+    }
+  }
+
+  String _formatNumber(num value) {
+    if (value % 1 == 0) {
+      return value.toInt().toString();
+    }
+    return value
+        .toStringAsFixed(4)
+        .replaceAll(RegExp(r'0+$'), '')
+        .replaceAll(RegExp(r'\.$'), '');
   }
 }
 
@@ -878,13 +901,27 @@ class AnswerModel {
 class AutofillModel {
   final String? sourceFormId;
   final String? plainFormula;
+  final String? formula;
+  final String? type;
 
-  AutofillModel({this.sourceFormId, this.plainFormula});
+  bool get hasFormula {
+    return (plainFormula?.trim().isNotEmpty ?? false) ||
+        (formula?.trim().isNotEmpty ?? false);
+  }
+
+  AutofillModel({
+    this.sourceFormId,
+    this.plainFormula,
+    this.formula,
+    this.type,
+  });
 
   factory AutofillModel.fromJson(Map<String, dynamic> json) {
     return AutofillModel(
       sourceFormId: json["source_form_id"]?.toString(),
       plainFormula: json["plain_formula"]?.toString(),
+      formula: json["formula"]?.toString(),
+      type: json["type"]?.toString(),
     );
   }
 }
