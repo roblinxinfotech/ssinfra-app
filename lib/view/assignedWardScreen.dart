@@ -60,7 +60,7 @@ class _AssignWardScreenState extends State<AssignWardScreen> {
                     Row(
                       children: [
                         CommonWidgets().commonText(
-                          text: "Assign Ward",
+                          text: "AssignWard".tr,
                           fontSize: 18.sp,
                           fontColor: AppColors().color1E1E1E,
                           fontFamily: "PlusJakartaSansMedium",
@@ -129,7 +129,7 @@ class _AssignWardScreenState extends State<AssignWardScreen> {
                               ),
                               contentPadding: EdgeInsets.only(left: 10),
                               border: const OutlineInputBorder(),
-                              hintText: "Search team",
+                              hintText: "SearchWard".tr,
                               hintStyle: TextStyle(
                                 fontSize: 16,
                                 fontFamily: "PlusJakartaSansRegular",
@@ -176,7 +176,7 @@ class _AssignWardScreenState extends State<AssignWardScreen> {
                               borderRadius: BorderRadius.circular(10.w),
                             ),
                             child: Text(
-                              "Free",
+                              "Free".tr,
                               style: TextStyle(
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.w600,
@@ -225,7 +225,7 @@ class _AssignWardScreenState extends State<AssignWardScreen> {
                               borderRadius: BorderRadius.circular(10.w),
                             ),
                             child: Text(
-                              "Assigned",
+                              "Assigned".tr,
                               style: TextStyle(
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.w600,
@@ -278,7 +278,7 @@ class _AssignWardScreenState extends State<AssignWardScreen> {
                                         fit: BoxFit.fill,
                                       ),
                                       CommonWidgets().commonText(
-                                        text: "SOMETHING WENT WRONG",
+                                        text: "SomethingWentWrong".tr,
                                         fontSize: 20.sp,
                                         fontColor: AppColors().color1E1E1E,
                                         fontFamily: "PlusJakartaSansMedium",
@@ -316,7 +316,7 @@ class _AssignWardScreenState extends State<AssignWardScreen> {
                                         fit: BoxFit.fill,
                                       ),
                                       CommonWidgets().commonText(
-                                        text: "NO DATA FOUND.",
+                                        text: "NoDataFound".tr,
                                         fontSize: 20.sp,
                                         fontColor: AppColors().color1E1E1E,
                                         fontFamily: "PlusJakartaSansMedium",
@@ -348,7 +348,7 @@ class _AssignWardScreenState extends State<AssignWardScreen> {
                                         fit: BoxFit.fill,
                                       ),
                                       CommonWidgets().commonText(
-                                        text: "NO MATCHING FOUND.",
+                                        text: "NoMatchingFound".tr,
                                         fontSize: 20.sp,
                                         fontColor: AppColors().color1E1E1E,
                                         fontFamily: "PlusJakartaSansMedium",
@@ -476,7 +476,8 @@ class _AssignWardScreenState extends State<AssignWardScreen> {
                                                       CrossAxisAlignment.center,
                                                   children: [
                                                     Text(
-                                                      'Are you sure you want to release this village?',
+                                                      'AreYouSureYouWantToReleaseThisWard'
+                                                          .tr,
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: TextStyle(
@@ -489,7 +490,8 @@ class _AssignWardScreenState extends State<AssignWardScreen> {
                                                     ),
                                                     SizedBox(height: 4.w),
                                                     Text(
-                                                      'Note :- If you release this village than that record will be transferred to new assigning person.',
+                                                      'NoteIfYouReleaseWardRecordTransferredToPerson'
+                                                          .tr,
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: TextStyle(
@@ -539,7 +541,7 @@ class _AssignWardScreenState extends State<AssignWardScreen> {
                                                                   ),
                                                             ),
                                                             child: Text(
-                                                              "No",
+                                                              "No".tr,
                                                               style: TextStyle(
                                                                 fontSize: 16.sp,
                                                                 fontWeight:
@@ -599,7 +601,7 @@ class _AssignWardScreenState extends State<AssignWardScreen> {
                                                                       .center,
                                                               children: [
                                                                 Text(
-                                                                  "Yes",
+                                                                  "Yes".tr,
                                                                   style: TextStyle(
                                                                     color: AppColors()
                                                                         .color5B6AEA,

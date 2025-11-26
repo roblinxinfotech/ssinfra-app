@@ -12,6 +12,7 @@ import '../controller/profileScreenController.dart';
 import '../utils/appColors.dart';
 import '../utils/commonWidgets.dart';
 import 'editProfileScreen.dart';
+import 'notificationScreen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -59,7 +60,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Column(
                             children: [
                               CommonWidgets().commonText(
-                                text: "PROFILE",
+                                text: "ProfileCapital".tr,
                                 fontSize: 18.sp,
                                 fontColor: AppColors().color1E1E1E,
                                 fontFamily: "PlusJakartaSansMedium",
@@ -106,7 +107,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           CrossAxisAlignment.center,
                                       children: [
                                         Text(
-                                          'Are you sure you want to logout?',
+                                          'AreYouSureYouWantToLogout'.tr,
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                             fontSize: 18.sp,
@@ -144,7 +145,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       ),
                                                 ),
                                                 child: Text(
-                                                  "No",
+                                                  "No".tr,
                                                   style: TextStyle(
                                                     fontSize: 16.sp,
                                                     fontWeight: FontWeight.w600,
@@ -194,7 +195,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       CrossAxisAlignment.center,
                                                   children: [
                                                     Text(
-                                                      "Yes",
+                                                      "Yes".tr,
                                                       style: TextStyle(
                                                         color: AppColors()
                                                             .color5B6AEA,
@@ -229,7 +230,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ],
                   ),
                 ),
-                SizedBox(height: 10.w),
+                SizedBox(height: 4.w),
                 Obx(() {
                   return profileScreenController.loader.value == true
                       ? Flexible(
@@ -255,7 +256,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   fit: BoxFit.fill,
                                 ),
                                 CommonWidgets().commonText(
-                                  text: "SOMETHING WENT WRONG",
+                                  text: "Something went wrong.",
                                   fontSize: 20.sp,
                                   fontColor: AppColors().color1E1E1E,
                                   fontFamily: "PlusJakartaSansMedium",
@@ -266,157 +267,446 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         )
                       : Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(100),
-                              child: Image.network(
-                                height: 25.w,
-                                width: 25.w,
-                                "${profileScreenController.profileModel.value.data?.profilePhoto.toString()}",
-                                fit: BoxFit.fill,
-                                errorBuilder: (context, error, stackTrace) =>
-                                    SvgPicture.asset(
-                                      "assets/icons/profile.svg",
-                                      height: 20.w,
-                                      width: 20.w,
+                            Container(
+                              width: 100.w,
+
+                              padding: EdgeInsets.only(
+                                top: 2.w,
+                                left: 2.w,
+                                right: 2.w,
+                                bottom: 2.w,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(3.w),
+
+                                color: AppColors().colorFFFFFF.withValues(
+                                  alpha: 0.9,
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(100),
+                                    child: Image.network(
+                                      height: 25.w,
+                                      width: 25.w,
+                                      "${profileScreenController.profileModel.value.data?.profilePhoto.toString()}",
                                       fit: BoxFit.fill,
+                                      errorBuilder:
+                                          (context, error, stackTrace) =>
+                                              Image.asset(
+                                                "assets/icons/placeHolder.png",
+                                                height: 20.w,
+                                                width: 20.w,
+                                                fit: BoxFit.fill,
+                                              ),
                                     ),
+                                  ),
+                                ],
                               ),
                             ),
                             SizedBox(height: 4.w),
-                            CommonWidgets().commonText(
-                              text:
-                                  "Name :- ${profileScreenController.profileModel.value.data?.fullname ?? "N/A"} (${profileScreenController.profileModel.value.data?.username ?? "N/A"})",
-                              fontSize: 18.sp,
-                              fontColor: AppColors().color1E1E1E,
-                              fontFamily: "PlusJakartaSansMedium",
-                              fontWeight: FontWeight.bold,
-                            ),
-                            SizedBox(height: 1.w),
-                            CommonWidgets().commonText(
-                              text:
-                                  "Email :- ${profileScreenController.profileModel.value.data?.email ?? "N/A"}",
-                              fontSize: 18.sp,
-                              fontColor: AppColors().color5B6AEA,
-                              fontFamily: "PlusJakartaSansRegular",
-                              fontWeight: FontWeight.w400,
-                            ),
-                            SizedBox(height: 1.w),
+                            Container(
+                              width: 100.w,
 
-                            CommonWidgets().commonText(
-                              text:
-                                  "Role :- ${profileScreenController.profileModel.value.data?.role ?? "N/A"}",
-                              fontSize: 18.sp,
-                              fontColor: AppColors().color5B6AEA,
-                              fontFamily: "PlusJakartaSansRegular",
-                              fontWeight: FontWeight.w400,
-                            ),
-                            SizedBox(height: 1.w),
-                            CommonWidgets().commonText(
-                              text:
-                                  "Gender :- ${profileScreenController.profileModel.value.data?.gender ?? "N/A"}",
-                              fontSize: 18.sp,
-                              fontColor: AppColors().color5B6AEA,
-                              fontFamily: "PlusJakartaSansRegular",
-                              fontWeight: FontWeight.w400,
-                            ),
-                            SizedBox(height: 1.w),
-                            CommonWidgets().commonText(
-                              text:
-                                  "Mobile :- ${profileScreenController.profileModel.value.data?.mobile ?? "N/A"}",
-                              fontSize: 18.sp,
-                              fontColor: AppColors().color5B6AEA,
-                              fontFamily: "PlusJakartaSansRegular",
-                              fontWeight: FontWeight.w400,
-                            ),
-                            SizedBox(height: 1.w),
-                            CommonWidgets().commonText(
-                              text:
-                                  "Blood Group :- ${profileScreenController.profileModel.value.data?.bloodGroup ?? "N/A"}",
-                              fontSize: 18.sp,
-                              fontColor: AppColors().color5B6AEA,
-                              fontFamily: "PlusJakartaSansRegular",
-                              fontWeight: FontWeight.w400,
-                            ),
+                              padding: EdgeInsets.only(
+                                top: 3.w,
+                                left: 3.w,
+                                right: 3.w,
+                                bottom: 3.w,
+                              ),
 
-                            SizedBox(height: 5.w),
-                            Obx(() {
-                              return profileScreenController.permissions
-                                      .contains("team:self_profile_update")
-                                  ? Column(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(3.w),
+
+                                color: AppColors().colorFFFFFF.withValues(
+                                  alpha: 0.9,
+                                ),
+                              ),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      CommonWidgets().commonText(
+                                        text: "Name".tr,
+                                        fontSize: 18.sp,
+                                        fontColor: AppColors().color666666,
+                                        fontFamily: "PlusJakartaSansRegular",
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                      Flexible(
+                                        child: CommonWidgets().commonText(
+                                          text:
+                                              "${profileScreenController.profileModel.value.data?.fullname ?? "N/A"} (${profileScreenController.profileModel.value.data?.username ?? "N/A"})",
+
+                                          fontSize: 18.sp,
+                                          textAlign: TextAlign.right,
+                                          fontColor: AppColors().color1E1E1E,
+                                          fontFamily: "PlusJakartaSansRegular",
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+
+                                  Container(
+                                    height: 1,
+                                    width: 100.w,
+                                    color: AppColors().colorD7D7D7,
+                                  ),
+                                  SizedBox(height: 2.w),
+
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      CommonWidgets().commonText(
+                                        text: "Email".tr,
+                                        fontSize: 18.sp,
+                                        fontColor: AppColors().color666666,
+                                        fontFamily: "PlusJakartaSansRegular",
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                      Flexible(
+                                        child: CommonWidgets().commonText(
+                                          text:
+                                              "${profileScreenController.profileModel.value.data?.email ?? "N/A"}",
+                                          fontSize: 18.sp,
+                                          textAlign: TextAlign.right,
+                                          fontColor: AppColors().color1E1E1E,
+                                          fontFamily: "PlusJakartaSansRegular",
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+
+                                  Container(
+                                    height: 1,
+                                    width: 100.w,
+                                    color: AppColors().colorD7D7D7,
+                                  ),
+                                  SizedBox(height: 2.w),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      CommonWidgets().commonText(
+                                        text: "Role".tr,
+                                        fontSize: 18.sp,
+                                        fontColor: AppColors().color666666,
+                                        fontFamily: "PlusJakartaSansRegular",
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                      Flexible(
+                                        child: CommonWidgets().commonText(
+                                          text:
+                                              "${profileScreenController.profileModel.value.data?.role ?? "N/A"}",
+                                          fontSize: 18.sp,
+                                          textAlign: TextAlign.right,
+                                          fontColor: AppColors().color1E1E1E,
+                                          fontFamily: "PlusJakartaSansRegular",
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+
+                                  Container(
+                                    height: 1,
+                                    width: 100.w,
+                                    color: AppColors().colorD7D7D7,
+                                  ),
+
+                                  SizedBox(height: 2.w),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      CommonWidgets().commonText(
+                                        text: "Gender".tr,
+                                        fontSize: 18.sp,
+                                        fontColor: AppColors().color666666,
+                                        fontFamily: "PlusJakartaSansRegular",
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                      Flexible(
+                                        child: CommonWidgets().commonText(
+                                          text:
+                                              "${profileScreenController.profileModel.value.data?.gender == null ? "N/A" : profileScreenController.profileModel.value.data?.gender.toString().capitalizeFirst}",
+
+                                          fontSize: 18.sp,
+                                          textAlign: TextAlign.right,
+                                          fontColor: AppColors().color1E1E1E,
+                                          fontFamily: "PlusJakartaSansRegular",
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+
+                                  Container(
+                                    height: 1,
+                                    width: 100.w,
+                                    color: AppColors().colorD7D7D7,
+                                  ),
+                                  SizedBox(height: 2.w),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      CommonWidgets().commonText(
+                                        text: "Mobile".tr,
+                                        fontSize: 18.sp,
+                                        fontColor: AppColors().color666666,
+                                        fontFamily: "PlusJakartaSansRegular",
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                      Flexible(
+                                        child: CommonWidgets().commonText(
+                                          text:
+                                              "${profileScreenController.profileModel.value.data?.mobile ?? "N/A"} ",
+
+                                          fontSize: 18.sp,
+                                          textAlign: TextAlign.right,
+                                          fontColor: AppColors().color1E1E1E,
+                                          fontFamily: "PlusJakartaSansRegular",
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+
+                                  Container(
+                                    height: 1,
+                                    width: 100.w,
+                                    color: AppColors().colorD7D7D7,
+                                  ),
+
+                                  SizedBox(height: 2.w),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      CommonWidgets().commonText(
+                                        text: "BloodGroup".tr,
+                                        fontSize: 18.sp,
+                                        fontColor: AppColors().color666666,
+                                        fontFamily: "PlusJakartaSansRegular",
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                      Flexible(
+                                        child: CommonWidgets().commonText(
+                                          text:
+                                              "${profileScreenController.profileModel.value.data?.bloodGroup ?? "N/A"}",
+
+                                          fontSize: 18.sp,
+                                          textAlign: TextAlign.right,
+                                          fontColor: AppColors().color1E1E1E,
+                                          fontFamily: "PlusJakartaSansRegular",
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 2.w),
+
+                                  Container(
+                                    height: 1,
+                                    width: 100.w,
+                                    color: AppColors().colorD7D7D7,
+                                  ),
+                                  SizedBox(height: 2.w),
+                                  Obx(
+                                    () => Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
-                                        GestureDetector(
-                                          onTap: () async {
-                                            Get.delete<
-                                              EditProfileScreenController
-                                            >();
-                                            var a = await Get.to(
-                                              EditProfileScreen(),
-                                              arguments: {
-                                                "profileData":
-                                                    profileScreenController
-                                                        .profileModel
-                                                        .value,
-                                              },
-                                            );
-                                            Get.delete<
-                                              ProfileScreenController
-                                            >();
-                                            await profileScreenController
-                                                .getProfileData();
-                                          },
-                                          child: Row(
-                                            children: [
-                                              SvgPicture.asset(
-                                                "assets/icons/blackProfile.svg",
-                                                height: 20.sp,
-                                                width: 20.sp,
-                                                fit: BoxFit.contain,
-                                              ),
-                                              SizedBox(width: 4.w),
-                                              CommonWidgets().commonText(
-                                                text: "Edit Profile",
-                                                fontSize: 18.sp,
-                                                fontColor:
-                                                    AppColors().color1E1E1E,
-                                                fontFamily:
-                                                    "PlusJakartaSansRegular",
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ],
+                                        Flexible(
+                                          child: CommonWidgets().commonText(
+                                            text: "Language".tr,
+                                            fontSize: 18.sp,
+                                            fontColor: AppColors().color666666,
+                                            fontFamily:
+                                                "PlusJakartaSansRegular",
+                                            fontWeight: FontWeight.w600,
                                           ),
                                         ),
-                                        SizedBox(height: 4.w),
+                                        Flexible(
+                                          child: Container(
+                                            width: 100.w,
+                                            padding: EdgeInsets.all(2.w),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(2.w),
+                                              border: Border.all(
+                                                color: AppColors().color666666,
+                                              ),
+                                            ),
+                                            child: DropdownButton<Locale>(
+                                              isDense: true,
+                                              isExpanded: true,
+                                              dropdownColor: Colors.white,
+                                              value: profileScreenController
+                                                  .currentLocale
+                                                  .value,
+                                              underline: const SizedBox(),
+                                              icon: const Icon(
+                                                Icons
+                                                    .keyboard_arrow_down_rounded,
+                                                color: Colors.black,
+                                              ),
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                              onChanged: (Locale? newLocale) {
+                                                if (newLocale != null) {
+                                                  profileScreenController
+                                                      .changeLanguage(
+                                                        newLocale,
+                                                      );
+                                                }
+                                              },
+                                              items: [
+                                                DropdownMenuItem(
+                                                  value: Locale('en', 'US'),
+                                                  child: Text(
+                                                    'English (US)',
+                                                    style: TextStyle(
+                                                      fontSize: 15,
+                                                      fontFamily:
+                                                          "PlusJakartaSansRegular",
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                ),
+                                                DropdownMenuItem(
+                                                  value: Locale('gu', 'IN'),
+                                                  child: Text(
+                                                    'ગુજરાતી',
+                                                    style: TextStyle(
+                                                      fontSize: 15,
+                                                      fontFamily:
+                                                          "PlusJakartaSansRegular",
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
                                       ],
-                                    )
-                                  : SizedBox();
-                            }),
-                            Row(
-                              children: [
-                                SvgPicture.asset(
-                                  "assets/icons/blackNotification.svg",
-                                  height: 20.sp,
-                                  width: 20.sp,
-                                  fit: BoxFit.contain,
-                                ),
-                                SizedBox(width: 4.w),
-                                CommonWidgets().commonText(
-                                  text: "Notifications",
-                                  fontSize: 18.sp,
-                                  fontColor: AppColors().color1E1E1E,
-                                  fontFamily: "PlusJakartaSansRegular",
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 4.w),
-                            CommonWidgets().commonText(
-                              text: "Version 1.0.0",
-                              fontSize: 18.sp,
-                              fontColor: AppColors().color5B6AEA,
-                              fontFamily: "PlusJakartaSansRegular",
-                              fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                  SizedBox(height: 2.w),
+                                  Container(
+                                    height: 1,
+                                    width: 100.w,
+                                    color: AppColors().colorD7D7D7,
+                                  ),
+                                  Obx(() {
+                                    return profileScreenController.permissions
+                                            .contains(
+                                              "team:self_profile_update",
+                                            )
+                                        ? Column(
+                                            children: [
+                                              SizedBox(height: 3.w),
+                                              GestureDetector(
+                                                onTap: () async {
+                                                  Get.delete<
+                                                    EditProfileScreenController
+                                                  >();
+                                                  var a = await Get.to(
+                                                    EditProfileScreen(),
+                                                    arguments: {
+                                                      "profileData":
+                                                          profileScreenController
+                                                              .profileModel
+                                                              .value,
+                                                    },
+                                                  );
+                                                  Get.delete<
+                                                    ProfileScreenController
+                                                  >();
+                                                  await profileScreenController
+                                                      .getProfileData();
+                                                },
+                                                child: Row(
+                                                  children: [
+                                                    SvgPicture.asset(
+                                                      "assets/icons/blackProfile.svg",
+                                                      height: 20.sp,
+                                                      width: 20.sp,
+                                                      fit: BoxFit.contain,
+                                                    ),
+                                                    SizedBox(width: 4.w),
+                                                    CommonWidgets().commonText(
+                                                      text: "EditProfileSmall".tr,
+                                                      fontSize: 18.sp,
+                                                      fontColor: AppColors()
+                                                          .color1E1E1E,
+                                                      fontFamily:
+                                                          "PlusJakartaSansRegular",
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              SizedBox(height: 2.w),
+                                            ],
+                                          )
+                                        : SizedBox();
+                                  }),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Get.to(NotificationScreen());
+                                    },
+                                    child: Row(
+                                      children: [
+                                        SvgPicture.asset(
+                                          "assets/icons/blackNotification.svg",
+                                          height: 20.sp,
+                                          width: 20.sp,
+                                          fit: BoxFit.contain,
+                                        ),
+                                        SizedBox(width: 4.w),
+                                        CommonWidgets().commonText(
+                                          text: "Notification".tr,
+                                          fontSize: 18.sp,
+                                          fontColor: AppColors().color1E1E1E,
+                                          fontFamily: "PlusJakartaSansRegular",
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(height: 2.w),
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: CommonWidgets().commonText(
+                                      text:
+                                          "Version".tr +
+                                          ": ${profileScreenController.versionName.value}",
+                                      fontSize: 18.sp,
+                                      fontColor: AppColors().color5B6AEA,
+                                      fontFamily: "PlusJakartaSansRegular",
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         );

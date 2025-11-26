@@ -5,8 +5,10 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:sizer/sizer.dart';
 import 'package:ssinfra/utils/commonWidgets.dart';
+import 'package:ssinfra/view/editFormScreen.dart';
 import '../controller/formScreenController.dart';
 import '../utils/appColors.dart';
+import 'package:image_picker/image_picker.dart';
 
 class FormScreen extends StatefulWidget {
   const FormScreen({super.key, String? formid});
@@ -79,7 +81,7 @@ class _FormScreenState extends State<FormScreen> {
                                 fit: BoxFit.fill,
                               ),
                               CommonWidgets().commonText(
-                                text: "SOMETHING WENT WRONG",
+                                text: "SomethingWentWrong".tr,
                                 fontSize: 20.sp,
                                 fontColor: AppColors().color1E1E1E,
                                 fontFamily: "PlusJakartaSansMedium",
@@ -123,7 +125,7 @@ class _FormScreenState extends State<FormScreen> {
                                 fit: BoxFit.fill,
                               ),
                               CommonWidgets().commonText(
-                                text: "NO DATA FOUND.",
+                                text: "NoDataFound".tr,
                                 fontSize: 20.sp,
                                 fontColor: AppColors().color1E1E1E,
                                 fontFamily: "PlusJakartaSansMedium",
@@ -207,424 +209,965 @@ class _FormScreenState extends State<FormScreen> {
                                           color: AppColors().colorD7D7D7,
                                         ),
                                       ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Radio<int>(
-                                                visualDensity: VisualDensity(
-                                                  horizontal: -4,
-                                                  vertical: -4,
-                                                ),
-                                                value: 1,
-                                                groupValue: 1,
-                                                fillColor:
-                                                    WidgetStateProperty.resolveWith(
-                                                      (states) => AppColors()
-                                                          .color5B6AEA,
-                                                    ),
-                                                onChanged: (_) {},
+                                      child: ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount:
+                                            controller.categoryList.length,
+                                        itemBuilder: (context, index) {
+                                          return Obx(() {
+                                            return Padding(
+                                              padding: EdgeInsets.only(
+                                                right: 4.w,
                                               ),
-                                              Text(
-                                                "Rural-1",
-                                                style: TextStyle(
-                                                  fontSize: 16.sp,
-                                                  fontFamily:
-                                                      "PlusJakartaSansMedium",
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Colors.black,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(width: 10),
-                                          Row(
-                                            children: [
-                                              Radio<int>(
-                                                value: 2,
-                                                groupValue: 1,
-                                                fillColor:
-                                                    WidgetStateProperty.resolveWith(
-                                                      (states) => AppColors()
-                                                          .color5B6AEA,
-                                                    ),
-                                                onChanged: (_) {},
-                                              ),
-                                              Text(
-                                                "Urban-2",
-                                                style: TextStyle(
-                                                  fontSize: 16.sp,
-                                                  fontFamily:
-                                                      "PlusJakartaSansMedium",
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Colors.black,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(height: 2.w),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: Container(
-                                            height: 40,
-                                            child: TextFormField(
-                                              readOnly: true,
-                                              decoration: InputDecoration(
-                                                labelText: 'State',
-                                                hintText:
-                                                    "${controller.assignedVillageWardModel.value.data?.state?.name ?? "N/A"}",
-                                                labelStyle: TextStyle(
-                                                  color:
-                                                      AppColors().color5B6AEA,
-                                                  fontSize: 16.sp,
-                                                  fontFamily:
-                                                      "PlusJakartaSansRegular",
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                                floatingLabelBehavior:
-                                                    FloatingLabelBehavior
-                                                        .always,
-                                                contentPadding:
-                                                    EdgeInsets.symmetric(
-                                                      horizontal: 10,
-                                                    ),
-                                                enabledBorder:
-                                                    OutlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                        color: AppColors()
-                                                            .colorD7D7D7,
-                                                      ),
-                                                    ),
-                                                focusedBorder:
-                                                    OutlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                        color: AppColors()
-                                                            .color5B6AEA,
-                                                      ),
-                                                    ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
+                                              child: Row(
+                                                children: [
+                                                  Radio<int>(
+                                                    visualDensity:
+                                                        VisualDensity(
+                                                          horizontal: -4,
+                                                          vertical: -4,
+                                                        ),
+                                                    value: controller
+                                                        .categoryList
+                                                        .value[index]
+                                                        .id!,
+                                                    groupValue: controller
+                                                        .storedCategory
+                                                        .value,
+                                                    fillColor:
+                                                        WidgetStateProperty.resolveWith(
+                                                          (states) =>
+                                                              AppColors()
+                                                                  .color5B6AEA,
+                                                        ),
+                                                    onChanged: (val) {
+                                                      controller
+                                                              .storedCategory
+                                                              .value =
+                                                          val;
 
-                                        SizedBox(width: 2.w),
-
-                                        // 🟡 Code Field
-                                        Expanded(
-                                          flex: 1,
-                                          child: Container(
-                                            height: 40,
-                                            child: TextFormField(
-                                              readOnly: true,
-                                              decoration: InputDecoration(
-                                                labelText: 'Code',
-                                                hintText:
-                                                    "${controller.assignedVillageWardModel.value.data?.state?.code ?? "N/A"}",
-                                                labelStyle: TextStyle(
-                                                  color:
-                                                      AppColors().color5B6AEA,
-                                                  fontSize: 16.sp,
-                                                  fontFamily:
-                                                      "PlusJakartaSansRegular",
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                                floatingLabelBehavior:
-                                                    FloatingLabelBehavior
-                                                        .always,
-                                                contentPadding:
-                                                    EdgeInsets.symmetric(
-                                                      horizontal: 10,
-                                                    ),
-                                                enabledBorder:
-                                                    OutlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                        color: AppColors()
-                                                            .colorD7D7D7,
-                                                      ),
-                                                    ),
-                                                focusedBorder:
-                                                    OutlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                        color: AppColors()
-                                                            .color5B6AEA,
-                                                      ),
-                                                    ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 2.w),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: Container(
-                                            height: 40,
-                                            child: TextFormField(
-                                              readOnly: true,
-                                              decoration: InputDecoration(
-                                                hintText:
-                                                    "${controller.assignedVillageWardModel.value.data?.district?.name ?? "N/A"}",
-                                                labelText: 'District',
-                                                labelStyle: TextStyle(
-                                                  color:
-                                                      AppColors().color5B6AEA,
-                                                  fontSize: 16.sp,
-                                                  fontFamily:
-                                                      "PlusJakartaSansRegular",
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                                floatingLabelBehavior:
-                                                    FloatingLabelBehavior
-                                                        .always,
-                                                contentPadding:
-                                                    EdgeInsets.symmetric(
-                                                      horizontal: 10,
-                                                    ),
-                                                enabledBorder:
-                                                    OutlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                        color: AppColors()
-                                                            .colorD7D7D7,
-                                                      ),
-                                                    ),
-                                                focusedBorder:
-                                                    OutlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                        color: AppColors()
-                                                            .color5B6AEA,
-                                                      ),
-                                                    ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-
-                                        SizedBox(width: 2.w),
-
-                                        // 🟡 Code Field
-                                        Expanded(
-                                          flex: 1,
-                                          child: Container(
-                                            height: 40,
-                                            child: TextFormField(
-                                              readOnly: true,
-                                              decoration: InputDecoration(
-                                                hintText:
-                                                    "${controller.assignedVillageWardModel.value.data?.district?.code ?? "N/A"}",
-                                                labelText: 'Code',
-                                                labelStyle: TextStyle(
-                                                  color:
-                                                      AppColors().color5B6AEA,
-                                                  fontSize: 16.sp,
-                                                  fontFamily:
-                                                      "PlusJakartaSansRegular",
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                                floatingLabelBehavior:
-                                                    FloatingLabelBehavior
-                                                        .always,
-                                                contentPadding:
-                                                    EdgeInsets.symmetric(
-                                                      horizontal: 10,
-                                                    ),
-                                                enabledBorder:
-                                                    OutlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                        color: AppColors()
-                                                            .colorD7D7D7,
-                                                      ),
-                                                    ),
-                                                focusedBorder:
-                                                    OutlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                        color: AppColors()
-                                                            .color5B6AEA,
-                                                      ),
-                                                    ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 2.w),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: Container(
-                                            height: 40,
-                                            child: TextFormField(
-                                              readOnly: true,
-                                              decoration: InputDecoration(
-                                                hintText:
-                                                    "${controller.assignedVillageWardModel.value.data?.subdistrict?.name ?? "N/A"}",
-                                                labelText: 'Block/Tehsil',
-                                                labelStyle: TextStyle(
-                                                  color:
-                                                      AppColors().color5B6AEA,
-                                                  fontSize: 16.sp,
-                                                  fontFamily:
-                                                      "PlusJakartaSansRegular",
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                                floatingLabelBehavior:
-                                                    FloatingLabelBehavior
-                                                        .always,
-                                                contentPadding:
-                                                    EdgeInsets.symmetric(
-                                                      horizontal: 10,
-                                                    ),
-                                                enabledBorder:
-                                                    OutlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                        color: AppColors()
-                                                            .colorD7D7D7,
-                                                      ),
-                                                    ),
-                                                focusedBorder:
-                                                    OutlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                        color: AppColors()
-                                                            .color5B6AEA,
-                                                      ),
-                                                    ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-
-                                        SizedBox(width: 2.w),
-
-                                        // 🟡 Code Field
-                                        Expanded(
-                                          flex: 1,
-                                          child: Container(
-                                            height: 40,
-                                            child: TextFormField(
-                                              readOnly: true,
-                                              decoration: InputDecoration(
-                                                hintText:
-                                                    "${controller.assignedVillageWardModel.value.data?.subdistrict?.code ?? "N/A"}",
-                                                labelText: 'Code',
-                                                labelStyle: TextStyle(
-                                                  color:
-                                                      AppColors().color5B6AEA,
-                                                  fontSize: 16.sp,
-                                                  fontFamily:
-                                                      "PlusJakartaSansRegular",
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                                floatingLabelBehavior:
-                                                    FloatingLabelBehavior
-                                                        .always,
-                                                contentPadding:
-                                                    EdgeInsets.symmetric(
-                                                      horizontal: 10,
-                                                    ),
-                                                enabledBorder:
-                                                    OutlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                        color: AppColors()
-                                                            .colorD7D7D7,
-                                                      ),
-                                                    ),
-                                                focusedBorder:
-                                                    OutlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                        color: AppColors()
-                                                            .color5B6AEA,
-                                                      ),
-                                                    ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-
-                                    SizedBox(height: 2.w),
-                                    Container(
-                                      height: 42,
-                                      child: DropdownButtonFormField<int>(
-                                        value: controller.villageStored.value,
-                                        decoration: InputDecoration(
-                                          contentPadding: EdgeInsets.symmetric(
-                                            horizontal: 12,
-                                            vertical: 10,
-                                          ),
-                                          suffixIcon: Icon(
-                                            Icons.keyboard_arrow_down_rounded,
-                                            size: 30,
-                                            color: AppColors().color1E1E1E,
-                                          ),
-                                          enabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                              color: AppColors().colorD7D7D7,
-                                            ),
-                                          ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                              color: AppColors().color5B6AEA,
-                                            ),
-                                          ),
-                                          border: OutlineInputBorder(),
-                                        ),
-                                        items: controller
-                                            .assignedVillageWardModel
-                                            .value
-                                            .data
-                                            ?.villages!
-                                            .map(
-                                              (opt) => DropdownMenuItem(
-                                                value: opt.id,
-                                                child: Text(
-                                                  opt.name.toString(),
-                                                  style: TextStyle(
-                                                    fontSize: 16.sp,
-                                                    fontFamily:
-                                                        "PlusJakartaSansRegular",
-                                                    fontWeight: FontWeight.w600,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
+                                                      if (val == 1) {
+                                                        controller.filterForms(
+                                                          controller
+                                                              .wardStored
+                                                              .value,
+                                                        );
+                                                      } else if (val == 2) {
+                                                        controller.filterForms(
+                                                          controller
+                                                              .villageStored
+                                                              .value,
+                                                        );
+                                                      }
+                                                    },
                                                   ),
-                                                ),
+                                                  Text(
+                                                    "${controller.categoryList[index].name?.capitalizeFirst.toString()}",
+                                                    style: TextStyle(
+                                                      fontSize: 16.sp,
+                                                      fontFamily:
+                                                          "PlusJakartaSansMedium",
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                            )
-                                            .toList(),
-                                        onChanged: (dynamic value) {
-                                          controller.villageStored.value =
-                                              value;
+                                            );
+                                          });
                                         },
-                                        // value: ans.answer,
-                                        // items: q.options
-                                        //     .map(
-                                        //       (opt) => DropdownMenuItem(
-                                        //     value: opt.id,
-                                        //     child: Text(
-                                        //       opt.label,
-                                        //       style: TextStyle(
-                                        //         fontSize: 16.sp,
-                                        //         fontFamily: "PlusJakartaSansRegular",
-                                        //         fontWeight: FontWeight.w600,
-                                        //       ),
-                                        //     ),
-                                        //   ),
-                                        // )
-                                        //     .toList(),
-                                        // onChanged: (v) => controller.updateAnswer(q.id, v),
                                       ),
                                     ),
+                                    SizedBox(height: 2.w),
+
+                                    controller.storedCategory == 2
+                                        ? Column(
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: Container(
+                                                      height: 40,
+                                                      child: TextFormField(
+                                                        readOnly: true,
+                                                        decoration: InputDecoration(
+                                                          labelText: 'State'.tr,
+                                                          hintText:
+                                                              "${controller.assignedVillageWardModel.value.data?.state?.name ?? "N/A"}",
+                                                          labelStyle: TextStyle(
+                                                            color: AppColors()
+                                                                .color5B6AEA,
+                                                            fontSize: 16.sp,
+                                                            fontFamily:
+                                                                "PlusJakartaSansRegular",
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
+                                                          floatingLabelBehavior:
+                                                              FloatingLabelBehavior
+                                                                  .always,
+                                                          contentPadding:
+                                                              EdgeInsets.symmetric(
+                                                                horizontal: 10,
+                                                              ),
+                                                          enabledBorder: OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                              color: AppColors()
+                                                                  .colorD7D7D7,
+                                                            ),
+                                                          ),
+                                                          focusedBorder: OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                              color: AppColors()
+                                                                  .color5B6AEA,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+
+                                                  SizedBox(width: 2.w),
+
+                                                  // 🟡 Code Field
+                                                  Expanded(
+                                                    flex: 1,
+                                                    child: Container(
+                                                      height: 40,
+                                                      child: TextFormField(
+                                                        readOnly: true,
+                                                        decoration: InputDecoration(
+                                                          labelText: 'Code'.tr,
+                                                          hintText:
+                                                              "${controller.assignedVillageWardModel.value.data?.state?.code ?? "N/A"}",
+                                                          labelStyle: TextStyle(
+                                                            color: AppColors()
+                                                                .color5B6AEA,
+                                                            fontSize: 16.sp,
+                                                            fontFamily:
+                                                                "PlusJakartaSansRegular",
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
+                                                          floatingLabelBehavior:
+                                                              FloatingLabelBehavior
+                                                                  .always,
+                                                          contentPadding:
+                                                              EdgeInsets.symmetric(
+                                                                horizontal: 10,
+                                                              ),
+                                                          enabledBorder: OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                              color: AppColors()
+                                                                  .colorD7D7D7,
+                                                            ),
+                                                          ),
+                                                          focusedBorder: OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                              color: AppColors()
+                                                                  .color5B6AEA,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(height: 2.w),
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: Container(
+                                                      height: 40,
+                                                      child: TextFormField(
+                                                        readOnly: true,
+                                                        decoration: InputDecoration(
+                                                          hintText:
+                                                              "${controller.assignedVillageWardModel.value.data?.district?.name ?? "N/A"}",
+                                                          labelText:
+                                                              'District'.tr,
+                                                          labelStyle: TextStyle(
+                                                            color: AppColors()
+                                                                .color5B6AEA,
+                                                            fontSize: 16.sp,
+                                                            fontFamily:
+                                                                "PlusJakartaSansRegular",
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
+                                                          floatingLabelBehavior:
+                                                              FloatingLabelBehavior
+                                                                  .always,
+                                                          contentPadding:
+                                                              EdgeInsets.symmetric(
+                                                                horizontal: 10,
+                                                              ),
+                                                          enabledBorder: OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                              color: AppColors()
+                                                                  .colorD7D7D7,
+                                                            ),
+                                                          ),
+                                                          focusedBorder: OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                              color: AppColors()
+                                                                  .color5B6AEA,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+
+                                                  SizedBox(width: 2.w),
+
+                                                  // 🟡 Code Field
+                                                  Expanded(
+                                                    flex: 1,
+                                                    child: Container(
+                                                      height: 40,
+                                                      child: TextFormField(
+                                                        readOnly: true,
+                                                        decoration: InputDecoration(
+                                                          hintText:
+                                                              "${controller.assignedVillageWardModel.value.data?.district?.code ?? "N/A"}",
+                                                          labelText: 'Code'.tr,
+                                                          labelStyle: TextStyle(
+                                                            color: AppColors()
+                                                                .color5B6AEA,
+                                                            fontSize: 16.sp,
+                                                            fontFamily:
+                                                                "PlusJakartaSansRegular",
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
+                                                          floatingLabelBehavior:
+                                                              FloatingLabelBehavior
+                                                                  .always,
+                                                          contentPadding:
+                                                              EdgeInsets.symmetric(
+                                                                horizontal: 10,
+                                                              ),
+                                                          enabledBorder: OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                              color: AppColors()
+                                                                  .colorD7D7D7,
+                                                            ),
+                                                          ),
+                                                          focusedBorder: OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                              color: AppColors()
+                                                                  .color5B6AEA,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(height: 2.w),
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: Container(
+                                                      height: 40,
+                                                      child: TextFormField(
+                                                        readOnly: true,
+                                                        decoration: InputDecoration(
+                                                          hintText:
+                                                              "${controller.assignedVillageWardModel.value.data?.subdistrict?.name ?? "N/A"}",
+                                                          labelText:
+                                                              'Block/Tehsil'.tr,
+                                                          labelStyle: TextStyle(
+                                                            color: AppColors()
+                                                                .color5B6AEA,
+                                                            fontSize: 16.sp,
+                                                            fontFamily:
+                                                                "PlusJakartaSansRegular",
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
+                                                          floatingLabelBehavior:
+                                                              FloatingLabelBehavior
+                                                                  .always,
+                                                          contentPadding:
+                                                              EdgeInsets.symmetric(
+                                                                horizontal: 10,
+                                                              ),
+                                                          enabledBorder: OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                              color: AppColors()
+                                                                  .colorD7D7D7,
+                                                            ),
+                                                          ),
+                                                          focusedBorder: OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                              color: AppColors()
+                                                                  .color5B6AEA,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+
+                                                  SizedBox(width: 2.w),
+
+                                                  // 🟡 Code Field
+                                                  Expanded(
+                                                    flex: 1,
+                                                    child: Container(
+                                                      height: 40,
+                                                      child: TextFormField(
+                                                        readOnly: true,
+                                                        decoration: InputDecoration(
+                                                          hintText:
+                                                              "${controller.assignedVillageWardModel.value.data?.subdistrict?.code ?? "N/A"}",
+                                                          labelText: 'Code'.tr,
+                                                          labelStyle: TextStyle(
+                                                            color: AppColors()
+                                                                .color5B6AEA,
+                                                            fontSize: 16.sp,
+                                                            fontFamily:
+                                                                "PlusJakartaSansRegular",
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
+                                                          floatingLabelBehavior:
+                                                              FloatingLabelBehavior
+                                                                  .always,
+                                                          contentPadding:
+                                                              EdgeInsets.symmetric(
+                                                                horizontal: 10,
+                                                              ),
+                                                          enabledBorder: OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                              color: AppColors()
+                                                                  .colorD7D7D7,
+                                                            ),
+                                                          ),
+                                                          focusedBorder: OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                              color: AppColors()
+                                                                  .color5B6AEA,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+
+                                              SizedBox(height: 2.w),
+                                              Container(
+                                                height: 42,
+                                                child: DropdownButtonFormField<int>(
+                                                  value: controller
+                                                      .villageStored
+                                                      .value,
+                                                  hint: Text(
+                                                    "SelectVillage".tr,
+                                                  ),
+                                                  decoration: InputDecoration(
+                                                    contentPadding:
+                                                        EdgeInsets.symmetric(
+                                                          horizontal: 12,
+                                                          vertical: 10,
+                                                        ),
+                                                    suffixIcon: Icon(
+                                                      Icons
+                                                          .keyboard_arrow_down_rounded,
+                                                      size: 30,
+                                                      color: AppColors()
+                                                          .color1E1E1E,
+                                                    ),
+                                                    enabledBorder:
+                                                        OutlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                            color: AppColors()
+                                                                .colorD7D7D7,
+                                                          ),
+                                                        ),
+                                                    focusedBorder:
+                                                        OutlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                            color: AppColors()
+                                                                .color5B6AEA,
+                                                          ),
+                                                        ),
+                                                    border:
+                                                        OutlineInputBorder(),
+                                                  ),
+                                                  items: controller
+                                                      .assignedVillageWardModel
+                                                      .value
+                                                      .data
+                                                      ?.villages!
+                                                      .map(
+                                                        (
+                                                          opt,
+                                                        ) => DropdownMenuItem(
+                                                          value: opt.id,
+                                                          child: Text(
+                                                            opt.name.toString(),
+                                                            style: TextStyle(
+                                                              fontSize: 16.sp,
+                                                              fontFamily:
+                                                                  "PlusJakartaSansRegular",
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      )
+                                                      .toList(),
+                                                  onChanged:
+                                                      (dynamic value) async {
+                                                        controller
+                                                                .villageStored
+                                                                .value =
+                                                            value;
+                                                        await controller
+                                                            .filterForms(
+                                                              controller
+                                                                  .villageStored
+                                                                  .value,
+                                                            );
+                                                      },
+                                                  // value: ans.answer,
+                                                  // items: q.options
+                                                  //     .map(
+                                                  //       (opt) => DropdownMenuItem(
+                                                  //     value: opt.id,
+                                                  //     child: Text(
+                                                  //       opt.label,
+                                                  //       style: TextStyle(
+                                                  //         fontSize: 16.sp,
+                                                  //         fontFamily: "PlusJakartaSansRegular",
+                                                  //         fontWeight: FontWeight.w600,
+                                                  //       ),
+                                                  //     ),
+                                                  //   ),
+                                                  // )
+                                                  //     .toList(),
+                                                  // onChanged: (v) => controller.updateAnswer(q.id, v),
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        : Column(
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: Container(
+                                                      height: 40,
+                                                      child: TextFormField(
+                                                        readOnly: true,
+                                                        decoration: InputDecoration(
+                                                          labelText: 'State'.tr,
+                                                          hintText:
+                                                              "${controller.wardListDataModel.value.data?.state?.name ?? "N/A"}",
+                                                          labelStyle: TextStyle(
+                                                            color: AppColors()
+                                                                .color5B6AEA,
+                                                            fontSize: 16.sp,
+                                                            fontFamily:
+                                                                "PlusJakartaSansRegular",
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
+                                                          floatingLabelBehavior:
+                                                              FloatingLabelBehavior
+                                                                  .always,
+                                                          contentPadding:
+                                                              EdgeInsets.symmetric(
+                                                                horizontal: 10,
+                                                              ),
+                                                          enabledBorder: OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                              color: AppColors()
+                                                                  .colorD7D7D7,
+                                                            ),
+                                                          ),
+                                                          focusedBorder: OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                              color: AppColors()
+                                                                  .color5B6AEA,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+
+                                                  SizedBox(width: 2.w),
+
+                                                  // 🟡 Code Field
+                                                  Expanded(
+                                                    flex: 1,
+                                                    child: Container(
+                                                      height: 40,
+                                                      child: TextFormField(
+                                                        readOnly: true,
+                                                        decoration: InputDecoration(
+                                                          labelText: 'Code'.tr,
+                                                          hintText:
+                                                              "${controller.wardListDataModel.value.data?.state?.code ?? "N/A"}",
+                                                          labelStyle: TextStyle(
+                                                            color: AppColors()
+                                                                .color5B6AEA,
+                                                            fontSize: 16.sp,
+                                                            fontFamily:
+                                                                "PlusJakartaSansRegular",
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
+                                                          floatingLabelBehavior:
+                                                              FloatingLabelBehavior
+                                                                  .always,
+                                                          contentPadding:
+                                                              EdgeInsets.symmetric(
+                                                                horizontal: 10,
+                                                              ),
+                                                          enabledBorder: OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                              color: AppColors()
+                                                                  .colorD7D7D7,
+                                                            ),
+                                                          ),
+                                                          focusedBorder: OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                              color: AppColors()
+                                                                  .color5B6AEA,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(height: 2.w),
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: Container(
+                                                      height: 40,
+                                                      child: TextFormField(
+                                                        readOnly: true,
+                                                        decoration: InputDecoration(
+                                                          hintText:
+                                                              "${controller.wardListDataModel.value.data?.district?.name ?? "N/A"}",
+                                                          labelText:
+                                                              'District'.tr,
+                                                          labelStyle: TextStyle(
+                                                            color: AppColors()
+                                                                .color5B6AEA,
+                                                            fontSize: 16.sp,
+                                                            fontFamily:
+                                                                "PlusJakartaSansRegular",
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
+                                                          floatingLabelBehavior:
+                                                              FloatingLabelBehavior
+                                                                  .always,
+                                                          contentPadding:
+                                                              EdgeInsets.symmetric(
+                                                                horizontal: 10,
+                                                              ),
+                                                          enabledBorder: OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                              color: AppColors()
+                                                                  .colorD7D7D7,
+                                                            ),
+                                                          ),
+                                                          focusedBorder: OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                              color: AppColors()
+                                                                  .color5B6AEA,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+
+                                                  SizedBox(width: 2.w),
+
+                                                  // 🟡 Code Field
+                                                  Expanded(
+                                                    flex: 1,
+                                                    child: Container(
+                                                      height: 40,
+                                                      child: TextFormField(
+                                                        readOnly: true,
+                                                        decoration: InputDecoration(
+                                                          hintText:
+                                                              "${controller.wardListDataModel.value.data?.district?.code ?? "N/A"}",
+                                                          labelText: 'Code'.tr,
+                                                          labelStyle: TextStyle(
+                                                            color: AppColors()
+                                                                .color5B6AEA,
+                                                            fontSize: 16.sp,
+                                                            fontFamily:
+                                                                "PlusJakartaSansRegular",
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
+                                                          floatingLabelBehavior:
+                                                              FloatingLabelBehavior
+                                                                  .always,
+                                                          contentPadding:
+                                                              EdgeInsets.symmetric(
+                                                                horizontal: 10,
+                                                              ),
+                                                          enabledBorder: OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                              color: AppColors()
+                                                                  .colorD7D7D7,
+                                                            ),
+                                                          ),
+                                                          focusedBorder: OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                              color: AppColors()
+                                                                  .color5B6AEA,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(height: 2.w),
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: Container(
+                                                      height: 40,
+                                                      child: TextFormField(
+                                                        readOnly: true,
+                                                        decoration: InputDecoration(
+                                                          hintText:
+                                                              "${controller.wardListDataModel.value.data?.town?.name ?? "N/A"}",
+                                                          labelText: 'Town'.tr,
+                                                          labelStyle: TextStyle(
+                                                            color: AppColors()
+                                                                .color5B6AEA,
+                                                            fontSize: 16.sp,
+                                                            fontFamily:
+                                                                "PlusJakartaSansRegular",
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
+                                                          floatingLabelBehavior:
+                                                              FloatingLabelBehavior
+                                                                  .always,
+                                                          contentPadding:
+                                                              EdgeInsets.symmetric(
+                                                                horizontal: 10,
+                                                              ),
+                                                          enabledBorder: OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                              color: AppColors()
+                                                                  .colorD7D7D7,
+                                                            ),
+                                                          ),
+                                                          focusedBorder: OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                              color: AppColors()
+                                                                  .color5B6AEA,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+
+                                                  SizedBox(width: 2.w),
+
+                                                  // 🟡 Code Field
+                                                  Expanded(
+                                                    flex: 1,
+                                                    child: Container(
+                                                      height: 40,
+                                                      child: TextFormField(
+                                                        readOnly: true,
+                                                        decoration: InputDecoration(
+                                                          hintText:
+                                                              "${controller.wardListDataModel.value.data?.town?.code ?? "N/A"}",
+                                                          labelText: 'Code'.tr,
+                                                          labelStyle: TextStyle(
+                                                            color: AppColors()
+                                                                .color5B6AEA,
+                                                            fontSize: 16.sp,
+                                                            fontFamily:
+                                                                "PlusJakartaSansRegular",
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
+                                                          floatingLabelBehavior:
+                                                              FloatingLabelBehavior
+                                                                  .always,
+                                                          contentPadding:
+                                                              EdgeInsets.symmetric(
+                                                                horizontal: 10,
+                                                              ),
+                                                          enabledBorder: OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                              color: AppColors()
+                                                                  .colorD7D7D7,
+                                                            ),
+                                                          ),
+                                                          focusedBorder: OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                              color: AppColors()
+                                                                  .color5B6AEA,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+
+                                              SizedBox(height: 2.w),
+                                              Container(
+                                                height: 42,
+                                                child: DropdownButtonFormField<int>(
+                                                  hint: Text("SelectWard".tr),
+                                                  value: controller
+                                                      .wardStored
+                                                      .value,
+                                                  decoration: InputDecoration(
+                                                    contentPadding:
+                                                        EdgeInsets.symmetric(
+                                                          horizontal: 12,
+                                                          vertical: 10,
+                                                        ),
+                                                    suffixIcon: Icon(
+                                                      Icons
+                                                          .keyboard_arrow_down_rounded,
+                                                      size: 30,
+                                                      color: AppColors()
+                                                          .color1E1E1E,
+                                                    ),
+                                                    enabledBorder:
+                                                        OutlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                            color: AppColors()
+                                                                .colorD7D7D7,
+                                                          ),
+                                                        ),
+                                                    focusedBorder:
+                                                        OutlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                            color: AppColors()
+                                                                .color5B6AEA,
+                                                          ),
+                                                        ),
+                                                    border:
+                                                        OutlineInputBorder(),
+                                                  ),
+                                                  items: controller
+                                                      .wardListDataModel
+                                                      .value
+                                                      .data
+                                                      ?.wards!
+                                                      .map(
+                                                        (
+                                                          opt,
+                                                        ) => DropdownMenuItem(
+                                                          value: opt.id,
+                                                          child: Text(
+                                                            opt.name.toString(),
+                                                            style: TextStyle(
+                                                              fontSize: 16.sp,
+                                                              fontFamily:
+                                                                  "PlusJakartaSansRegular",
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      )
+                                                      .toList(),
+                                                  onChanged:
+                                                      (dynamic value) async {
+                                                        controller
+                                                                .wardStored
+                                                                .value =
+                                                            value;
+                                                        await controller
+                                                            .filterForms(
+                                                              controller
+                                                                  .wardStored
+                                                                  .value,
+                                                            );
+                                                      },
+                                                  // value: ans.answer,
+                                                  // items: q.options
+                                                  //     .map(
+                                                  //       (opt) => DropdownMenuItem(
+                                                  //     value: opt.id,
+                                                  //     child: Text(
+                                                  //       opt.label,
+                                                  //       style: TextStyle(
+                                                  //         fontSize: 16.sp,
+                                                  //         fontFamily: "PlusJakartaSansRegular",
+                                                  //         fontWeight: FontWeight.w600,
+                                                  //       ),
+                                                  //     ),
+                                                  //   ),
+                                                  // )
+                                                  //     .toList(),
+                                                  // onChanged: (v) => controller.updateAnswer(q.id, v),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                   ],
                                 ),
                               ),
+                              Obx(() {
+                                return controller.filledForm.length == 0
+                                    ? SizedBox()
+                                    : Padding(
+                                        padding: EdgeInsets.only(
+                                          top: 3.w,
+                                          bottom: 3.w,
+                                        ),
+
+                                        child: Container(
+                                          padding: EdgeInsets.only(
+                                            left: 3.w,
+                                            right: 3.w,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(
+                                              10,
+                                            ),
+                                          ),
+
+                                          child: Theme(
+                                            data: Theme.of(context).copyWith(
+                                              dividerColor: Colors
+                                                  .transparent, // removes both lines
+                                            ),
+                                            child: ExpansionTile(
+                                              title: Text(
+                                                "AllForms".tr,
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontFamily:
+                                                      "PlusJakartaSansMedium",
+                                                ),
+                                              ),
+                                              tilePadding: EdgeInsets.zero,
+                                              childrenPadding: EdgeInsets.zero,
+
+                                              children: [
+                                                Container(
+                                                  height: 150,
+                                                  child: ListView.builder(
+                                                    padding: EdgeInsets.zero,
+                                                    itemCount: controller
+                                                        .filledForm
+                                                        .length,
+                                                    itemBuilder: (context, index) {
+                                                      return GestureDetector(
+                                                        onTap: () {
+                                                          print("color5B6AEA");
+                                                          print(
+                                                            controller
+                                                                .filledForm[index]
+                                                                .id,
+                                                          );
+
+                                                          Get.to(
+                                                            EditFormScreen(),
+                                                            arguments: {
+                                                              "formId": controller
+                                                                  .filledForm[index]
+                                                                  .id,
+                                                              "categoryId":
+                                                                  controller
+                                                                      .storedCategory
+                                                                      .value,
+                                                              "surveyId": controller
+                                                                  .filledForm[index]
+                                                                  .surveyId,
+                                                            },
+                                                          );
+                                                        },
+                                                        child: ListTile(
+                                                          contentPadding:
+                                                              EdgeInsets.all(0),
+                                                          title: Container(
+                                                            padding:
+                                                                EdgeInsets.all(
+                                                                  2.w,
+                                                                ),
+                                                            decoration: BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius.circular(
+                                                                    2.w,
+                                                                  ),
+                                                              border: Border.all(
+                                                                width: 1,
+                                                                color: AppColors()
+                                                                    .color1E1E1E,
+                                                              ),
+                                                            ),
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                Text(
+                                                                  "${controller.filledForm[index].name.toString()}",
+                                                                  style: TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                    fontFamily:
+                                                                        "PlusJakartaSansRegular",
+                                                                  ),
+                                                                ),
+                                                                Icon(
+                                                                  Icons.edit,
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                              }),
+
                               SingleChildScrollView(
                                 child: Container(
                                   // padding: EdgeInsets.only(left: 2.w, right: 2.w),
@@ -660,7 +1203,31 @@ class _FormScreenState extends State<FormScreen> {
                 children: [
                   GestureDetector(
                     onTap: () async {
-                      await controller.submit(context);
+                      if (controller.storedCategory.value == 2) {
+                        if (controller.villageStored.value == null) {
+                          CommonWidgets().showSnackBar(
+                            "Message",
+                            "Please select village",
+                            Colors.red,
+                            Colors.white,
+                          );
+                        } else {
+                          await controller.submit(context);
+                        }
+                      } else if (controller.storedCategory.value == 1) {
+                        if (controller.wardStored.value == null) {
+                          CommonWidgets().showSnackBar(
+                            "Message",
+                            "Please select ward",
+                            Colors.red,
+                            Colors.white,
+                          );
+                        } else {
+                          await controller.submit(context);
+                        }
+                      } else {
+                        print("Select Category");
+                      }
                     },
                     child: Container(
                       margin: EdgeInsets.only(
@@ -675,7 +1242,7 @@ class _FormScreenState extends State<FormScreen> {
                       ),
                       child: Center(
                         child: CommonWidgets().commonText(
-                          text: "Submit",
+                          text: "Submit".tr,
                           fontSize: 16.sp,
                           fontColor: AppColors().colorFFFFFF,
                           fontFamily: "PlusJakartaSansRegular",
@@ -801,7 +1368,33 @@ class _FormScreenState extends State<FormScreen> {
         );
 
       case "checkbox":
-        List<int> selected = (ans.answer ?? []).cast<int>();
+        // Safely handle checkbox answer - ensure it's always a List<int>
+        List<int> selected = [];
+        if (ans.answer != null) {
+          if (ans.answer is List) {
+            selected = (ans.answer as List)
+                .map((e) {
+                  if (e is int) return e;
+                  if (e is num) return e.toInt();
+                  return int.tryParse(e.toString()) ?? 0;
+                })
+                .where((e) => e != 0)
+                .toList();
+          } else {
+            // If it's not a list, try to convert it
+            final value = ans.answer;
+            if (value is int) {
+              selected = [value];
+            } else if (value is num) {
+              selected = [value.toInt()];
+            } else {
+              final parsed = int.tryParse(value.toString());
+              if (parsed != null) {
+                selected = [parsed];
+              }
+            }
+          }
+        }
         final maxSelect = q.maxSelect ?? q.options.length;
 
         return Column(
@@ -860,7 +1453,6 @@ class _FormScreenState extends State<FormScreen> {
       case "select":
         return Container(
           height: 42,
-
           child: DropdownButtonFormField<int>(
             isExpanded: true,
             decoration: InputDecoration(
@@ -919,21 +1511,150 @@ class _FormScreenState extends State<FormScreen> {
               alignment: Alignment.topLeft,
               child: ElevatedButton.icon(
                 onPressed: () async {
-                  final result = await FilePicker.platform.pickFiles();
-                  if (result != null) {
-                    controller.updateAnswer(q.id, result.files.single.path);
-                  }
+                  // final result = await FilePicker.platform.pickFiles();
+                  // if (result != null) {
+                  //   controller.updateAnswer(q.id, result.files.single.path);
+                  // }
 
-                  // final XFile? image = await controller
-                  //     .picker.pickImage(
-                  //     source: ImageSource
-                  //         .camera,
-                  //     imageQuality: 50);
-                  // Navigator.pop(context);
-                  // final result =  image;
+                  // final XFile? image = await controller.picker.pickImage(
+                  //   source: ImageSource.camera,
+                  //   imageQuality: 50,
+                  // );
+                  // // Navigator.pop(context);
+                  // final result = image;
                   // if (result != null) {
                   //   controller.updateAnswer(q.id, result.path);
                   // }
+
+                  Get.dialog(
+                    Dialog(
+                      backgroundColor: AppColors().colorFFFFFF,
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          top: 8.w,
+                          bottom: 4.w,
+                          left: 2.w,
+                          right: 2.w,
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Select image by below options.',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: "PlusJakartaSansRegular",
+                              ),
+                            ),
+                            SizedBox(height: 4.w),
+
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                GestureDetector(
+                                  onTap: () async {
+                                    final XFile? image = await controller.picker
+                                        .pickImage(
+                                          source: ImageSource.camera,
+                                          imageQuality: 50,
+                                        );
+                                    Navigator.pop(context);
+                                    final result = image;
+                                    if (result != null) {
+                                      controller.updateAnswer(
+                                        q.id,
+                                        result.path,
+                                      );
+                                    }
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 2.w,
+                                      horizontal: 6.w,
+                                    ),
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: AppColors().color5B6AEA.withValues(
+                                        alpha: 0.3,
+                                      ),
+                                      border: Border.all(
+                                        color: AppColors().color5B6AEA,
+                                      ),
+                                      borderRadius: BorderRadius.circular(1.w),
+                                    ),
+                                    child: Text(
+                                      "Camera",
+                                      style: TextStyle(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w600,
+                                        fontFamily: "PlusJakartaSansMedium",
+                                        color: AppColors().color5B6AEA,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 2.w),
+                                GestureDetector(
+                                  onTap: () async {
+                                    final XFile? image = await controller.picker
+                                        .pickImage(
+                                          source: ImageSource.gallery,
+                                          imageQuality: 50,
+                                        );
+                                    Navigator.pop(context);
+                                    final result = image;
+                                    if (result != null) {
+                                      controller.updateAnswer(
+                                        q.id,
+                                        result.path,
+                                      );
+                                    }
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 2.w,
+                                      horizontal: 6.w,
+                                    ),
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: AppColors().color5B6AEA.withValues(
+                                        alpha: 0.3,
+                                      ),
+                                      border: Border.all(
+                                        color: AppColors().color5B6AEA,
+                                      ),
+                                      borderRadius: BorderRadius.circular(1.w),
+                                    ),
+
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "Gallery",
+                                          style: TextStyle(
+                                            color: AppColors().color5B6AEA,
+                                            fontWeight: FontWeight.w400,
+                                            fontFamily: "PlusJakartaSansMedium",
+                                            fontSize: 16.sp,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
                 },
                 icon: Icon(Icons.upload_file, color: AppColors().color1E1E1E),
                 label: Text(
@@ -1385,6 +2106,7 @@ class _TextareaFieldWidgetState extends State<_TextareaFieldWidget> {
 
 class _AutoBadgeChip extends StatelessWidget {
   final String? type;
+
   const _AutoBadgeChip({this.type});
 
   @override
@@ -1412,6 +2134,7 @@ class _AutoBadgeChip extends StatelessWidget {
 
 class _AutoFormulaBanner extends StatelessWidget {
   final String? type;
+
   const _AutoFormulaBanner({this.type});
 
   @override

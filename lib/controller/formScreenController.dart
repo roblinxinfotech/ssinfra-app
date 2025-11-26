@@ -6,12 +6,15 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:ssinfra/model/assignedVillageWardModel.dart';
 
 import 'package:ssinfra/services/apiEndPoint.dart';
 import 'package:ssinfra/services/apiServices.dart';
 
+import '../model/categoryModel.dart';
+import '../model/wardListDataModel.dart';
 import '../utils/commonWidgets.dart';
 import '../utils/formula_evaluator.dart';
 
@@ -19,6 +22,7 @@ class DynamicFormController extends GetxController {
   RxList<QuestionModel> questions = <QuestionModel>[].obs;
   Rx<AssignedVillageWardModel> assignedVillageWardModel =
       AssignedVillageWardModel().obs;
+  Rx<WardListDataModel> wardListDataModel = WardListDataModel().obs;
   RxList<AnswerModel> answers = <AnswerModel>[].obs;
   final ScrollController scrollController = ScrollController();
   RxDouble progress = 0.0.obs;
@@ -29,8 +33,15 @@ class DynamicFormController extends GetxController {
   RxString title = "".obs;
   String formId = "";
   var arguments;
-  RxnInt villageStored = RxnInt();
+
   final ImagePicker picker = ImagePicker();
+  Rx<CategoryModel> categoryModel = CategoryModel().obs;
+  RxList<CategoryList> categoryList = <CategoryList>[].obs;
+  RxnInt storedCategory = RxnInt();
+  RxnInt wardStored = RxnInt();
+  RxnInt villageStored = RxnInt();
+  RxList<FilledFormModel> allForms = <FilledFormModel>[].obs;
+  RxList<FilledFormModel> filledForm = <FilledFormModel>[].obs;
 
   @override
   void onInit() {
@@ -45,28 +56,40 @@ class DynamicFormController extends GetxController {
     formId = arguments["formId"];
     print(formId);
     try {
-      var res = await ApiServices().getData(
-        url: "${ApiEndPoint.vFormField}${formId}${ApiEndPoint.language}en",
+      var categoryResponse = await ApiServices().getData(
+        url: ApiEndPoint.category,
       );
-      var responseVillage = await ApiServices().getData(
-        url: "${ApiEndPoint.assignedVillageWardData}",
-      );
-      log(responseVillage);
-      assignedVillageWardModel.value = AssignedVillageWardModel.fromJson(
-        json.decode(responseVillage),
-      );
-      print(assignedVillageWardModel.value.data!.villages![0].id!);
-      print(assignedVillageWardModel.value.data!.villages![0].id!);
-      print(assignedVillageWardModel.value.data!.villages![0].id!);
-      print(assignedVillageWardModel.value.data!.villages![0].id!);
-      if (assignedVillageWardModel.value.data?.villages?.length != 0) {
-        villageStored.value =
-            assignedVillageWardModel.value.data!.villages![0].id!;
-      }
-      print(villageStored);
-      print(villageStored);
 
-      await Future.delayed(Duration(seconds: 3), () {});
+      categoryModel.value = CategoryModel.fromJson(
+        json.decode(categoryResponse),
+      );
+      categoryList.clear();
+      categoryModel.value.data?.forEach((action) {
+        categoryList.add(action);
+      });
+
+      if (categoryList.length != 0) {
+        storedCategory.value = categoryList[0].id;
+        // if(categoryList[0].name=="rural")
+        //   {
+        //
+        //   }else if(categoryList[0].name=="urban")
+        //     {
+        //
+        //     }
+        // // await getUrbanData(storedCategory.value);
+      }
+
+      await getAssignedWard();
+      await getAssignedVillage();
+      final prefs = await SharedPreferences.getInstance();
+      final langCode = prefs.getString('languageCode');
+      var res = await ApiServices().getData(
+        url:
+            "${ApiEndPoint.vFormField}${formId}${ApiEndPoint.language}${langCode}",
+      );
+
+      // await Future.delayed(Duration(seconds: 3), () {});
       var datas = jsonDecode(res);
       print(datas);
       // use live API response (fallback to static data if needed)
@@ -205,7 +228,16 @@ class DynamicFormController extends GetxController {
       code.value = data?["code"];
       title.value = data?["title"];
       final fields = data?["fields"] as List<dynamic>? ?? [];
+      final surveyIds = data?["survey_ids"] as List<dynamic>? ?? [];
       questions.value = fields.map((e) => QuestionModel.fromJson(e)).toList();
+      allForms.value = surveyIds
+          .map((e) => FilledFormModel.fromJson(e))
+          .toList();
+      allForms.forEach((action) {
+        filledForm.addIf(action.surveyId == wardStored.value, action);
+      });
+      print(filledForm.length);
+      print("filledForm.length");
       showLoader.value = false;
       error.value = false;
     } catch (e) {
@@ -218,8 +250,67 @@ class DynamicFormController extends GetxController {
     // generate flattened answers (including children)
     answers.value = _generateAnswers(questions);
 
-    // 🔄 Calculate initial autofill values
+    // 🧾 Prefill existing answers coming from API (if any)
+    _applyPrefilledAnswers(questions);
+
+    // 🔄 Set default values for options with is_default: 1
+    _setDefaultValues();
+
+    // 🔄 Calculate initial autofill values (after defaults are set)
     _calculateInitialAutofills();
+  }
+
+  filterForms(value) {
+    filledForm.clear();
+    allForms.forEach((action) {
+      filledForm.addIf(action.surveyId == value, action);
+    });
+  }
+
+  getAssignedVillage() async {
+    var responseVillage = await ApiServices().getData(
+      url: "${ApiEndPoint.assignedVillageWardData}",
+    );
+    log(responseVillage);
+    assignedVillageWardModel.value = AssignedVillageWardModel.fromJson(
+      json.decode(responseVillage),
+    );
+    print(assignedVillageWardModel.value.data?.villages?.length);
+    if (assignedVillageWardModel.value.data?.villages?.length != 0 &&
+        assignedVillageWardModel.value.data?.villages?.length != null) {
+      villageStored.value =
+          assignedVillageWardModel.value.data?.villages?[0].id;
+      if (categoryList.length != 0) {
+        storedCategory.value = categoryList[1].id;
+        // if(categoryList[0].name=="rural")
+        //   {
+        //
+        //   }else if(categoryList[0].name=="urban")
+        //     {
+        //
+        //     }
+        // // await getUrbanData(storedCategory.value);
+      }
+    }
+  }
+
+  getAssignedWard() async {
+    var responseWard = await ApiServices().getData(
+      url: "${ApiEndPoint.assignedWardWards}",
+    );
+
+    wardListDataModel.value = WardListDataModel.fromJson(
+      json.decode(responseWard),
+    );
+    log(responseWard);
+    print(wardListDataModel.value.data?.wards?.length);
+    if (wardListDataModel.value.data?.wards?.length != 0 &&
+        wardListDataModel.value.data?.wards?.length != null) {
+      wardStored.value = wardListDataModel.value.data?.wards?[0].id;
+      if (categoryList.length != 0) {
+        storedCategory.value = categoryList[0].id;
+      }
+    }
   }
 
   List<AnswerModel> _generateAnswers(List<QuestionModel> qs) {
@@ -581,8 +672,14 @@ class DynamicFormController extends GetxController {
 
     try {
       final authUserData = {
-        "village_id": villageStored.value.toString(),
-        "form_id": formId.toString(),
+        "url": ApiEndPoint.formSubmit,
+        "village_id": storedCategory.value.toString() == "2"
+            ? villageStored.value.toString()
+            : "",
+        "ward_id": storedCategory.value.toString() == "1"
+            ? wardStored.value.toString()
+            : "",
+        "form_id": formId.toString(), // encode once here
         "answers": result,
       };
 
@@ -590,8 +687,13 @@ class DynamicFormController extends GetxController {
 
       var response = await ApiServices().uploadFormDataWithFiles(
         url: ApiEndPoint.formSubmit,
-        villageId: 12.toInt(),
-        formId: formId.toString(), // encode once here
+        villageId: storedCategory.value.toString() == "2"
+            ? villageStored.value.toString()
+            : "",
+        wardId: storedCategory.value.toString() == "1"
+            ? wardStored.value.toString()
+            : "",
+        formId: formId.toString(),
         answers: result, // encode once here
       );
       var datas = jsonDecode(response);
@@ -617,12 +719,12 @@ class DynamicFormController extends GetxController {
     }
     Navigator.pop(context);
     debugPrint("✅ Submitted Answers => $result");
-    Get.snackbar(
-      "Success",
-      "Form submitted successfully!",
-      backgroundColor: Colors.green,
-      colorText: Colors.white,
-    );
+    // Get.snackbar(
+    //   "Success",
+    //   "Form submitted successfully!",
+    //   backgroundColor: Colors.green,
+    //   colorText: Colors.white,
+    // );
   }
 
   void _collectAnswers(QuestionModel q, List<Map<String, dynamic>> list) {
@@ -675,12 +777,17 @@ class DynamicFormController extends GetxController {
 
     try {
       final result = evaluator.evaluate(formula);
+      // Only update if autofill succeeds
       targetAnswer.answer = _normalizeAutofillValue(result, q);
     } on FormulaMissingDependencyException {
-      targetAnswer.answer = null;
+      // If autofill fails due to missing dependencies, keep the existing value (default_value)
+      // Don't change the answer at all - preserve default_value
+      debugPrint(
+        'Autofill formula for field ${q.id} failed: missing dependencies. Keeping existing value.',
+      );
     } catch (e) {
       debugPrint('Error evaluating autofill formula for ${q.id}: $e');
-      targetAnswer.answer = null;
+      // On error, preserve existing value (default_value) - don't change it
     }
 
     answers.refresh();
@@ -698,12 +805,164 @@ class DynamicFormController extends GetxController {
     return null;
   }
 
+  void _applyPrefilledAnswers(List<QuestionModel> qs) {
+    void assignValues(List<QuestionModel> questions) {
+      for (final q in questions) {
+        final value = _extractPrefilledValue(q);
+        if (value != null) {
+          final ans = answers.firstWhereOrNull((a) => a.id == q.id);
+          if (ans != null) {
+            ans.answer = value;
+          }
+        }
+        if (q.childrens.isNotEmpty) {
+          assignValues(q.childrens);
+        }
+      }
+    }
+
+    assignValues(qs);
+    answers.refresh();
+    updateProgress();
+  }
+
+  dynamic _extractPrefilledValue(QuestionModel question) {
+    return _normalizePrefillValue(question, question.answerPayload);
+  }
+
+  dynamic _normalizePrefillValue(QuestionModel question, dynamic payload) {
+    if (payload == null) return null;
+
+    if (payload is List) {
+      if (payload.isEmpty) return null;
+      final normalized = payload
+          .map((item) => _normalizePrefillValue(question, item))
+          .where((value) => value != null)
+          .toList();
+      if (normalized.isEmpty) return null;
+
+      if (question.type == 'checkbox') {
+        final flattened = normalized
+            .expand((value) => value is List ? value : [value])
+            .map(_coerceToInt)
+            .whereType<int>()
+            .toList();
+        return flattened.isEmpty ? null : flattened;
+      }
+
+      return normalized.first;
+    }
+
+    if (payload is Map<String, dynamic>) {
+      if (question.type == 'file') {
+        final path = (payload['path'] ?? payload['url'])?.toString();
+        if (path == null || path.trim().isEmpty) return null;
+        return path;
+      }
+
+      final value = payload['value'];
+      return _normalizePrefillScalar(question, value);
+    }
+
+    return _normalizePrefillScalar(question, payload);
+  }
+
+  dynamic _normalizePrefillScalar(QuestionModel question, dynamic value) {
+    if (value == null) return null;
+
+    switch (question.type) {
+      case 'checkbox':
+        final list = value is List ? value : [value];
+        final normalized = list.map(_coerceToInt).whereType<int>().toList();
+        return normalized.isEmpty ? null : normalized;
+      case 'radio':
+      case 'select':
+        final parsed = _parseToNumber(value);
+        return parsed?.toInt();
+      case 'number':
+        if (value is num) return _formatNumber(value);
+        final parsed = _parseToNumber(value);
+        return parsed != null ? _formatNumber(parsed) : value.toString();
+      case 'file':
+        final path = value.toString();
+        return path.trim().isEmpty ? null : path;
+      default:
+        return value.toString();
+    }
+  }
+
+  int? _coerceToInt(dynamic value) {
+    if (value == null) return null;
+    if (value is int) return value;
+    if (value is num) return value.toInt();
+    return int.tryParse(value.toString());
+  }
+
+  /// Set default values for fields with is_default: 1 options or default_value
+  void _setDefaultValues() {
+    final allQuestions = _getAllQuestions(questions);
+    for (final q in allQuestions) {
+      // Skip if field already has a value
+      final existingAnswer = answers.firstWhereOrNull((a) => a.id == q.id);
+      if (existingAnswer?.answer != null) continue;
+
+      dynamic defaultValue;
+
+      // Handle radio and select fields - set default if one option has is_default: 1
+      if (q.type == 'radio' || q.type == 'select') {
+        final defaultOption = q.options.firstWhereOrNull(
+          (opt) => opt.isDefault == 1,
+        );
+        if (defaultOption != null) {
+          // Store the id (not code) to match what UI components expect
+          defaultValue = defaultOption.id;
+        }
+      }
+      // Handle checkbox fields - add all options with is_default: 1
+      else if (q.type == 'checkbox') {
+        final defaultOptions = q.options
+            .where((opt) => opt.isDefault == 1)
+            .map((opt) => opt.id)
+            .toList();
+        if (defaultOptions.isNotEmpty) {
+          defaultValue = defaultOptions;
+        }
+      }
+      // Handle fields with default_value (number, input, etc.)
+      // Set default_value first, autofill will override if it can evaluate successfully
+      if (q.defaultValue != null && defaultValue == null) {
+        defaultValue = q.defaultValue;
+      }
+
+      // Set the value directly without triggering autofill recalculation
+      if (defaultValue != null) {
+        final ans = answers.firstWhereOrNull((a) => a.id == q.id);
+        if (ans != null) {
+          if (defaultValue is List && defaultValue.isEmpty) {
+            ans.answer = null;
+          } else if (defaultValue == null ||
+              (defaultValue is String && defaultValue.trim().isEmpty)) {
+            ans.answer = null;
+          } else {
+            ans.answer = defaultValue;
+          }
+        }
+      }
+    }
+    // Refresh answers after setting all defaults
+    answers.refresh();
+  }
+
   /// Calculate initial autofill values when questions are loaded
   void _calculateInitialAutofills() {
     final allQuestions = _getAllQuestions(questions);
     for (final q in allQuestions) {
       if (_getFormulaString(q.autofill) != null) {
-        _evaluateAutofill(q);
+        final currentAns = answers.firstWhereOrNull((a) => a.id == q.id);
+        if (currentAns?.answer == null) {
+          // Try to evaluate autofill only when no response is already stored
+          _evaluateAutofill(q);
+        }
       }
     }
   }
@@ -736,6 +995,32 @@ class DynamicFormController extends GetxController {
     if (fieldId == null) return null;
     final answer = answers.firstWhereOrNull((a) => a.id == fieldId);
     final value = answer?.answer;
+
+    // Find the question to check if it's a radio/select/checkbox field
+    final question = _getAllQuestions(
+      questions,
+    ).firstWhereOrNull((q) => q.id == fieldId);
+
+    // For radio/select/checkbox fields, convert id to code for formula evaluation
+    if (question != null &&
+        (question.type == 'radio' ||
+            question.type == 'select' ||
+            question.type == 'checkbox')) {
+      if (value is List) {
+        if (value.isEmpty) return null;
+        // Convert each id in the list to its corresponding code
+        final codes = value.map((id) {
+          final opt = question.options.firstWhereOrNull((o) => o.id == id);
+          return opt?.code ?? id;
+        }).toList();
+        return codes.length == 1 ? codes.first : codes;
+      } else if (value != null) {
+        // Convert single id to code
+        final opt = question.options.firstWhereOrNull((o) => o.id == value);
+        return opt?.code ?? value;
+      }
+    }
+
     if (value is List) {
       if (value.isEmpty) return null;
       return value.length == 1 ? value.first : value;
@@ -751,6 +1036,35 @@ class DynamicFormController extends GetxController {
       case 'select':
         final numeric = _parseToNumber(value);
         return numeric?.toInt();
+      case 'checkbox':
+        // For checkbox, ensure we return a List<int>
+        if (value is List) {
+          return value
+              .map((e) {
+                if (e is int) return e;
+                if (e is num) return e.toInt();
+                return int.tryParse(e.toString());
+              })
+              .whereType<int>()
+              .toList();
+        }
+        // If it's a boolean true, select all default options
+        if (value is bool && value == true) {
+          final defaultOptions = question.options
+              .where((opt) => opt.isDefault == 1)
+              .map((opt) => opt.id)
+              .toList();
+          return defaultOptions.isNotEmpty ? defaultOptions : null;
+        }
+        // If it's a single value, try to convert to int and return as list
+        if (value is int) {
+          return [value];
+        }
+        if (value is num) {
+          return [value.toInt()];
+        }
+        final parsed = int.tryParse(value.toString());
+        return parsed != null ? [parsed] : null;
       case 'number':
         if (value is num) {
           return _formatNumber(value);
@@ -788,6 +1102,8 @@ class QuestionModel {
   final int? textMaxLimit;
   final UnitModel? unit;
   final AutofillModel? autofill;
+  final dynamic defaultValue;
+  final dynamic answerPayload;
 
   QuestionModel({
     required this.id,
@@ -803,6 +1119,8 @@ class QuestionModel {
     this.textMinLimit,
     this.unit,
     this.autofill,
+    this.defaultValue,
+    this.answerPayload,
   });
 
   factory QuestionModel.fromJson(Map<String, dynamic> json) {
@@ -837,6 +1155,8 @@ class QuestionModel {
           json["autofill"] != null && json["autofill"] is Map<String, dynamic>
           ? AutofillModel.fromJson(json["autofill"])
           : null,
+      defaultValue: json["default_value"],
+      answerPayload: json["answers"],
     );
   }
 }
@@ -845,14 +1165,41 @@ class OptionModel {
   final int id;
   final int? code;
   final String label;
+  final int isDefault;
 
-  OptionModel({required this.id, required this.label, this.code});
+  OptionModel({
+    required this.id,
+    required this.label,
+    this.code,
+    this.isDefault = 0,
+  });
 
   factory OptionModel.fromJson(Map<String, dynamic> json) {
     return OptionModel(
       id: json["id"],
       label: json["label"] ?? "",
       code: json["code"],
+      isDefault: json["is_default"] ?? 0,
+    );
+  }
+}
+
+class FilledFormModel {
+  final int id;
+  final String? name;
+  final int? surveyId;
+
+  FilledFormModel({
+    required this.id,
+    required this.name,
+    required this.surveyId,
+  });
+
+  factory FilledFormModel.fromJson(Map<String, dynamic> json) {
+    return FilledFormModel(
+      id: json["id"],
+      name: json["name"] ?? "",
+      surveyId: json["survey_id"],
     );
   }
 }

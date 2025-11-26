@@ -22,7 +22,9 @@ class AssignedVillageWardModel {
   factory AssignedVillageWardModel.fromJson(Map<String, dynamic> json) => AssignedVillageWardModel(
     status: json["status"],
     message: json["message"],
-    data: json["data"] == [] ? Data.fromJson(json["data"]) : Data.fromJson(json["data"]),
+    data:  json["data"] is Map<String, dynamic>
+        ? Data.fromJson(json["data"])
+        : null,
   );
 
   Map<String, dynamic> toJson() => {

@@ -64,7 +64,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                     Column(
                       children: [
                         CommonWidgets().commonText(
-                          text: "ADD TEAM MEMBER",
+                          text: "AddTeamMember".tr,
                           fontSize: 18.sp,
                           fontColor: AppColors().color1E1E1E,
                           fontFamily: "PlusJakartaSansMedium",
@@ -182,7 +182,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                                             CrossAxisAlignment.center,
                                             children: [
                                               Text(
-                                                'Select image by below options.',
+                                                'SelectImageByBelowOptions'.tr,
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                   fontSize: 18.sp,
@@ -236,7 +236,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                                                         ),
                                                       ),
                                                       child: Text(
-                                                        "Camera",
+                                                        "Camera".tr,
                                                         style: TextStyle(
                                                           fontSize: 16.sp,
                                                           fontWeight:
@@ -297,7 +297,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                                                             .center,
                                                         children: [
                                                           Text(
-                                                            "Gallery",
+                                                            "Gallery".tr,
                                                             style: TextStyle(
                                                               color: AppColors()
                                                                   .color5B6AEA,
@@ -421,7 +421,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             CommonWidgets().commonText(
-                              text: "Personal Information",
+                              text: "PersonalInformation".tr,
                               fontSize: 18.sp,
                               fontColor: AppColors().color1E1E1E,
                               fontFamily: "PlusJakartaSansMedium",
@@ -431,7 +431,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                             Row(
                               children: [
                                 CommonWidgets().commonText(
-                                  text: "Full Name",
+                                  text: "FullName".tr,
                                   fontSize: 16.sp,
                                   fontColor: AppColors().color1E1E1E,
                                   fontFamily: "PlusJakartaSansRegular",
@@ -488,7 +488,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                               children: [
 
                                 CommonWidgets().commonText(
-                                  text: "User Name",
+                                  text: "UserName".tr,
                                   fontSize: 16.sp,
                                   fontColor: AppColors().color1E1E1E,
                                   fontFamily: "PlusJakartaSansRegular",
@@ -546,7 +546,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                             Row(
                               children: [
                                 CommonWidgets().commonText(
-                                  text: "Email Address",
+                                  text: "EmailAddress".tr,
                                   fontSize: 16.sp,
                                   fontColor: AppColors().color1E1E1E,
                                   fontFamily: "PlusJakartaSansRegular",
@@ -605,7 +605,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                             Row(
                               children: [
                                 CommonWidgets().commonText(
-                                  text: "Password",
+                                  text: "Password".tr,
                                   fontSize: 16.sp,
                                   fontColor: AppColors().color1E1E1E,
                                   fontFamily: "PlusJakartaSansRegular",
@@ -663,7 +663,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                             Row(
                               children: [
                                 CommonWidgets().commonText(
-                                  text: "Confirm Password",
+                                  text: "ConfirmPassword".tr,
                                   fontSize: 16.sp,
                                   fontColor: AppColors().color1E1E1E,
                                   fontFamily: "PlusJakartaSansRegular",
@@ -722,7 +722,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                             Row(
                               children: [
                                 CommonWidgets().commonText(
-                                  text: "Phone Number",
+                                  text: "PhoneNumber".tr,
                                   fontSize: 16.sp,
                                   fontColor: AppColors().color1E1E1E,
                                   fontFamily: "PlusJakartaSansRegular",
@@ -774,7 +774,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                             ),
                             SizedBox(height: 3.w),
                             CommonWidgets().commonText(
-                              text: "Status",
+                              text: "Status".tr,
                               fontSize: 16.sp,
                               fontColor: AppColors().color1E1E1E,
                               fontFamily: "PlusJakartaSansRegular",
@@ -802,7 +802,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                             Row(
                               children: [
                                 CommonWidgets().commonText(
-                                  text: "Emergency Mobile",
+                                  text: "EmergencyMobile".tr,
                                   fontSize: 16.sp,
                                   fontColor: AppColors().color1E1E1E,
                                   fontFamily: "PlusJakartaSansRegular",
@@ -864,7 +864,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                                       Row(
                                         children: [
                                           CommonWidgets().commonText(
-                                            text: "Date Of Birth",
+                                            text: "DateOfBirth".tr,
                                             fontSize: 16.sp,
                                             fontColor: AppColors().color1E1E1E,
                                             fontFamily: "PlusJakartaSansRegular",
@@ -903,15 +903,18 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                                                         .now(), // Latest selectable date
                                                   );
                                                   if (picked != null) {
+                                                    final year = picked.year
+                                                        .toString();
+                                                    final month = picked.month
+                                                        .toString().padLeft(
+                                                        2, '0');
+                                                    final date = picked.day
+                                                        .toString().padLeft(
+                                                        2, '0');
+
                                                     addMemberScreenController
-                                                        .birthDate
-                                                        .value
-                                                        .text =
-                                                    "${picked?.year
-                                                        .toString()}-${picked
-                                                        ?.month
-                                                        .toString()}-${picked
-                                                        ?.day.toString()}";
+                                                        .birthDate.value.text =
+                                                    "$year-$month-$date";
                                                   }
                                                 },
                                                 child: Padding(
@@ -971,7 +974,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                                       Row(
                                         children: [
                                           CommonWidgets().commonText(
-                                            text: "Blood Group",
+                                            text: "BloodGroup".tr,
                                             fontSize: 16.sp,
                                             fontColor: AppColors().color1E1E1E,
                                             fontFamily: "PlusJakartaSansRegular",
@@ -1031,7 +1034,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                             ),
 
                             CommonWidgets().commonText(
-                              text: "Gender",
+                              text: "Gender".tr,
                               fontSize: 16.sp,
                               fontColor: AppColors().color1E1E1E,
                               fontFamily: "PlusJakartaSansRegular",
@@ -1124,7 +1127,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                             SizedBox(height: 1.w),
                             SizedBox(height: 3.w),
                             CommonWidgets().commonText(
-                              text: "Area type",
+                              text: "AreaType".tr,
                               fontSize: 16.sp,
                               fontColor: AppColors().color1E1E1E,
                               fontFamily: "PlusJakartaSansRegular",
@@ -1206,10 +1209,10 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                                     text: addMemberScreenController
                                         .storedCategory
                                         .value == 1
-                                        ? "Select Town"
+                                        ? "SelectTown".tr
                                         : addMemberScreenController
                                         .storedCategory
-                                        .value == 2 ? "Select Taluka" : "",
+                                        .value == 2 ? "SelectTaluka".tr : "",
                                     fontSize: 16.sp,
                                     fontColor: AppColors().color1E1E1E,
                                     fontFamily: "PlusJakartaSansRegular",
@@ -1294,7 +1297,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                             Row(
                               children: [
                                 CommonWidgets().commonText(
-                                  text: "Address",
+                                  text: "Address".tr,
                                   fontSize: 16.sp,
                                   fontColor: AppColors().color1E1E1E,
                                   fontFamily: "PlusJakartaSansRegular",
@@ -1350,7 +1353,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                             ),
                             SizedBox(height: 3.w),
                             CommonWidgets().commonText(
-                              text: "Bank Information",
+                              text: "BankInformation".tr,
                               fontSize: 18.sp,
                               fontColor: AppColors().color1E1E1E,
                               fontFamily: "PlusJakartaSansMedium",
@@ -1360,7 +1363,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                             Row(
                               children: [
                                 CommonWidgets().commonText(
-                                  text: "Bank Name",
+                                  text: "BankName".tr,
                                   fontSize: 16.sp,
                                   fontColor: AppColors().color1E1E1E,
                                   fontFamily: "PlusJakartaSansRegular",
@@ -1418,7 +1421,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                             Row(
                               children: [
                                 CommonWidgets().commonText(
-                                  text: "Branch Name",
+                                  text: "BranchName".tr,
                                   fontSize: 16.sp,
                                   fontColor: AppColors().color1E1E1E,
                                   fontFamily: "PlusJakartaSansRegular",
@@ -1476,7 +1479,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                             Row(
                               children: [
                                 CommonWidgets().commonText(
-                                  text: "Bank Account Holder Name",
+                                  text: "BankAccountHolderName".tr,
                                   fontSize: 16.sp,
                                   fontColor: AppColors().color1E1E1E,
                                   fontFamily: "PlusJakartaSansRegular",
@@ -1533,7 +1536,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                             Row(
                               children: [
                                 CommonWidgets().commonText(
-                                  text: "Bank Account No",
+                                  text: "BankAccountNo".tr,
                                   fontSize: 16.sp,
                                   fontColor: AppColors().color1E1E1E,
                                   fontFamily: "PlusJakartaSansRegular",
@@ -1591,7 +1594,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                             Row(
                               children: [
                                 CommonWidgets().commonText(
-                                  text: "IFSC Code",
+                                  text: "IFSCCode".tr,
                                   fontSize: 16.sp,
                                   fontColor: AppColors().color1E1E1E,
                                   fontFamily: "PlusJakartaSansRegular",
@@ -1648,7 +1651,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                             ),
                             SizedBox(height: 3.w),
                             CommonWidgets().commonText(
-                              text: "Upload Proof (Blank cheque/passbook)",
+                              text: "UploadProofBlankChequePassBook".tr,
                               fontSize: 16.sp,
                               fontColor: AppColors().color1E1E1E,
                               fontFamily: "PlusJakartaSansRegular",
@@ -1675,7 +1678,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                                         CrossAxisAlignment.center,
                                         children: [
                                           Text(
-                                            'Select image by below options.',
+                                            'SelectImageByBelowOptions'.tr,
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               fontSize: 18.sp,
@@ -1729,7 +1732,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                                                     ),
                                                   ),
                                                   child: Text(
-                                                    "Camera",
+                                                    "Camera".tr,
                                                     style: TextStyle(
                                                       fontSize: 16.sp,
                                                       fontWeight:
@@ -1790,7 +1793,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                                                         .center,
                                                     children: [
                                                       Text(
-                                                        "Gallery",
+                                                        "Gallery".tr,
                                                         style: TextStyle(
                                                           color: AppColors()
                                                               .color5B6AEA,
@@ -1886,7 +1889,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                             ),
                             SizedBox(height: 5.w),
                             CommonWidgets().commonText(
-                              text: "KYC Information",
+                              text: "KycInformation".tr,
                               fontSize: 18.sp,
                               fontColor: AppColors().color1E1E1E,
                               fontFamily: "PlusJakartaSansMedium",
@@ -1897,7 +1900,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                                 height: 2.w), Row(
                               children: [
                                 CommonWidgets().commonText(
-                                  text: "Aadharcard Number",
+                                  text: "AadharcardNumber".tr,
                                   fontSize: 16.sp,
                                   fontColor: AppColors().color1E1E1E,
                                   fontFamily: "PlusJakartaSansRegular",
@@ -1980,7 +1983,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                                 height: 2.w),
 
                             CommonWidgets().commonText(
-                              text: "Upload Photos",
+                              text: "UploadPhotos".tr,
                               fontSize: 16.sp,
                               fontColor: AppColors().color1E1E1E,
                               fontFamily: "PlusJakartaSansRegular",
@@ -2009,7 +2012,8 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                                               CrossAxisAlignment.center,
                                               children: [
                                                 Text(
-                                                  'Select image by below options.',
+                                                  'SelectImageByBelowOptions'
+                                                      .tr,
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                     fontSize: 18.sp,
@@ -2063,7 +2067,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                                                           ),
                                                         ),
                                                         child: Text(
-                                                          "Camera",
+                                                          "Camera".tr,
                                                           style: TextStyle(
                                                             fontSize: 16.sp,
                                                             fontWeight:
@@ -2124,7 +2128,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                                                               .center,
                                                           children: [
                                                             Text(
-                                                              "Gallery",
+                                                              "Gallery".tr,
                                                               style: TextStyle(
                                                                 color: AppColors()
                                                                     .color5B6AEA,
@@ -2165,7 +2169,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                                               ),
                                               SizedBox(width: 2.w),
                                               CommonWidgets().commonText(
-                                                text: "Aadhar Card Front Side",
+                                                text: "AadharCardFrontSide".tr,
                                                 fontSize: 16.sp,
                                                 fontColor:
                                                 AppColors().colorD7D7D7,
@@ -2240,7 +2244,8 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                                               CrossAxisAlignment.center,
                                               children: [
                                                 Text(
-                                                  'Select image by below options.',
+                                                  'SelectImageByBelowOptions'
+                                                      .tr,
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                     fontSize: 18.sp,
@@ -2294,7 +2299,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                                                           ),
                                                         ),
                                                         child: Text(
-                                                          "Camera",
+                                                          "Camera".tr,
                                                           style: TextStyle(
                                                             fontSize: 16.sp,
                                                             fontWeight:
@@ -2355,7 +2360,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                                                               .center,
                                                           children: [
                                                             Text(
-                                                              "Gallery",
+                                                              "Gallery".tr,
                                                               style: TextStyle(
                                                                 color: AppColors()
                                                                     .color5B6AEA,
@@ -2397,7 +2402,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                                               ),
                                               SizedBox(width: 2.w),
                                               CommonWidgets().commonText(
-                                                text: "Aadhar Card Back Side",
+                                                text: "AadharCardBackSide".tr,
                                                 fontSize: 16.sp,
                                                 fontColor:
                                                 AppColors().colorD7D7D7,
@@ -2456,7 +2461,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                                 height: 3.w),
 
                             CommonWidgets().commonText(
-                              text: "Pan Details",
+                              text: "PanDetails".tr,
                               fontSize: 16.sp,
                               fontColor: AppColors().color1E1E1E,
                               fontFamily: "PlusJakartaSansRegular",
@@ -2485,7 +2490,8 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                                               CrossAxisAlignment.center,
                                               children: [
                                                 Text(
-                                                  'Select image by below options.',
+                                                  'SelectImageByBelowOptions'
+                                                      .tr,
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                     fontSize: 18.sp,
@@ -2539,7 +2545,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                                                           ),
                                                         ),
                                                         child: Text(
-                                                          "Camera",
+                                                          "Camera".tr,
                                                           style: TextStyle(
                                                             fontSize: 16.sp,
                                                             fontWeight:
@@ -2600,7 +2606,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                                                               .center,
                                                           children: [
                                                             Text(
-                                                              "Gallery",
+                                                              "Gallery".tr,
                                                               style: TextStyle(
                                                                 color: AppColors()
                                                                     .color5B6AEA,
@@ -2646,7 +2652,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                                                   SizedBox(width: 2.w),
                                                   CommonWidgets()
                                                       .commonText(
-                                                    text: "Upload PanCard",
+                                                    text: "UploadPanCard".tr,
                                                     fontSize: 14,
                                                     fontColor:
                                                     AppColors().colorD7D7D7,
@@ -2710,7 +2716,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                                 height: 4.w), Row(
                               children: [
                                 CommonWidgets().commonText(
-                                  text: "Pan Details",
+                                  text: "PanNumber".tr,
                                   fontSize: 16.sp,
                                   fontColor: AppColors().color1E1E1E,
                                   fontFamily: "PlusJakartaSansRegular",
@@ -2859,14 +2865,14 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                                                   fontFamily: "PlusJakartaSansMedium",
                                                   fontWeight: FontWeight.bold,
                                                 ),
-                                                CommonWidgets().commonText(
-                                                  text: "1MB",
-                                                  fontSize: 18.sp,
-                                                  fontColor: AppColors()
-                                                      .color1E1E1E,
-                                                  fontFamily: "PlusJakartaSansMedium",
-                                                  fontWeight: FontWeight.bold,
-                                                ),
+                                                // CommonWidgets().commonText(
+                                                //   text: "1MB",
+                                                //   fontSize: 18.sp,
+                                                //   fontColor: AppColors()
+                                                //       .color1E1E1E,
+                                                //   fontFamily: "PlusJakartaSansMedium",
+                                                //   fontWeight: FontWeight.bold,
+                                                // ),
                                               ],
                                             ),
                                           ],
@@ -2950,14 +2956,14 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                                                   fontFamily: "PlusJakartaSansMedium",
                                                   fontWeight: FontWeight.bold,
                                                 ),
-                                                CommonWidgets().commonText(
-                                                  text: "1MB",
-                                                  fontSize: 18.sp,
-                                                  fontColor: AppColors()
-                                                      .color1E1E1E,
-                                                  fontFamily: "PlusJakartaSansMedium",
-                                                  fontWeight: FontWeight.bold,
-                                                ),
+                                                // CommonWidgets().commonText(
+                                                //   text: "1MB",
+                                                //   fontSize: 18.sp,
+                                                //   fontColor: AppColors()
+                                                //       .color1E1E1E,
+                                                //   fontFamily: "PlusJakartaSansMedium",
+                                                //   fontWeight: FontWeight.bold,
+                                                // ),
                                               ],
                                             ),
                                           ],
@@ -3040,14 +3046,14 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                                                   fontFamily: "PlusJakartaSansMedium",
                                                   fontWeight: FontWeight.bold,
                                                 ),
-                                                CommonWidgets().commonText(
-                                                  text: "1MB",
-                                                  fontSize: 18.sp,
-                                                  fontColor: AppColors()
-                                                      .color1E1E1E,
-                                                  fontFamily: "PlusJakartaSansMedium",
-                                                  fontWeight: FontWeight.bold,
-                                                ),
+                                                // CommonWidgets().commonText(
+                                                //   text: "1MB",
+                                                //   fontSize: 18.sp,
+                                                //   fontColor: AppColors()
+                                                //       .color1E1E1E,
+                                                //   fontFamily: "PlusJakartaSansMedium",
+                                                //   fontWeight: FontWeight.bold,
+                                                // ),
                                               ],
                                             ),
                                           ],
@@ -3130,14 +3136,14 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                                                   fontFamily: "PlusJakartaSansMedium",
                                                   fontWeight: FontWeight.bold,
                                                 ),
-                                                CommonWidgets().commonText(
-                                                  text: "1MB",
-                                                  fontSize: 18.sp,
-                                                  fontColor: AppColors()
-                                                      .color1E1E1E,
-                                                  fontFamily: "PlusJakartaSansMedium",
-                                                  fontWeight: FontWeight.bold,
-                                                ),
+                                                // CommonWidgets().commonText(
+                                                //   text: "1MB",
+                                                //   fontSize: 18.sp,
+                                                //   fontColor: AppColors()
+                                                //       .color1E1E1E,
+                                                //   fontFamily: "PlusJakartaSansMedium",
+                                                //   fontWeight: FontWeight.bold,
+                                                // ),
                                               ],
                                             ),
                                           ],
@@ -3255,7 +3261,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                   .toString())) {
                 CommonWidgets().showSnackBar(
                   "Alert",
-                  "Password must be at least 6 characters long and include letters and numbers Abc@123.",
+                  "Confirm password must be at least 6 characters long and include letters and numbers Abc@123.",
                   Colors.red,
                   Colors.white,
                 );
@@ -3266,7 +3272,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                       .toString()) {
                 CommonWidgets().showSnackBar(
                   "Alert",
-                  "Please enter a same password",
+                  "Password and confirm password should be same",
                   Colors.red,
                   Colors.white,
                 );
@@ -3275,7 +3281,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                   addMemberScreenController.password.value.text.toString()) {
                 CommonWidgets().showSnackBar(
                   "Alert",
-                  "Please enter a same password",
+                  "Password and confirm password should be same",
                   Colors.red,
                   Colors.white,
                 );
@@ -3483,7 +3489,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
               ),
               child: Center(
                 child: CommonWidgets().commonText(
-                  text: "Save",
+                  text: "Save".tr,
                   fontSize: 16.sp,
                   fontColor: AppColors().colorFFFFFF,
                   fontFamily: "PlusJakartaSansRegular",

@@ -27,7 +27,7 @@ class TeamScreenController extends GetxController {
     List? permission = await prefs.getStringList("permissions");
     print(permission?.length);
     print("permission?.length");
-    if (permission?.length != 0) {
+    if (permission?.length != 0 && permission!=null) {
       permissions.value = permission!;
     }
   }
@@ -70,7 +70,7 @@ class TeamScreenController extends GetxController {
     await getPermissions();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List? permission = await prefs.getStringList("permissions");
-    if (permission?.length != 0) {
+    if (permission?.length != 0 && permission!=null) {
       permissions.value = permission!;
     }
     // await   Future.delayed(Duration(seconds: 5),(){});

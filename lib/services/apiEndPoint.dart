@@ -26,5 +26,8 @@ class ApiEndPoint {
   static String userAssignedWard = "v1/user_assigned_ward/";
   static String deleteWardId = "v1/delete-ward-to-user?assigned_id=";
   static String assignWardToUser = "v1/assign-ward-to-user";
-
+  static String assignedWardWards = "v1/assigned-ward-wards";
+  static String editFormsLang = "v1/edit-forms/?lang=";
+  static String surveyId = "&survey_id=";
+  static String surveyUpdate = "v1/survey/update/";
 }

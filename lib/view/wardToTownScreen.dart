@@ -61,13 +61,13 @@ class _WardToTownScreenState extends State<WardToTownScreen> {
                     Row(
                       children: [
                         CommonWidgets().commonText(
-                          text: "Wards",
+                          text: "Wards".tr,
                           // "${villageToTalukaScreenController.villageToTalukaListModel.value.data? ?? ""}",
                           fontSize: 18.sp,
                           fontColor: AppColors().color1E1E1E,
                           fontFamily: "PlusJakartaSansMedium",
                           fontWeight: FontWeight.bold,
-                        )
+                        ),
                         // Obx(() {
                         //   return CommonWidgets().commonText(
                         //     text: "",
@@ -140,8 +140,8 @@ class _WardToTownScreenState extends State<WardToTownScreen> {
                                 ),
                               ),
                               contentPadding: EdgeInsets.only(left: 10),
-                              border: const OutlineInputBorder(),
-                              hintText: "Search ward",
+                              border: OutlineInputBorder(),
+                              hintText: "SearchWard".tr,
                               hintStyle: TextStyle(
                                 fontSize: 16,
                                 fontFamily: "PlusJakartaSansRegular",
@@ -246,7 +246,7 @@ class _WardToTownScreenState extends State<WardToTownScreen> {
                                         fit: BoxFit.fill,
                                       ),
                                       CommonWidgets().commonText(
-                                        text: "SOMETHING WENT WRONG",
+                                        text: "SomethingWentWrong".tr,
                                         fontSize: 20.sp,
                                         fontColor: AppColors().color1E1E1E,
                                         fontFamily: "PlusJakartaSansMedium",
@@ -274,7 +274,7 @@ class _WardToTownScreenState extends State<WardToTownScreen> {
                                         fit: BoxFit.fill,
                                       ),
                                       CommonWidgets().commonText(
-                                        text: "NO DATA FOUND.",
+                                        text: "NoDataFound".tr,
                                         fontSize: 20.sp,
                                         fontColor: AppColors().color1E1E1E,
                                         fontFamily: "PlusJakartaSansMedium",
@@ -301,7 +301,7 @@ class _WardToTownScreenState extends State<WardToTownScreen> {
                                         fit: BoxFit.fill,
                                       ),
                                       CommonWidgets().commonText(
-                                        text: "NO MATCHING FOUND.",
+                                        text: "NoMatchingFound".tr,
                                         fontSize: 20.sp,
                                         fontColor: AppColors().color1E1E1E,
                                         fontFamily: "PlusJakartaSansMedium",
@@ -417,9 +417,8 @@ class _WardToTownScreenState extends State<WardToTownScreen> {
                                                           ),
                                                     ),
                                                     child: CommonWidgets().commonText(
-
                                                       text:
-                                                          "${wardToTownScreenController.wardList[index].assign == true ? "Assigned" : "Not Assigned"}",
+                                                          "${wardToTownScreenController.wardList[index].assign == true ? "Assigned".tr : "NotAssigned".tr}",
                                                       fontSize: 15.sp,
                                                       fontColor: AppColors()
                                                           .color1E1E1E,

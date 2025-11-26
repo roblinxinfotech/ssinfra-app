@@ -47,14 +47,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       Row(
                         children: [
                           CommonWidgets().commonText(
-                            text: "Welcome",
+                            text: "Welcome".tr,
                             fontSize: 18.sp,
                             fontColor: AppColors().color1E1E1E,
                             fontFamily: "PlusJakartaSansRegular",
                             fontWeight: FontWeight.w600,
                           ),
                           CommonWidgets().commonText(
-                            text: " SNS",
+                            text: "SNS".tr,
                             fontSize: 18.sp,
                             fontColor: AppColors().color1E1E1E,
                             fontFamily: "PlusJakartaSansMedium",
@@ -70,11 +70,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             width: 25.sp,
                           ),
 
-                          Image.asset(
-                            "assets/icons/switch.png",
-                            height: 25.sp,
-                            width: 25.sp,
-                          ),
+                          // Image.asset(
+                          //   "assets/icons/switch.png",
+                          //   height: 25.sp,
+                          //   width: 25.sp,
+                          // ),
                         ],
                       ),
                     ],
@@ -107,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   fit: BoxFit.fill,
                                 ),
                                 CommonWidgets().commonText(
-                                  text: "SOMETHING WENT WRONG",
+                                  text: "SomethingWentWrong".tr,
                                   fontSize: 20.sp,
                                   fontColor: AppColors().color1E1E1E,
                                   fontFamily: "PlusJakartaSansMedium",
@@ -136,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   fit: BoxFit.fill,
                                 ),
                                 CommonWidgets().commonText(
-                                  text: "NO DATA FOUND.",
+                                  text: "NoDataFound".tr,
                                   fontSize: 20.sp,
                                   fontColor: AppColors().color1E1E1E,
                                   fontFamily: "PlusJakartaSansMedium",

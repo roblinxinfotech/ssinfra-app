@@ -161,7 +161,8 @@ class ApiServices {
 
   Future<String> uploadFormDataWithFiles({
     required String url,
-    required int villageId,
+    required String villageId,
+    required String wardId,
     required String formId,
     required List<Map<String, dynamic>> answers,
   }) async {
@@ -180,6 +181,7 @@ class ApiServices {
 
     // ✅ Base fields
     request.fields["village_id"] = villageId.toString();
+    request.fields["ward_id"] = wardId.toString();
     request.fields["form_id"] = formId.toString();
 
     int index = 0;

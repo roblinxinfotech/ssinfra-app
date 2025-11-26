@@ -60,13 +60,13 @@ class _VillageToTalukaScreenState extends State<VillageToTalukaScreen> {
                     Row(
                       children: [
                         CommonWidgets().commonText(
-                          text: "Villages",
+                          text: "Villages".tr,
                           // "${villageToTalukaScreenController.villageToTalukaListModel.value.data? ?? ""}",
                           fontSize: 18.sp,
                           fontColor: AppColors().color1E1E1E,
                           fontFamily: "PlusJakartaSansMedium",
                           fontWeight: FontWeight.bold,
-                        )
+                        ),
                         // Obx(() {
                         //   return CommonWidgets().commonText(
                         //     text: "Village",
@@ -143,7 +143,7 @@ class _VillageToTalukaScreenState extends State<VillageToTalukaScreen> {
                               ),
                               contentPadding: EdgeInsets.only(left: 10),
                               border: const OutlineInputBorder(),
-                              hintText: "Search team",
+                              hintText: "SearchVillages".tr,
                               hintStyle: TextStyle(
                                 fontSize: 16,
                                 fontFamily: "PlusJakartaSansRegular",
@@ -249,7 +249,7 @@ class _VillageToTalukaScreenState extends State<VillageToTalukaScreen> {
                                         fit: BoxFit.fill,
                                       ),
                                       CommonWidgets().commonText(
-                                        text: "SOMETHING WENT WRONG",
+                                        text: "Something went wrong.",
                                         fontSize: 20.sp,
                                         fontColor: AppColors().color1E1E1E,
                                         fontFamily: "PlusJakartaSansMedium",
@@ -277,7 +277,7 @@ class _VillageToTalukaScreenState extends State<VillageToTalukaScreen> {
                                         fit: BoxFit.fill,
                                       ),
                                       CommonWidgets().commonText(
-                                        text: "NO DATA FOUND.",
+                                        text: "No data found.",
                                         fontSize: 20.sp,
                                         fontColor: AppColors().color1E1E1E,
                                         fontFamily: "PlusJakartaSansMedium",
@@ -421,7 +421,7 @@ class _VillageToTalukaScreenState extends State<VillageToTalukaScreen> {
                                                     ),
                                                     child: CommonWidgets().commonText(
                                                       text:
-                                                          "${villageToTalukaScreenController.villageToTalukaList[index].isAssigned == true ? "Assigned" : "Not Assigned"}",
+                                                          "${villageToTalukaScreenController.villageToTalukaList[index].isAssigned == true ? "Assigned".tr : "NotAssigned".tr}",
                                                       fontSize: 15.sp,
                                                       fontColor: AppColors()
                                                           .color1E1E1E,

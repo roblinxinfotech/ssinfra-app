@@ -50,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   children: [
                     CommonWidgets().commonText(
-                      text: "Welcome Back",
+                      text: "WelcomeBack".tr,
                       fontSize: 18.sp,
                       fontColor: AppColors().color1E1E1E,
                       fontFamily: "PlusJakartaSansMedium",
@@ -63,13 +63,13 @@ class _LoginScreenState extends State<LoginScreen> {
               Container(
                 decoration: BoxDecoration(),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Image.asset(
-                      height: 25.w,
-                      width: 70.w,
-                      "assets/images/splashLogo.png",
-                      fit: BoxFit.fill,
+                    SvgPicture.asset(
+                      height: 15.w,
+                      width: 100.w,
+                      "assets/images/snsMiSeven.svg",
+                      fit: BoxFit.fitHeight,
                     ),
                   ],
                 ),
@@ -87,7 +87,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     CommonWidgets().commonText(
                       text:
-                          "Sign in to find form summaries and easily access knowledge every day.",
+                          "SignInToFindFormSummariesAndEasilyAccessKnowledgeEveryDay"
+                              .tr,
                       fontSize: 16.sp,
                       fontColor: AppColors().color1E1E1E,
                       fontFamily: "PlusJakartaSansRegular",
@@ -95,7 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     SizedBox(height: 3.w),
                     CommonWidgets().commonText(
-                      text: "Username",
+                      text: "UserNameSpace".tr,
                       fontSize: 16.sp,
                       fontColor: AppColors().color1E1E1E,
                       fontFamily: "PlusJakartaSansRegular",
@@ -124,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           contentPadding: EdgeInsets.only(left: 10),
                           border: const OutlineInputBorder(),
-                          hintText: "User Name",
+                          hintText: "UserNameSpace".tr,
                           hintStyle: TextStyle(
                             fontSize: 16,
                             fontFamily: "PlusJakartaSansRegular",
@@ -135,7 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     SizedBox(height: 3.w),
                     CommonWidgets().commonText(
-                      text: "Password",
+                      text: "Password".tr,
                       fontSize: 16.sp,
                       fontColor: AppColors().color1E1E1E,
                       fontFamily: "PlusJakartaSansRegular",
@@ -180,7 +181,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             contentPadding: EdgeInsets.only(left: 10),
                             border: const OutlineInputBorder(),
-                            hintText: "Password",
+                            hintText: "Password".tr,
                             hintStyle: TextStyle(
                               fontSize: 16,
                               fontFamily: "PlusJakartaSansRegular",
@@ -204,7 +205,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         child: Center(
                           child: CommonWidgets().commonText(
-                            text: "Log In",
+                            text: "LogIn".tr,
                             fontSize: 16.sp,
                             fontColor: AppColors().colorFFFFFF,
                             fontFamily: "PlusJakartaSansRegular",

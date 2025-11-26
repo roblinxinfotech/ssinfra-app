@@ -59,7 +59,7 @@ class _AssignVillageScreenState extends State<AssignVillageScreen> {
                     Row(
                       children: [
                         CommonWidgets().commonText(
-                          text: "Assign Village",
+                          text: "AssignVillage".tr,
                           fontSize: 18.sp,
                           fontColor: AppColors().color1E1E1E,
                           fontFamily: "PlusJakartaSansMedium",
@@ -128,7 +128,7 @@ class _AssignVillageScreenState extends State<AssignVillageScreen> {
                               ),
                               contentPadding: EdgeInsets.only(left: 10),
                               border: const OutlineInputBorder(),
-                              hintText: "Search team",
+                              hintText: "SearchVillage".tr,
                               hintStyle: TextStyle(
                                 fontSize: 16,
                                 fontFamily: "PlusJakartaSansRegular",
@@ -177,7 +177,7 @@ class _AssignVillageScreenState extends State<AssignVillageScreen> {
                               borderRadius: BorderRadius.circular(10.w),
                             ),
                             child: Text(
-                              "Free",
+                              "Free".tr,
                               style: TextStyle(
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.w600,
@@ -228,7 +228,7 @@ class _AssignVillageScreenState extends State<AssignVillageScreen> {
                               borderRadius: BorderRadius.circular(10.w),
                             ),
                             child: Text(
-                              "Assigned",
+                              "Assigned".tr,
                               style: TextStyle(
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.w600,
@@ -250,14 +250,15 @@ class _AssignVillageScreenState extends State<AssignVillageScreen> {
               }),
               Expanded(
                 child: RefreshIndicator(
-                  onRefresh: ()async{
-                  await  assignVillageScreenController.getVillageList();
-                await    assignVillageScreenController.searchItem();
+                  onRefresh: () async {
+                    await assignVillageScreenController.getVillageList();
+                    await assignVillageScreenController.searchItem();
                   },
                   child: Column(
                     children: [
                       Obx(() {
-                        return assignVillageScreenController.loader.value == true
+                        return assignVillageScreenController.loader.value ==
+                                true
                             ? Flexible(
                                 child: Center(
                                   child: Image.asset(
@@ -281,7 +282,7 @@ class _AssignVillageScreenState extends State<AssignVillageScreen> {
                                         fit: BoxFit.fill,
                                       ),
                                       CommonWidgets().commonText(
-                                        text: "SOMETHING WENT WRONG",
+                                        text: "SomethingWentWrong".tr,
                                         fontSize: 20.sp,
                                         fontColor: AppColors().color1E1E1E,
                                         fontFamily: "PlusJakartaSansMedium",
@@ -297,14 +298,18 @@ class _AssignVillageScreenState extends State<AssignVillageScreen> {
                                               .data
                                               ?.length ==
                                           0 &&
-                                      assignVillageScreenController.groupValue == 0) ||
+                                      assignVillageScreenController
+                                              .groupValue ==
+                                          0) ||
                                   (assignVillageScreenController
                                               .assignedVillageListModel
                                               .value
                                               .data
                                               ?.length ==
                                           0 &&
-                                      assignVillageScreenController.groupValue == 1)
+                                      assignVillageScreenController
+                                              .groupValue ==
+                                          1)
                             ? Flexible(
                                 child: Center(
                                   child: Column(
@@ -317,7 +322,7 @@ class _AssignVillageScreenState extends State<AssignVillageScreen> {
                                         fit: BoxFit.fill,
                                       ),
                                       CommonWidgets().commonText(
-                                        text: "NO DATA FOUND.",
+                                        text: "NoDataFound".tr,
                                         fontSize: 20.sp,
                                         fontColor: AppColors().color1E1E1E,
                                         fontFamily: "PlusJakartaSansMedium",
@@ -331,12 +336,16 @@ class _AssignVillageScreenState extends State<AssignVillageScreen> {
                                               .villageList
                                               ?.length ==
                                           0 &&
-                                      assignVillageScreenController.groupValue == 0) ||
+                                      assignVillageScreenController
+                                              .groupValue ==
+                                          0) ||
                                   (assignVillageScreenController
                                               .assignedVillageList
                                               ?.length ==
                                           0 &&
-                                      assignVillageScreenController.groupValue == 1)
+                                      assignVillageScreenController
+                                              .groupValue ==
+                                          1)
                             ? Flexible(
                                 child: Center(
                                   child: Column(
@@ -349,7 +358,7 @@ class _AssignVillageScreenState extends State<AssignVillageScreen> {
                                         fit: BoxFit.fill,
                                       ),
                                       CommonWidgets().commonText(
-                                        text: "NO MATCHING FOUND.",
+                                        text: "NoMatchingFound".tr,
                                         fontSize: 20.sp,
                                         fontColor: AppColors().color1E1E1E,
                                         fontFamily: "PlusJakartaSansMedium",
@@ -359,7 +368,8 @@ class _AssignVillageScreenState extends State<AssignVillageScreen> {
                                   ),
                                 ),
                               )
-                            : assignVillageScreenController.groupValue.value == 0
+                            : assignVillageScreenController.groupValue.value ==
+                                  0
                             ? Expanded(
                                 child: ListView.builder(
                                   padding: EdgeInsets.only(
@@ -391,11 +401,13 @@ class _AssignVillageScreenState extends State<AssignVillageScreen> {
                                           "${assignVillageScreenController.villageList?[index].name.toString()}  ",
                                           style: TextStyle(
                                             fontSize: 16.sp,
-                                            fontFamily: "PlusJakartaSansRegular",
+                                            fontFamily:
+                                                "PlusJakartaSansRegular",
                                             fontWeight: FontWeight.w600,
                                           ),
                                         ),
-                                        value: assignVillageScreenController.villageId
+                                        value: assignVillageScreenController
+                                            .villageId
                                             .contains(
                                               assignVillageScreenController
                                                   .villageList[index]
@@ -445,7 +457,8 @@ class _AssignVillageScreenState extends State<AssignVillageScreen> {
                                           "${assignVillageScreenController.assignedVillageList?[index].name.toString()}",
                                           style: TextStyle(
                                             fontSize: 16.sp,
-                                            fontFamily: "PlusJakartaSansRegular",
+                                            fontFamily:
+                                                "PlusJakartaSansRegular",
                                             fontWeight: FontWeight.w600,
                                           ),
                                         ),
@@ -459,7 +472,8 @@ class _AssignVillageScreenState extends State<AssignVillageScreen> {
                                         onChanged: (v) {
                                           Get.dialog(
                                             Dialog(
-                                              backgroundColor: AppColors().colorFFFFFF,
+                                              backgroundColor:
+                                                  AppColors().colorFFFFFF,
                                               child: Padding(
                                                 padding: EdgeInsets.only(
                                                   top: 8.w,
@@ -468,28 +482,36 @@ class _AssignVillageScreenState extends State<AssignVillageScreen> {
                                                   right: 2.w,
                                                 ),
                                                 child: Column(
-                                                  mainAxisSize: MainAxisSize.min,
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.center,
                                                   children: [
                                                     Text(
-                                                      'Are you sure you want to release this village?',
-                                                      textAlign: TextAlign.center,
+                                                      "AreYouSureYouWantToReleaseThisVillage"
+                                                          .tr,
+                                                      textAlign:
+                                                          TextAlign.center,
                                                       style: TextStyle(
                                                         fontSize: 18.sp,
-                                                        fontWeight: FontWeight.bold,
+                                                        fontWeight:
+                                                            FontWeight.bold,
                                                         fontFamily:
                                                             "PlusJakartaSansRegular",
                                                       ),
                                                     ),
                                                     SizedBox(height: 4.w),
                                                     Text(
-                                                      'Note :- If you release this village than that record will be transferred to new assigning person.',
-                                                      textAlign: TextAlign.center,
+                                                      "NoteIfYouReleaseVillageRecordTransferredToPerson"
+                                                          .tr,
+                                                      textAlign:
+                                                          TextAlign.center,
                                                       style: TextStyle(
                                                         fontSize: 16.sp,
-                                                        color: AppColors().colorFF0000,
-                                                        fontWeight: FontWeight.bold,
+                                                        color: AppColors()
+                                                            .colorFF0000,
+                                                        fontWeight:
+                                                            FontWeight.bold,
                                                         fontFamily:
                                                             "PlusJakartaSansRegular",
                                                       ),
@@ -497,19 +519,24 @@ class _AssignVillageScreenState extends State<AssignVillageScreen> {
                                                     SizedBox(height: 2.h),
                                                     Row(
                                                       mainAxisAlignment:
-                                                          MainAxisAlignment.center,
+                                                          MainAxisAlignment
+                                                              .center,
                                                       children: [
                                                         GestureDetector(
                                                           onTap: () async {
-                                                            Navigator.pop(context);
+                                                            Navigator.pop(
+                                                              context,
+                                                            );
                                                           },
                                                           child: Container(
                                                             padding:
                                                                 EdgeInsets.symmetric(
                                                                   vertical: 2.w,
-                                                                  horizontal: 6.w,
+                                                                  horizontal:
+                                                                      6.w,
                                                                 ),
-                                                            alignment: Alignment.center,
+                                                            alignment: Alignment
+                                                                .center,
                                                             decoration: BoxDecoration(
                                                               color: AppColors()
                                                                   .color5B6AEA
@@ -526,11 +553,12 @@ class _AssignVillageScreenState extends State<AssignVillageScreen> {
                                                                   ),
                                                             ),
                                                             child: Text(
-                                                              "No",
+                                                              "No".tr,
                                                               style: TextStyle(
                                                                 fontSize: 16.sp,
                                                                 fontWeight:
-                                                                    FontWeight.w600,
+                                                                    FontWeight
+                                                                        .w600,
                                                                 color: AppColors()
                                                                     .color5B6AEA,
                                                               ),
@@ -540,7 +568,9 @@ class _AssignVillageScreenState extends State<AssignVillageScreen> {
                                                         SizedBox(width: 2.w),
                                                         GestureDetector(
                                                           onTap: () async {
-                                                            Navigator.pop(context);
+                                                            Navigator.pop(
+                                                              context,
+                                                            );
                                                             await assignVillageScreenController
                                                                 .removeVillage(
                                                                   assignVillageScreenController
@@ -553,9 +583,11 @@ class _AssignVillageScreenState extends State<AssignVillageScreen> {
                                                             padding:
                                                                 EdgeInsets.symmetric(
                                                                   vertical: 2.w,
-                                                                  horizontal: 6.w,
+                                                                  horizontal:
+                                                                      6.w,
                                                                 ),
-                                                            alignment: Alignment.center,
+                                                            alignment: Alignment
+                                                                .center,
                                                             decoration: BoxDecoration(
                                                               color: AppColors()
                                                                   .color5B6AEA
@@ -581,15 +613,17 @@ class _AssignVillageScreenState extends State<AssignVillageScreen> {
                                                                       .center,
                                                               children: [
                                                                 Text(
-                                                                  "Yes",
+                                                                  "Yes".tr,
                                                                   style: TextStyle(
                                                                     color: AppColors()
                                                                         .color5B6AEA,
                                                                     fontWeight:
-                                                                        FontWeight.w400,
+                                                                        FontWeight
+                                                                            .w400,
                                                                     fontFamily:
                                                                         "AppFontData.regular",
-                                                                    fontSize: 16.sp,
+                                                                    fontSize:
+                                                                        16.sp,
                                                                   ),
                                                                 ),
                                                               ],
@@ -647,7 +681,7 @@ class _AssignVillageScreenState extends State<AssignVillageScreen> {
                       ),
                       child: Center(
                         child: CommonWidgets().commonText(
-                          text: "Submit",
+                          text: "Submit".tr,
                           fontSize: 16.sp,
                           fontColor: AppColors().colorFFFFFF,
                           fontFamily: "PlusJakartaSansRegular",

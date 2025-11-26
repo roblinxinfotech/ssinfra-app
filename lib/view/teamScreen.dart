@@ -58,7 +58,7 @@ class _TeamScreenState extends State<TeamScreen> {
                         Column(
                           children: [
                             CommonWidgets().commonText(
-                              text: "Team List",
+                              text: "TeamList".tr,
                               fontSize: 18.sp,
                               fontColor: AppColors().color1E1E1E,
                               fontFamily: "PlusJakartaSansMedium",
@@ -148,8 +148,8 @@ class _TeamScreenState extends State<TeamScreen> {
                                 ),
                               ),
                               contentPadding: EdgeInsets.only(left: 10),
-                              border: const OutlineInputBorder(),
-                              hintText: "Search team",
+                              border:   OutlineInputBorder(),
+                              hintText: "SearchTeam".tr,
                               hintStyle: TextStyle(
                                 fontSize: 16,
                                 fontFamily: "PlusJakartaSansRegular",
@@ -193,7 +193,7 @@ class _TeamScreenState extends State<TeamScreen> {
                               borderRadius: BorderRadius.circular(10.w),
                             ),
                             child: Text(
-                              "Pending",
+                              "Pending".tr,
                               style: TextStyle(
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.w600,
@@ -235,7 +235,7 @@ class _TeamScreenState extends State<TeamScreen> {
                               borderRadius: BorderRadius.circular(10.w),
                             ),
                             child: Text(
-                              "Approved",
+                              "Approved".tr,
                               style: TextStyle(
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.w600,
@@ -277,7 +277,7 @@ class _TeamScreenState extends State<TeamScreen> {
                               borderRadius: BorderRadius.circular(10.w),
                             ),
                             child: Text(
-                              "Rejected",
+                              "Rejected".tr,
                               style: TextStyle(
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.w600,
@@ -329,7 +329,7 @@ class _TeamScreenState extends State<TeamScreen> {
                                         fit: BoxFit.fill,
                                       ),
                                       CommonWidgets().commonText(
-                                        text: "SOMETHING WENT WRONG",
+                                        text: "SomethingWentWrong".tr,
                                         fontSize: 20.sp,
                                         fontColor: AppColors().color1E1E1E,
                                         fontFamily: "PlusJakartaSansMedium",
@@ -352,7 +352,7 @@ class _TeamScreenState extends State<TeamScreen> {
                                         fit: BoxFit.fill,
                                       ),
                                       CommonWidgets().commonText(
-                                        text: "NO DATA FOUND.",
+                                        text: "NoDataFound".tr,
                                         fontSize: 20.sp,
                                         fontColor: AppColors().color1E1E1E,
                                         fontFamily: "PlusJakartaSansMedium",
@@ -435,13 +435,9 @@ class _TeamScreenState extends State<TeamScreen> {
                                                 width: 20.w,
                                                 "${teamScreenController.teamList.value[index].profilePhoto.toString()}",
                                                 fit: BoxFit.fill,
-                                                errorBuilder:
-                                                    (
-                                                      context,
-                                                      error,
-                                                      stackTrace,
-                                                    ) => SvgPicture.asset(
-                                                      "assets/icons/profile.svg",
+                                                errorBuilder: (context, error, stackTrace) =>
+                                                    Image.asset(
+                                                      "assets/icons/placeHolder.png",
                                                       height: 20.w,
                                                       width: 20.w,
                                                       fit: BoxFit.fill,
@@ -466,13 +462,13 @@ class _TeamScreenState extends State<TeamScreen> {
                                                           .value[index]
                                                           .subDistrictId !=
                                                       null
-                                                  ? "Village : ${teamScreenController.teamList.value[index].assignedVillages?.length}"
+                                                  ? "Village:".tr+ "${teamScreenController.teamList.value[index].assignedVillages?.length}"
                                                   : teamScreenController
                                                             .teamList
                                                             .value[index]
                                                             .townId !=
                                                         null
-                                                  ? "Ward : ${teamScreenController.teamList.value[index].assignedWards?.length}"
+                                                  ? "Ward:".tr+ "${teamScreenController.teamList.value[index].assignedWards?.length}"
                                                   : "",
                                               fontSize: 16.sp,
                                               textAlign: TextAlign.center,
@@ -543,7 +539,7 @@ class _TeamScreenState extends State<TeamScreen> {
                                                       child: Center(
                                                         child: CommonWidgets()
                                                             .commonText(
-                                                              text: "Assign",
+                                                              text: "Assign".tr,
                                                               fontSize: 16.sp,
                                                               fontColor:
                                                                   AppColors()

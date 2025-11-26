@@ -7,13 +7,20 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:sizer/sizer.dart';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:ssinfra/controller/profileScreenController.dart';
 import 'package:ssinfra/view/splashScreen.dart';
+
+import 'languages/appTranslation.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  ProfileScreenController profileScreenController = Get.put(
+    ProfileScreenController(),
+  );
+
   @override
   Widget build(BuildContext context) {
     return Sizer(
@@ -23,6 +30,8 @@ class MyApp extends StatelessWidget {
           title: 'Sizer',
           theme: ThemeData.light(),
           home: SplashScreen(),
+          translations: AppTranslations(),
+          fallbackLocale: const Locale('en', 'US'),
           // home: DynamicFormScreen() ,
           // home: FormScreen() ,
         );
@@ -623,5 +632,6 @@ class RuleModel {
 class AnswerModel {
   final int id;
   dynamic answer;
+
   AnswerModel({required this.id, required this.answer});
 }

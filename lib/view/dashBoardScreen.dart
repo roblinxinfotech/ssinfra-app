@@ -124,7 +124,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                 ),
                                 SizedBox(width: 1.w),
                                 CommonWidgets().commonText(
-                                  text: "Home",
+                                  text: "Home".tr,
                                   fontSize: 16.sp,
                                   fontColor:
                                       dashBoardScreenController
@@ -192,7 +192,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                 ),
                                 SizedBox(width: 1.w),
                                 CommonWidgets().commonText(
-                                  text: "Location",
+                                  text: "Location".tr,
                                   fontSize: 16.sp,
                                   fontColor:
                                       dashBoardScreenController
@@ -213,60 +213,59 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                           ),
                         ),
 
-                        if (dashBoardScreenController.permissions.value.contains("team:list")) GestureDetector(
-                                onTap: () {
-                                  dashBoardScreenController
-                                          .selectedNavIndex
-                                          .value =
-                                      3;
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.all(1.5.w),
-                                  decoration: BoxDecoration(
+                        if (dashBoardScreenController.permissions.value
+                            .contains("team:list"))
+                          GestureDetector(
+                            onTap: () {
+                              dashBoardScreenController.selectedNavIndex.value =
+                                  3;
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(1.5.w),
+                              decoration: BoxDecoration(
+                                color:
+                                    dashBoardScreenController
+                                            .selectedNavIndex
+                                            .value ==
+                                        3
+                                    ? AppColors().color5B6AEA
+                                    : AppColors().colorFFFFFF,
+                                borderRadius: BorderRadius.circular(10.sp),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SvgPicture.asset(
+                                    "assets/icons/group.svg",
+                                    height: 18.sp,
+                                    width: 18.sp,
+                                    fit: BoxFit.fill,
                                     color:
                                         dashBoardScreenController
                                                 .selectedNavIndex
                                                 .value ==
                                             3
-                                        ? AppColors().color5B6AEA
-                                        : AppColors().colorFFFFFF,
-                                    borderRadius: BorderRadius.circular(10.sp),
+                                        ? AppColors().colorFFFFFF
+                                        : AppColors().color1E1E1E,
                                   ),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      SvgPicture.asset(
-                                        "assets/icons/group.svg",
-                                        height: 18.sp,
-                                        width: 18.sp,
-                                        fit: BoxFit.fill,
-                                        color:
-                                            dashBoardScreenController
-                                                    .selectedNavIndex
-                                                    .value ==
-                                                3
-                                            ? AppColors().colorFFFFFF
-                                            : AppColors().color1E1E1E,
-                                      ),
-                                      SizedBox(width: 1.w),
-                                      CommonWidgets().commonText(
-                                        text: "Team",
-                                        fontSize: 16.sp,
-                                        fontColor:
-                                            dashBoardScreenController
-                                                    .selectedNavIndex
-                                                    .value ==
-                                                3
-                                            ? AppColors().colorFFFFFF
-                                            : AppColors().color1E1E1E,
-                                        fontFamily: "PlusJakartaSansRegular",
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ],
+                                  SizedBox(width: 1.w),
+                                  CommonWidgets().commonText(
+                                    text: "Team".tr,
+                                    fontSize: 16.sp,
+                                    fontColor:
+                                        dashBoardScreenController
+                                                .selectedNavIndex
+                                                .value ==
+                                            3
+                                        ? AppColors().colorFFFFFF
+                                        : AppColors().color1E1E1E,
+                                    fontFamily: "PlusJakartaSansRegular",
+                                    fontWeight: FontWeight.w600,
                                   ),
-                                ),
-                              )
-                           ,
+                                ],
+                              ),
+                            ),
+                          ),
                         GestureDetector(
                           onTap: () {
                             dashBoardScreenController.selectedNavIndex.value =
@@ -302,7 +301,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                 ),
                                 SizedBox(width: 1.w),
                                 CommonWidgets().commonText(
-                                  text: "Profile",
+                                  text: "Profile".tr,
                                   fontSize: 16.sp,
                                   fontColor:
                                       dashBoardScreenController

@@ -45,7 +45,7 @@ class DashBoardScreenController extends GetxController {
     List? permission = await prefs.getStringList("permissions");
     print(permission?.length);
     print("permission?.length");
-    if (permission?.length != 0) {
+    if (permission?.length != 0 && permission!=null) {
       permissions.value = permission!;
     }
   }

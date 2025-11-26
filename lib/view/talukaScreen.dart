@@ -52,7 +52,7 @@ class _TalukaScreenState extends State<TalukaScreen> {
                     Row(
                       children: [
                         CommonWidgets().commonText(
-                          text: "AHMEDABAD - 01",
+                          text: "TalukaTown".tr,
                           fontSize: 18.sp,
                           fontColor: AppColors().color1E1E1E,
                           fontFamily: "PlusJakartaSansMedium",
@@ -117,7 +117,12 @@ class _TalukaScreenState extends State<TalukaScreen> {
                               ),
                               contentPadding: EdgeInsets.only(left: 10),
                               border: const OutlineInputBorder(),
-                              hintText: "Search taluka",
+                              hintText:
+                                  talukaScreenController.groupValue.value == 0
+                                  ? "SearchTaluka".tr
+                                  : talukaScreenController.groupValue.value == 1
+                                  ? "SearchTown".tr
+                                  : "",
                               hintStyle: TextStyle(
                                 fontSize: 16,
                                 fontFamily: "PlusJakartaSansRegular",
@@ -162,7 +167,7 @@ class _TalukaScreenState extends State<TalukaScreen> {
                               borderRadius: BorderRadius.circular(10.w),
                             ),
                             child: Text(
-                              "Taluka",
+                              "Taluka".tr,
                               style: TextStyle(
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.w600,
@@ -206,7 +211,7 @@ class _TalukaScreenState extends State<TalukaScreen> {
                               borderRadius: BorderRadius.circular(10.w),
                             ),
                             child: Text(
-                              "Town",
+                              "Town".tr,
                               style: TextStyle(
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.w600,
@@ -316,7 +321,7 @@ class _TalukaScreenState extends State<TalukaScreen> {
                                         fit: BoxFit.fill,
                                       ),
                                       CommonWidgets().commonText(
-                                        text: "SOMETHING WENT WRONG",
+                                        text: "SomethingWentWrong".tr,
                                         fontSize: 20.sp,
                                         fontColor: AppColors().color1E1E1E,
                                         fontFamily: "PlusJakartaSansMedium",
@@ -352,7 +357,7 @@ class _TalukaScreenState extends State<TalukaScreen> {
                                         fit: BoxFit.fill,
                                       ),
                                       CommonWidgets().commonText(
-                                        text: "NO DATA FOUND.",
+                                        text: "NoDataFound".tr,
                                         fontSize: 20.sp,
                                         fontColor: AppColors().color1E1E1E,
                                         fontFamily: "PlusJakartaSansMedium",
@@ -386,7 +391,7 @@ class _TalukaScreenState extends State<TalukaScreen> {
                                         fit: BoxFit.fill,
                                       ),
                                       CommonWidgets().commonText(
-                                        text: "NO MATCHING FOUND.",
+                                        text: "NoMatchingFound".tr,
                                         fontSize: 20.sp,
                                         fontColor: AppColors().color1E1E1E,
                                         fontFamily: "PlusJakartaSansMedium",
@@ -600,7 +605,7 @@ class _TalukaScreenState extends State<TalukaScreen> {
                                                             children: [
                                                               CommonWidgets().commonText(
                                                                 text:
-                                                                    "Villages: ",
+                                                                    "Villages:".tr,
                                                                 fontSize: 17.sp,
                                                                 fontColor:
                                                                     AppColors()
@@ -656,7 +661,7 @@ class _TalukaScreenState extends State<TalukaScreen> {
                                                           child: Row(
                                                             children: [
                                                               CommonWidgets().commonText(
-                                                                text: "Team: ",
+                                                                text: "Team:".tr,
                                                                 fontSize: 17.sp,
                                                                 fontColor:
                                                                     AppColors()
@@ -934,7 +939,7 @@ class _TalukaScreenState extends State<TalukaScreen> {
                                                             children: [
                                                               CommonWidgets().commonText(
                                                                 text:
-                                                                    "Wards - ",
+                                                                    "Wards-".tr,
                                                                 fontSize: 17.sp,
                                                                 fontColor:
                                                                     AppColors()
@@ -990,7 +995,7 @@ class _TalukaScreenState extends State<TalukaScreen> {
                                                           child: Row(
                                                             children: [
                                                               CommonWidgets().commonText(
-                                                                text: "Team - ",
+                                                                text: "Team-".tr,
                                                                 fontSize: 17.sp,
                                                                 fontColor:
                                                                     AppColors()

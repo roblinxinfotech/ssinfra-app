@@ -126,7 +126,17 @@ class EditProfileScreenController extends GetxController {
 }
 
 String formatDate(String apiDate) {
-  final date = DateTime.parse(apiDate);
+  // Ensure 2-digit month & day
+  final parts = apiDate.split('-');
+
+  final year = parts[0];
+  final month = parts[1].padLeft(2, '0');
+  final day = parts[2].padLeft(2, '0');
+
+  final normalized = "$year-$month-$day";
+
+  final date = DateTime.parse(normalized);
+
   return "${date.year}-"
       "${date.month.toString().padLeft(2, '0')}-"
       "${date.day.toString().padLeft(2, '0')}";

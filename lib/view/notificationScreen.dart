@@ -40,11 +40,16 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
                   children: [
-                    Image.asset(
-                      "assets/icons/backWard.png",
-                      height: 25.sp,
-                      width: 25.sp,
-                      fit: BoxFit.contain,
+                    GestureDetector(
+                      onTap: () {
+                        Get.back();
+                      },
+                      child: Image.asset(
+                        "assets/icons/backWard.png",
+                        height: 25.sp,
+                        width: 25.sp,
+                        fit: BoxFit.contain,
+                      ),
                     ),
                     Row(
                       children: [
