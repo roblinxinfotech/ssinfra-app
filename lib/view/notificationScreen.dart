@@ -56,7 +56,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         Column(
                           children: [
                             CommonWidgets().commonText(
-                              text: "NOTIFICATION",
+                              text: "CapitalNotification".tr,
                               fontSize: 18.sp,
                               fontColor: AppColors().color1E1E1E,
                               fontFamily: "PlusJakartaSansMedium",
@@ -136,7 +136,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               Column(
                                 children: [
                                   CommonWidgets().commonText(
-                                    text: "Assigned",
+                                    text: "Assigned".tr,
                                     fontSize: 15.sp,
                                     fontColor: AppColors().color666666,
                                     fontFamily: "PlusJakartaSansRegular",

@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:ssinfra/model/assignedVillageWardModel.dart';
 import 'package:ssinfra/services/apiEndPoint.dart';
@@ -92,9 +93,11 @@ class EditFormScreenController extends GetxController {
 
       // print(argus["formId"]);
       // storedFormId = argus["formId"];
+      final prefs = await SharedPreferences.getInstance();
+      final langCode = prefs.getString('languageCode');
       var res = await ApiServices().getData(
         url:
-            "${ApiEndPoint.editFormsLang}en${ApiEndPoint.surveyId}${storedFormId}",
+            "${ApiEndPoint.editFormsLang}${langCode}${ApiEndPoint.surveyId}${storedFormId}",
       );
 
       // await Future.delayed(Duration(seconds: 3), () {});
@@ -712,9 +715,10 @@ class EditFormScreenController extends GetxController {
   void _collectAnswers(QuestionModel q, List<Map<String, dynamic>> list) {
     if (!shouldShowQuestion(q)) return;
     final ans = answers.firstWhereOrNull((a) => a.id == q.id);
-    if (ans != null && ans.answer != null && ans.answer.toString().isNotEmpty) {
-      list.add({"id": q.id, "answer": ans.answer, "type": q.type});
-    }
+    //TODO uncomment to pass only field data
+    // if (ans != null && ans.answer != null && ans.answer.toString().isNotEmpty) {
+    list.add({"id": q.id, "answer": ans?.answer, "type": q.type});
+    // }
     for (final ch in q.childrens) {
       _collectAnswers(ch, list);
     }

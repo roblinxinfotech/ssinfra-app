@@ -33,6 +33,8 @@ class DynamicFormController extends GetxController {
   RxString title = "".obs;
   String formId = "";
   var arguments;
+  String? latitude;
+  String? longitude;
 
   final ImagePicker picker = ImagePicker();
   Rx<CategoryModel> categoryModel = CategoryModel().obs;
@@ -234,7 +236,11 @@ class DynamicFormController extends GetxController {
           .map((e) => FilledFormModel.fromJson(e))
           .toList();
       allForms.forEach((action) {
-        filledForm.addIf(action.surveyId == wardStored.value, action);
+        if (storedCategory.value == 1) {
+          filledForm.addIf(action.surveyId == wardStored.value, action);
+        } else if (storedCategory.value == 2) {
+          filledForm.addIf(action.surveyId == villageStored.value, action);
+        }
       });
       print(filledForm.length);
       print("filledForm.length");
@@ -694,7 +700,10 @@ class DynamicFormController extends GetxController {
             ? wardStored.value.toString()
             : "",
         formId: formId.toString(),
-        answers: result, // encode once here
+        answers: result,
+        // encode once here
+        lat: latitude,
+        long: longitude,
       );
       var datas = jsonDecode(response);
       if (datas["status"] == 201) {
@@ -730,9 +739,10 @@ class DynamicFormController extends GetxController {
   void _collectAnswers(QuestionModel q, List<Map<String, dynamic>> list) {
     if (!shouldShowQuestion(q)) return;
     final ans = answers.firstWhereOrNull((a) => a.id == q.id);
-    if (ans != null && ans.answer != null && ans.answer.toString().isNotEmpty) {
-      list.add({"id": q.id, "answer": ans.answer, "type": q.type});
-    }
+    //TODO uncomment to pass only field data
+    // if (ans != null && ans.answer != null && ans.answer.toString().isNotEmpty) {
+    list.add({"id": q.id, "answer": ans?.answer, "type": q.type});
+    // }
     for (final ch in q.childrens) {
       _collectAnswers(ch, list);
     }

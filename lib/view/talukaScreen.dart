@@ -606,7 +606,7 @@ class _TalukaScreenState extends State<TalukaScreen> {
                                                               CommonWidgets().commonText(
                                                                 text:
                                                                     "Villages:".tr,
-                                                                fontSize: 17.sp,
+                                                                fontSize: 16.sp,
                                                                 fontColor:
                                                                     AppColors()
                                                                         .color1E1E1E,
@@ -621,7 +621,7 @@ class _TalukaScreenState extends State<TalukaScreen> {
                                                                   text:
                                                                       "${talukaScreenController.talukaList.value[index].villagesCount.toString()}",
                                                                   fontSize:
-                                                                      17.sp,
+                                                                      16.sp,
                                                                   fontColor:
                                                                       AppColors()
                                                                           .color1E1E1E,
@@ -662,7 +662,7 @@ class _TalukaScreenState extends State<TalukaScreen> {
                                                             children: [
                                                               CommonWidgets().commonText(
                                                                 text: "Team:".tr,
-                                                                fontSize: 17.sp,
+                                                                fontSize: 16.sp,
                                                                 fontColor:
                                                                     AppColors()
                                                                         .color1E1E1E,
@@ -940,7 +940,7 @@ class _TalukaScreenState extends State<TalukaScreen> {
                                                               CommonWidgets().commonText(
                                                                 text:
                                                                     "Wards-".tr,
-                                                                fontSize: 17.sp,
+                                                                fontSize: 16.sp,
                                                                 fontColor:
                                                                     AppColors()
                                                                         .color1E1E1E,
@@ -955,7 +955,7 @@ class _TalukaScreenState extends State<TalukaScreen> {
                                                                   text:
                                                                       "${talukaScreenController.assignedTownList.value[index].wardsCount.toString()}",
                                                                   fontSize:
-                                                                      18.sp,
+                                                                      16.sp,
                                                                   fontColor:
                                                                       AppColors()
                                                                           .color1E1E1E,
@@ -996,7 +996,7 @@ class _TalukaScreenState extends State<TalukaScreen> {
                                                             children: [
                                                               CommonWidgets().commonText(
                                                                 text: "Team-".tr,
-                                                                fontSize: 17.sp,
+                                                                fontSize: 16.sp,
                                                                 fontColor:
                                                                     AppColors()
                                                                         .color1E1E1E,
@@ -1011,7 +1011,7 @@ class _TalukaScreenState extends State<TalukaScreen> {
                                                                   text:
                                                                       "${talukaScreenController.assignedTownList.value[index].teamsCount.toString()}",
                                                                   fontSize:
-                                                                      18.sp,
+                                                                      16.sp,
                                                                   fontColor:
                                                                       AppColors()
                                                                           .color1E1E1E,

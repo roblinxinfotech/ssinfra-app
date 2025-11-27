@@ -256,7 +256,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   fit: BoxFit.fill,
                                 ),
                                 CommonWidgets().commonText(
-                                  text: "Something went wrong.",
+                                  text: "SomethingWentWrong".tr,
                                   fontSize: 20.sp,
                                   fontColor: AppColors().color1E1E1E,
                                   fontFamily: "PlusJakartaSansMedium",

@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -9,6 +12,7 @@ import 'package:ssinfra/view/editFormScreen.dart';
 import '../controller/formScreenController.dart';
 import '../utils/appColors.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class FormScreen extends StatefulWidget {
   const FormScreen({super.key, String? formid});
@@ -153,23 +157,26 @@ class _FormScreenState extends State<FormScreen> {
                                 fit: BoxFit.contain,
                               ),
                             ),
-                            Column(
-                              children: [
-                                CommonWidgets().commonText(
-                                  text:
-                                      "${controller.title.toString().toUpperCase()}",
-                                  fontSize: 20.sp,
-                                  fontColor: AppColors().color1E1E1E,
-                                  fontFamily: "PlusJakartaSansMedium",
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                SizedBox(height: 2.w),
-                                Container(
-                                  height: 1,
-                                  width: 30.w,
-                                  color: AppColors().color5B6AEA,
-                                ),
-                              ],
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  CommonWidgets().commonText(
+                                    text:
+                                        "${controller.title.toString().toUpperCase()}",
+                                    fontSize: 20.sp,
+                                    fontColor: AppColors().color1E1E1E,
+                                    fontFamily: "PlusJakartaSansMedium",
+                                    textAlign: TextAlign.center,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  SizedBox(height: 2.w),
+                                  Container(
+                                    height: 1,
+                                    width: 30.w,
+                                    color: AppColors().color5B6AEA,
+                                  ),
+                                ],
+                              ),
                             ),
                             Container(height: 25.sp, width: 25.sp),
                           ],
@@ -1198,60 +1205,58 @@ class _FormScreenState extends State<FormScreen> {
 
       bottomNavigationBar: Obx(() {
         return controller.questions.length != 0
-            ? Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  GestureDetector(
-                    onTap: () async {
-                      if (controller.storedCategory.value == 2) {
-                        if (controller.villageStored.value == null) {
-                          CommonWidgets().showSnackBar(
-                            "Message",
-                            "Please select village",
-                            Colors.red,
-                            Colors.white,
-                          );
+            ? SafeArea(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    GestureDetector(
+                      onTap: () async {
+                        if (controller.storedCategory.value == 2) {
+                          if (controller.villageStored.value == null) {
+                            CommonWidgets().showSnackBar(
+                              "Message",
+                              "Please select village",
+                              Colors.red,
+                              Colors.white,
+                            );
+                          } else {
+                            await controller.submit(context);
+                          }
+                        } else if (controller.storedCategory.value == 1) {
+                          if (controller.wardStored.value == null) {
+                            CommonWidgets().showSnackBar(
+                              "Message",
+                              "Please select ward",
+                              Colors.red,
+                              Colors.white,
+                            );
+                          } else {
+                            await controller.submit(context);
+                          }
                         } else {
-                          await controller.submit(context);
+                          print("Select Category");
                         }
-                      } else if (controller.storedCategory.value == 1) {
-                        if (controller.wardStored.value == null) {
-                          CommonWidgets().showSnackBar(
-                            "Message",
-                            "Please select ward",
-                            Colors.red,
-                            Colors.white,
-                          );
-                        } else {
-                          await controller.submit(context);
-                        }
-                      } else {
-                        print("Select Category");
-                      }
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(
-                        left: 5.w,
-                        right: 5.w,
-                        bottom: 10.w,
-                      ),
-                      padding: EdgeInsets.all(3.w),
-                      decoration: BoxDecoration(
-                        color: AppColors().color5B6AEA,
-                        borderRadius: BorderRadius.circular(10.sp),
-                      ),
-                      child: Center(
-                        child: CommonWidgets().commonText(
-                          text: "Submit".tr,
-                          fontSize: 16.sp,
-                          fontColor: AppColors().colorFFFFFF,
-                          fontFamily: "PlusJakartaSansRegular",
-                          fontWeight: FontWeight.w600,
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(left: 5.w, right: 5.w),
+                        padding: EdgeInsets.all(3.w),
+                        decoration: BoxDecoration(
+                          color: AppColors().color5B6AEA,
+                          borderRadius: BorderRadius.circular(10.sp),
+                        ),
+                        child: Center(
+                          child: CommonWidgets().commonText(
+                            text: "Submit".tr,
+                            fontSize: 16.sp,
+                            fontColor: AppColors().colorFFFFFF,
+                            fontFamily: "PlusJakartaSansRegular",
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               )
             : SizedBox();
       }),
@@ -1511,19 +1516,69 @@ class _FormScreenState extends State<FormScreen> {
               alignment: Alignment.topLeft,
               child: ElevatedButton.icon(
                 onPressed: () async {
-                  // final result = await FilePicker.platform.pickFiles();
-                  // if (result != null) {
-                  //   controller.updateAnswer(q.id, result.files.single.path);
-                  // }
+                  // if (Platform.isAndroid) {
+                  var status = await Permission.location.request();
+                  Position? position;
+                  if (status.isGranted) {
+                    // Check if GPS is enabled
+                    bool serviceEnabled =
+                        await Geolocator.isLocationServiceEnabled();
+                    if (!serviceEnabled) {
+                      // Open device location settings
+                      await Geolocator.openLocationSettings();
+                      position = await Geolocator.getCurrentPosition(
+                        desiredAccuracy: LocationAccuracy.high,
+                      );
+                      if (position != null) {
+                      } else {}
+                    } else {
+                      // Get current position
+                      position = await Geolocator.getCurrentPosition(
+                        desiredAccuracy: LocationAccuracy.high,
+                      );
+                      print(
+                        "Location: ${position.latitude}, ${position.longitude}",
+                      );
+                      if (position != null) {
+                        controller.latitude=position.latitude.toString();
+                        controller.longitude=position.longitude.toString();
+                      } else {}
+                    }
+                  } else if (status.isPermanentlyDenied) {
+                    // Open app settings
+                    await openAppSettings();
+                    position = await Geolocator.getCurrentPosition(
+                      desiredAccuracy: LocationAccuracy.high,
+                    );
+                    if (position != null) {
+                    } else {}
+                  } else {
+                    print("Permission denied");
+                  }
+                  // Map<Permission, PermissionStatus> statuses = await [
+                  //   Permission.location,
+                  // ].request();
 
-                  // final XFile? image = await controller.picker.pickImage(
-                  //   source: ImageSource.camera,
-                  //   imageQuality: 50,
-                  // );
-                  // // Navigator.pop(context);
-                  // final result = image;
-                  // if (result != null) {
-                  //   controller.updateAnswer(q.id, result.path);
+                  // await Utils.getCurrentLocation().then((value) async {
+                  //   print(value);
+                  //   print(value);
+                  //   if (position != null) {
+                  //     permissionDenied.value = false;
+                  //     currentLocationMarker =
+                  //         Image.asset(AppAssets.appIcon, width: 30, height: 30);
+                  //     markers.add(
+                  //       Marker(
+                  //         markerId: const MarkerId('current_location'),
+                  //         position: LatLng(position.latitude, position.longitude),
+                  //         icon:
+                  //             BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+                  //       ),
+                  //     );
+                  //   } else {
+                  //     isLoading.value = false;
+                  //     permissionDenied.value = true;
+                  //   }
+                  // });
                   // }
 
                   Get.dialog(
@@ -1669,16 +1724,35 @@ class _FormScreenState extends State<FormScreen> {
               ),
             ),
             if (ans.answer != null)
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Text(
-                  "Selected file: ${ans.answer}",
-                  style: TextStyle(
-                    fontSize: 15.sp,
-                    fontFamily: "PlusJakartaSansRegular",
-                    fontWeight: FontWeight.w600,
+              Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Text(
+                      "Selected file: ${ans.answer}",
+                      style: TextStyle(
+                        fontSize: 15.sp,
+                        fontFamily: "PlusJakartaSansRegular",
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ),
-                ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 2.w),
+                    child: Image.file(
+                      File(ans.answer.toString()),
+                      height: 50.w,
+                      width: 100.w,
+                      fit: BoxFit.fill,
+                      errorBuilder: (context, error, stackTrace) => Image.asset(
+                        "assets/icons/placeHolder.png",
+                        height: 20.w,
+                        width: 20.w,
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                  ),
+                ],
               ),
           ],
         );
@@ -1801,7 +1875,10 @@ class _NumberFieldWidgetState extends State<_NumberFieldWidget> {
                 },
                 onChanged: (v) {
                   _isUserEditing = true;
-                  widget.controller.updateAnswer(widget.question.id, v);
+                  widget.controller.updateAnswer(
+                    widget.question.id,
+                    v.toString().isEmpty ? 0 : v,
+                  );
                 },
                 onEditingComplete: () {
                   _isUserEditing = false;

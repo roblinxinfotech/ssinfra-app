@@ -644,38 +644,39 @@ class _AssignWardScreenState extends State<AssignWardScreen> {
         return assignWardScreenController.wardListModel.value.data?.length !=
                     0 &&
                 assignWardScreenController.groupValue.value == 0
-            ? Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  GestureDetector(
-                    onTap: () async {
-                      await assignWardScreenController.submit(context);
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(
-                        left: 5.w,
-                        right: 5.w,
-                        top: 5.w,
-                        bottom: 5.w,
-                      ),
-                      padding: EdgeInsets.all(3.w),
-                      decoration: BoxDecoration(
-                        color: AppColors().color5B6AEA,
-                        borderRadius: BorderRadius.circular(10.sp),
-                      ),
-                      child: Center(
-                        child: CommonWidgets().commonText(
-                          text: "Submit",
-                          fontSize: 16.sp,
-                          fontColor: AppColors().colorFFFFFF,
-                          fontFamily: "PlusJakartaSansRegular",
-                          fontWeight: FontWeight.w600,
+            ? SafeArea(
+              child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    GestureDetector(
+                      onTap: () async {
+                        await assignWardScreenController.submit(context);
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(
+                          left: 5.w,
+                          right: 5.w,
+
+                        ),
+                        padding: EdgeInsets.all(3.w),
+                        decoration: BoxDecoration(
+                          color: AppColors().color5B6AEA,
+                          borderRadius: BorderRadius.circular(10.sp),
+                        ),
+                        child: Center(
+                          child: CommonWidgets().commonText(
+                            text: "Submit",
+                            fontSize: 16.sp,
+                            fontColor: AppColors().colorFFFFFF,
+                            fontFamily: "PlusJakartaSansRegular",
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              )
+                  ],
+                ),
+            )
             : SizedBox();
       }),
     );

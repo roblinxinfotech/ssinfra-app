@@ -165,6 +165,8 @@ class ApiServices {
     required String wardId,
     required String formId,
     required List<Map<String, dynamic>> answers,
+    String? lat,
+    String? long,
   }) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? apiToken = prefs.getString("tokenValue");
@@ -178,8 +180,14 @@ class ApiServices {
       "Accept": "application/json",
       "Authorization": "Bearer $apiToken",
     });
-
+print(lat.toString());
+print(long.toString());
+print("long.toString()");
     // ✅ Base fields
+    if (lat!=null && long!=null) {
+      request.fields["latitude"] = lat.toString();
+      request.fields["longitude"] = long.toString();
+    }
     request.fields["village_id"] = villageId.toString();
     request.fields["ward_id"] = wardId.toString();
     request.fields["form_id"] = formId.toString();

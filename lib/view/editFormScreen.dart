@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -150,23 +152,26 @@ class _EditFormScreenState extends State<EditFormScreen> {
                                 fit: BoxFit.contain,
                               ),
                             ),
-                            Column(
-                              children: [
-                                CommonWidgets().commonText(
-                                  text:
-                                      "${controller.title.toString().toUpperCase()}",
-                                  fontSize: 20.sp,
-                                  fontColor: AppColors().color1E1E1E,
-                                  fontFamily: "PlusJakartaSansMedium",
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                SizedBox(height: 2.w),
-                                Container(
-                                  height: 1,
-                                  width: 30.w,
-                                  color: AppColors().color5B6AEA,
-                                ),
-                              ],
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  CommonWidgets().commonText(
+                                    text:
+                                    "${controller.title.toString().toUpperCase()}",
+                                    fontSize: 20.sp,
+                                    fontColor: AppColors().color1E1E1E,
+                                    fontFamily: "PlusJakartaSansMedium",
+                                    textAlign: TextAlign.center,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  SizedBox(height: 2.w),
+                                  Container(
+                                    height: 1,
+                                    width: 30.w,
+                                    color: AppColors().color5B6AEA,
+                                  ),
+                                ],
+                              ),
                             ),
                             Container(height: 25.sp, width: 25.sp),
                           ],
@@ -327,61 +332,63 @@ class _EditFormScreenState extends State<EditFormScreen> {
 
       bottomNavigationBar: Obx(() {
         return controller.questions.length != 0
-            ? Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  GestureDetector(
-                    onTap: () async {
-                      // if (controller.storedCategory.value == 2) {
-                      //   if (controller.villageStored.value == null) {
-                      //     CommonWidgets().showSnackBar(
-                      //       "Message",
-                      //       "Please select ward",
-                      //       Colors.red,
-                      //       Colors.white,
-                      //     );
-                      //   } else {
-                      await controller.submit(context);
-                      //   }
-                      // } else if (controller.storedCategory.value == 1) {
-                      //   if (controller.wardStored.value == null) {
-                      //     CommonWidgets().showSnackBar(
-                      //       "Message",
-                      //       "Please select village",
-                      //       Colors.red,
-                      //       Colors.white,
-                      //     );
-                      //   } else {
-                      //     await controller.submit(context);
-                      //   }
-                      // } else {
-                      //   print("Select Category");
-                      // }
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(
-                        left: 5.w,
-                        right: 5.w,
-                        bottom: 10.w,
-                      ),
-                      padding: EdgeInsets.all(3.w),
-                      decoration: BoxDecoration(
-                        color: AppColors().color5B6AEA,
-                        borderRadius: BorderRadius.circular(10.sp),
-                      ),
-                      child: Center(
-                        child: CommonWidgets().commonText(
-                          text: "Update".tr,
-                          fontSize: 16.sp,
-                          fontColor: AppColors().colorFFFFFF,
-                          fontFamily: "PlusJakartaSansRegular",
-                          fontWeight: FontWeight.w600,
+            ? SafeArea(
+              child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    GestureDetector(
+                      onTap: () async {
+                        // if (controller.storedCategory.value == 2) {
+                        //   if (controller.villageStored.value == null) {
+                        //     CommonWidgets().showSnackBar(
+                        //       "Message",
+                        //       "Please select ward",
+                        //       Colors.red,
+                        //       Colors.white,
+                        //     );
+                        //   } else {
+                        await controller.submit(context);
+                        //   }
+                        // } else if (controller.storedCategory.value == 1) {
+                        //   if (controller.wardStored.value == null) {
+                        //     CommonWidgets().showSnackBar(
+                        //       "Message",
+                        //       "Please select village",
+                        //       Colors.red,
+                        //       Colors.white,
+                        //     );
+                        //   } else {
+                        //     await controller.submit(context);
+                        //   }
+                        // } else {
+                        //   print("Select Category");
+                        // }
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(
+                          left: 5.w,
+                          right: 5.w,
+                         
+                        ),
+                        padding: EdgeInsets.all(3.w),
+                        decoration: BoxDecoration(
+                          color: AppColors().color5B6AEA,
+                          borderRadius: BorderRadius.circular(10.sp),
+                        ),
+                        child: Center(
+                          child: CommonWidgets().commonText(
+                            text: "Update".tr,
+                            fontSize: 16.sp,
+                            fontColor: AppColors().colorFFFFFF,
+                            fontFamily: "PlusJakartaSansRegular",
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              )
+                  ],
+                ),
+            )
             : SizedBox();
       }),
       // floatingActionButton: FloatingActionButton(
@@ -798,16 +805,21 @@ class _EditFormScreenState extends State<EditFormScreen> {
               ),
             ),
             if (ans.answer != null)
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Text(
-                  "Selected file: ${ans.answer}",
-                  style: TextStyle(
-                    fontSize: 15.sp,
-                    fontFamily: "PlusJakartaSansRegular",
-                    fontWeight: FontWeight.w600,
+              Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Text(
+                      "Selected file: ${ans.answer}",
+                      style: TextStyle(
+                        fontSize: 15.sp,
+                        fontFamily: "PlusJakartaSansRegular",
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ),
-                ),
+                  buildImage(ans.answer.toString()),
+                ],
               ),
           ],
         );
@@ -1293,4 +1305,54 @@ class _AutoFormulaBanner extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget buildImage(String path) {
+  if (isUrl(path)) {
+    // URL: Load with network
+    return Image.network(
+      path,
+      height: 50.w,
+      width: 100.w,
+      fit: BoxFit.fill,
+      errorBuilder: (context, error, stackTrace) => Image.asset(
+        "assets/icons/placeHolder.png",
+        height: 20.w,
+        width: 20.w,
+        fit: BoxFit.fill,
+      ),
+    );
+  } else if (isFilePath(path)) {
+    // Local File
+    return Image.file(
+      File(path),
+      height: 50.w,
+      width: 100.w,
+      fit: BoxFit.fill,
+      errorBuilder: (context, error, stackTrace) => Image.asset(
+        "assets/icons/placeHolder.png",
+        height: 20.w,
+        width: 20.w,
+        fit: BoxFit.fill,
+      ),
+    );
+  } else {
+    return Image.asset(
+      "assets/icons/placeHolder.png",
+      height: 20.w,
+      width: 20.w,
+      fit: BoxFit.fill,
+    ); // Neither file nor URL
+  }
+}
+
+bool isUrl(String value) {
+  final uri = Uri.tryParse(value);
+  return uri != null &&
+      uri.hasScheme &&
+      (uri.scheme == 'http' || uri.scheme == 'https');
+}
+
+bool isFilePath(String value) {
+  return File(value).existsSync();
 }

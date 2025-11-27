@@ -9,6 +9,8 @@ import 'package:ssinfra/utils/commonWidgets.dart';
 import 'package:ssinfra/view/formScreen.dart';
 import 'package:ssinfra/view/talukaScreen.dart';
 
+import 'notificationScreen.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -40,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               children: [
                 Padding(
-                  padding:   EdgeInsets.all(4.w),
+                  padding: EdgeInsets.all(4.w),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -64,10 +66,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       Row(
                         children: [
-                          Image.asset(
-                            "assets/icons/notification.png",
-                            height: 25.sp,
-                            width: 25.sp,
+                          GestureDetector(
+                            onTap: () {
+                              Get.to(NotificationScreen());
+                            },
+                            child: Image.asset(
+                              "assets/icons/notification.png",
+                              height: 25.sp,
+                              width: 25.sp,
+                            ),
                           ),
 
                           // Image.asset(
@@ -149,14 +156,17 @@ class _HomeScreenState extends State<HomeScreen> {
                       : Expanded(
                           child: Column(
                             children: [
-                              CommonWidgets().commonText(
-                                text:
-                                    "${homeScreenController.formsListModel.value.data?.yojnaName.toString()}",
-                                fontSize: 18.sp,
-                                fontColor: AppColors().color1E1E1E,
-                                fontWeight: FontWeight.w600,
-                                fontFamily: "PlusJakartaSansRegular",
-                                textAlign: TextAlign.center,
+                              Padding(
+                                padding: EdgeInsets.only(left: 1.w, right: 1.w),
+                                child: CommonWidgets().commonText(
+                                  text:
+                                      "${homeScreenController.formsListModel.value.data?.yojnaName.toString()}",
+                                  fontSize: 18.sp,
+                                  fontColor: AppColors().color1E1E1E,
+                                  fontWeight: FontWeight.w600,
+                                  fontFamily: "PlusJakartaSansRegular",
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
                               SizedBox(height: 5.w),
                               Expanded(
@@ -244,7 +254,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 children: [
                                                   TextSpan(
                                                     text:
-                                                        '${homeScreenController.formsListModel.value.data?.forms?[index].title}',
+                                                        '${homeScreenController.formsListModel.value.data?.forms?[index].title.toString().capitalizeFirst}',
                                                   ),
                                                   WidgetSpan(
                                                     alignment:
